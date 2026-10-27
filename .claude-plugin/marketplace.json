@@ -1,5 +1,5 @@
 {
-  "name": "learning-system",
+  "name": "learn-anything",
   "owner": {
     "name": "loselen"
   },
@@ -8,7 +8,7 @@
   },
   "plugins": [
     {
-      "name": "learning-system",
+      "name": "learn-anything",
       "source": "./",
       "description": "Clarify your goal, see where you are, plan the steps, and learn 1 step at a time.",
       "version": "1.0.2",
@@ -22,8 +22,8 @@
         "study",
         "agent-skills"
       ],
-      "homepage": "https://github.com/loselen/learning-system",
-      "repository": "https://github.com/loselen/learning-system"
+      "homepage": "https://github.com/loselen/learn-anything",
+      "repository": "https://github.com/loselen/learn-anything"
     }
   ]
 }

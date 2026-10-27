@@ -1,6 +1,6 @@
 ---
 name: setup-obsidian
-description: Set up an Obsidian vault for the learning system, once. Creates the folders, the agent rules (AGENTS.md), the templates and the review dashboard. Use only when the user asks to set up, create or connect a learning vault. After setup, the other learning skills use the vault on their own.
+description: Set up an Obsidian vault for learn-anything, once. Creates the folders, the agent rules (AGENTS.md), the templates and the review dashboard. Use only when the user asks to set up, create or connect a learning vault. After setup, the other learning skills use the vault on their own.
 license: MIT
 compatibility: Requires write access to the vault folder, through local files or the Obsidian CLI. Without it, give the user the files to copy.
 ---

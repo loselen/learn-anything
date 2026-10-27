@@ -1,4 +1,4 @@
-# Contributing to learning-system
+# Contributing to learn-anything
 
 Conventions for AI agents and humans editing this repository.
 

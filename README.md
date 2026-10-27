@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/banner.svg" alt="Learning system by loselen. Clarify, check, map, then teach in a loop." width="100%">
+  <img src="docs/banner.svg" alt="Learn anything by loselen. Clarify, check, map, then teach in a loop." width="100%">
 </p>
 
 <p align="center">
@@ -83,7 +83,7 @@ The skills use the open [SKILL.md format](https://agentskills.io), so they work 
 **Any agent**
 
 ```sh
-npx skills add loselen/learning-system
+npx skills add loselen/learn-anything
 ```
 
 Pick your agents when asked. To install everything without prompts, add `--all`.
@@ -92,8 +92,8 @@ Pick your agents when asked. To install everything without prompts, add `--all`.
 <summary><b>Claude Code plugin</b></summary>
 
 ```
-/plugin marketplace add loselen/learning-system
-/plugin install learning-system@learning-system
+/plugin marketplace add loselen/learn-anything
+/plugin install learn-anything@learn-anything
 ```
 
 </details>
@@ -101,7 +101,7 @@ Pick your agents when asked. To install everything without prompts, add `--all`.
 <details>
 <summary><b>Claude apps</b></summary>
 
-Download the `.skill` files from the [latest release](https://github.com/loselen/learning-system/releases/latest), then upload them in your skill settings.
+Download the `.skill` files from the [latest release](https://github.com/loselen/learn-anything/releases/latest), then upload them in your skill settings.
 
 </details>
 
