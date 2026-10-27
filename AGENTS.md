@@ -18,7 +18,7 @@ Conventions for AI agents and humans editing this repository.
 1. Keep each `SKILL.md` short. Cut before you add.
 2. Frontmatter may only use `name`, `description`, `license`, `compatibility`, `metadata` and `allowed-tools`. `name` must match the folder name.
 3. Write for any agent. Don't assume a specific product.
-4. `map-topic` runs the pipeline: `clarify-goal` → draft graph → `check-level` → final map. `teach-me` teaches after it.
+4. `map-topic` runs the pipeline: `clarify-goal` → draft graph → `check-level` → final map. `teach-me` teaches after it, and `test-me` tests what was taught.
 5. Use the shared vocabulary everywhere:
    - Node statuses: solid, shaky, ready next, not yet (Mermaid classes `solid`, `shaky`, `next`, `notyet`).
    - Knowledge kinds: procedure, principle, concept, structure, facts.
@@ -32,5 +32,5 @@ Conventions for AI agents and humans editing this repository.
 pip install skills-ref
 for d in skills/*/; do agentskills validate "$d"; done
 claude plugin validate .                     # Claude Code plugin
-npx skills add . --list                      # should find 6 skills
+npx skills add . --list                      # should find 7 skills
 ```

@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-  <img src="docs/badge-skills.svg" alt="6 skills" height="24">
+  <img src="docs/badge-skills.svg" alt="7 skills" height="24">
   <img src="docs/badge-format.svg" alt="SKILL.md format" height="24">
   <a href="LICENSE"><img src="docs/badge-license.svg" alt="MIT license" height="24"></a>
 </p>
 
 <h3 align="center">Learn anything, one small step at a time.</h3>
 
-<p align="center">6 skills that turn your agent into a patient teacher.</p>
+<p align="center">7 skills that turn your agent into a patient teacher.</p>
 
 ---
 
@@ -71,10 +71,11 @@ flowchart LR
 | [`check-level`](skills/check-level/SKILL.md) | Finds what you know, and why mistakes happen |
 | [`map-topic`](skills/map-topic/SKILL.md) | Plans the steps, starting where you are |
 | [`teach-me`](skills/teach-me/SKILL.md) | Teaches 1 step at a time, then waits for you |
+| [`test-me`](skills/test-me/SKILL.md) | Tests what you've learned, then plans the retest |
 | [`setup-obsidian`](skills/setup-obsidian/SKILL.md) | Sets up your vault, once |
 | [`ask-obsidian`](skills/ask-obsidian/SKILL.md) | Answers questions about your vault |
 
-Just ask: "teach me recursion", "what should I learn first?", "what's due this week?" Your agent picks the right skill.
+Just ask: "teach me recursion", "what should I learn first?", "test me on recursion", "what's due this week?" Your agent picks the right skill.
 
 ## Install
 
@@ -123,6 +124,7 @@ your-vault/
 ├── Dashboard.base      what's due, what's next
 ├── Maps/               1 plan per topic
 ├── Lessons/            1 note per step
+├── Tests/              1 note per test
 ├── Sources/
 ├── Templates/
 └── Archive/
@@ -150,7 +152,7 @@ graph TD
 | Blue outline | Ready next |
 | Grey, dashed | Not yet |
 
-Each lesson grows 1 step at a time: the explanation, the activity, **your attempt**, and feedback. Your attempts and your own-words summary stay yours. Your agent never edits them.
+Each lesson grows 1 step at a time: the explanation, the activity, **your attempt**, and feedback. Your attempts, your test answers and your own-words summary stay yours. Your agent only saves what you share in chat, word for word.
 
 **Set up once.** Open your agent in your vault folder and ask:
 
@@ -174,6 +176,10 @@ Your agent needs access to the vault folder. Without it, you get files to copy i
 | Show it, then let them try | Merrill, first principles of instruction | `teach-me` |
 | Feel capable, free and supported | Ryan & Deci, self-determination theory | `teach-me` |
 | Curiosity starts with a gap | Loewenstein, information gaps | `teach-me` |
+| Write questions by skill and level | Krathwohl, revised Bloom's taxonomy | `test-me` |
+| Testing beats rereading | Roediger & Karpicke, test-enhanced learning | `test-me` |
+| Answer, then see feedback | Kang, McDermott & Roediger, test format and feedback | `test-me` |
+| Use results to shape the next step | Black & Wiliam, formative assessment | `test-me` |
 
 ## Contribute
 

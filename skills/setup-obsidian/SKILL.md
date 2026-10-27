@@ -14,7 +14,7 @@ Run once per vault. After that, the other skills read the vault's `AGENTS.md` an
 1. **Find the vault.** Ask for the folder, or use the current one if it holds a `.obsidian/` folder.
 2. **Check for an earlier setup.** If the root `AGENTS.md` already starts with `# Learning vault rules`, the vault is ready. Say so and stop.
 3. **Don't overwrite.** If an `AGENTS.md`, `CLAUDE.md` or template already exists with other content, show the user and ask before changing it. Offer to append the learning rules instead.
-4. **Create the folders**: `Maps/`, `Lessons/`, `Sources/`, `Templates/`, `Archive/`.
+4. **Create the folders**: `Maps/`, `Lessons/`, `Tests/`, `Sources/`, `Templates/`, `Archive/`.
 5. **Copy the files** from `assets/`:
 
    | File | Goes to |
@@ -22,7 +22,7 @@ Run once per vault. After that, the other skills read the vault's `AGENTS.md` an
    | `AGENTS.md` | vault root |
    | `CLAUDE.md` | vault root (imports `AGENTS.md`) |
    | `Dashboard.base` | vault root |
-   | `map-template.md`, `lesson-template.md` | `Templates/` |
+   | `map-template.md`, `lesson-template.md`, `test-template.md` | `Templates/` |
 
 6. **Confirm** in 1 line, and suggest a first step: "Your vault is ready. What do you want to learn?"
 
