@@ -11,7 +11,7 @@
       "name": "learning-system",
       "source": "./",
       "description": "Clarify your goal, see where you are, plan the steps, and learn 1 step at a time.",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "license": "MIT",
       "strict": false,
       "keywords": [
