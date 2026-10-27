@@ -19,7 +19,8 @@ explain just enough → one activity → wait for "done"
 
 - Each message holds one explanation and **one** activity. Never write ahead.
 - Stop after the activity. Give no answer until the learner says done.
-- If the learner says "done" without sharing their work, read it from `### My attempt` in the vault note, or ask for it.
+- If the learner says "done" without sharing their work, ask for it.
+- Talk like a teacher with a student. Don't show cycle numbers, section labels or lists of open questions in chat. That structure belongs in the vault note.
 - Ask in one direction per message. Don't combine an open question with a next-lesson offer or confirmation. Wait for the answer first.
 - If they ask for help mid-attempt, give the smallest hint that could work.
 
@@ -29,7 +30,7 @@ State the outcome as something observable ("can write a recursive function that 
 
 ## Each cycle
 
-**Explanation.** Only what the next activity needs. Open with a question or puzzle the learner can almost answer, and ask them to guess before you explain. A wrong guess made while curious still helps memory. In the first cycle, show a worked example of the whole task. In later cycles, open with brief feedback on the attempt: what worked, what didn't, and why.
+**Explanation.** Only what the next activity needs. When the topic suits it, open with a question or puzzle the learner can almost answer and let them guess first, since a wrong guess made while curious still helps memory. When it doesn't, just explain. In the first cycle, show a worked example of the whole task. In later cycles, open with brief feedback on the attempt: what worked, what didn't, and why.
 
 **Activity.** One task, matched to the kind of knowledge:
 
@@ -80,7 +81,7 @@ Judge from the evidence across cycles. Before you call it, give one final activi
 If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and save each cycle as it happens:
 
 - When a cycle starts, append `## Cycle N · YYYY-MM-DD` to the lesson note with `### Explanation`, `### Activity` and an empty `### My attempt`. On cycle 1, set `status: learning`.
-- When the learner shares their attempt in chat, copy it verbatim under `### My attempt` of the current cycle before anything else. If they only say done, read `### My attempt` instead.
+- When the learner shares their attempt in chat, copy it verbatim under `### My attempt` of the current cycle before anything else.
 - Then append `### Analysis`. End the analysis by judging the outcome: met or not yet, with the evidence.
 - If you judge it met, do all of this in the same turn as the analysis, without asking:
   - Set the lesson `status: review`, `last_reviewed` to today and `next_review` 3 days out.

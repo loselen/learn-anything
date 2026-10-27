@@ -45,4 +45,4 @@ Keep the original as the **long-term goal**. Tell the learner it's the destinati
 
 ## With a learning vault
 
-If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and put the result in the map note's `## Goal`: **Now** (the reachable goal), **Long-term**, and **Path**.
+If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and hand the result to `map-topic`, which writes it in the map note's `## Goal`: **Now** (the reachable goal), **Long-term**, and **Path**. Don't create the map note yourself.

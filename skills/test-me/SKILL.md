@@ -18,6 +18,7 @@ pick scope → blueprint → questions → wait for "done" → mark and give fee
 - Every question is fresh: not a lesson activity, not an earlier test's question.
 - Stop after the questions. Give no answers and no hints until the learner says done. A blank or a guess is useful data.
 - Ask in one direction per message. Don't mix a feedback question with a next-lesson offer.
+- Talk like a teacher with a student. Don't show the blueprint, the key or note structure in chat. That belongs in the vault.
 
 ## Scope
 
@@ -43,7 +44,7 @@ By default, test what is due for review first, then what is in progress.
 ## Output
 
 - **Test:** instructions, time, questions, marks per question.
-- **Key:** blueprint, answers and retest plan. Keep it until they say done.
+- **Key:** blueprint, answers and retest plan. With a vault, it goes in the test note's collapsed `> [!success]- Answer` callouts and never in chat. Without one, keep it back until they say done.
 
 Reply in chat. Make a file only if asked, in the format they name.
 

@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-  <img src="docs/badge-skills.svg" alt="7 skills" height="24">
+  <img src="docs/badge-skills.svg" alt="9 skills" height="24">
   <img src="docs/badge-format.svg" alt="SKILL.md format" height="24">
   <a href="LICENSE"><img src="docs/badge-license.svg" alt="MIT license" height="24"></a>
 </p>
 
 <h3 align="center">Learn anything, one small step at a time.</h3>
 
-<p align="center">7 skills that turn your agent into a patient teacher.</p>
+<p align="center">9 skills that turn your agent into a patient teacher.</p>
 
 ---
 
@@ -72,7 +72,9 @@ flowchart LR
 | [`map-topic`](skills/map-topic/SKILL.md) | Plans the steps, starting where you are |
 | [`teach-me`](skills/teach-me/SKILL.md) | Teaches 1 step at a time, then waits for you |
 | [`test-me`](skills/test-me/SKILL.md) | Tests what you've learned, then plans the retest |
+| [`research-it`](skills/research-it/SKILL.md) | Checks facts against primary sources first |
 | [`setup-obsidian`](skills/setup-obsidian/SKILL.md) | Sets up your vault, once |
+| [`update-vault`](skills/update-vault/SKILL.md) | Updates an older vault, keeping your notes and edits |
 | [`ask-obsidian`](skills/ask-obsidian/SKILL.md) | Answers questions about your vault |
 
 Just ask: "teach me recursion", "what should I learn first?", "test me on recursion", "what's due this week?" Your agent picks the right skill.
@@ -125,7 +127,7 @@ your-vault/
 ├── Maps/               1 plan per topic
 ├── Lessons/            1 note per step
 ├── Tests/              1 note per test
-├── Sources/
+├── References/
 ├── Templates/
 └── Archive/
 ```
@@ -159,6 +161,8 @@ Each lesson grows 1 step at a time: the explanation, the activity, **your attemp
 > Set up my learning vault.
 
 Your agent adds the folders, the rules, the templates and the dashboard. From then on, every skill saves to your vault on its own.
+
+**Update later.** After a new release, ask "Update my learning vault." Your notes stay, and you choose which of your edits to keep.
 
 Your agent needs access to the vault folder. Without it, you get files to copy in.
 

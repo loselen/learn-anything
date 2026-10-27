@@ -15,7 +15,7 @@ This skill runs the pipeline:
 1. **Goal**: run clarify-goal and build for the reachable goal it returns.
 2. **Draft**: build a rough graph. Don't show it yet.
 3. **Check**: run check-level against the draft.
-4. **Map**: show the final graph, fitted to the level check.
+4. **Map**: finish the graph, fitted to the level check, and give the learner the big picture.
 5. **Teach**: offer to start teach-me on the ready-next nodes.
 
 Each step is its own message: never put goal questions and level-check tasks in the same one.
@@ -29,16 +29,21 @@ If the user skips the level check, build from what they say they know.
 - Put isolated facts in a side list. They have no prerequisites.
 - When two different prerequisites each lead to a node, show both as alternatives.
 
-## Output
+## The map
+
+The map is the agent's memory, not the learner's reading. Never paste it into chat.
 
 - A Mermaid `graph TD` with rounded nodes (`A(Power rule)`), the goal on top, and arrows from prerequisite to dependent. Mark each node with one status: **solid**, **shaky**, **ready next** or **not yet**. Keep it under about 20 nodes.
 - One study order, starting from the ready-next nodes.
-- If the goal was lowered, the path to the long-term goal in one line.
+
+## Tell the learner
+
+Talk it through like a teacher: what they already have, where to start, roughly what comes after, and, if the goal was lowered, how the path reaches the long-term goal. Name a few nodes in passing. Don't list them all or show statuses, arrows or code.
 
 ## With a learning vault
 
-If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and save the final map:
+If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and save the final map there. Without a vault, keep it in your working notes for the session.
 
-- Create or update the map note in `Maps/`: goal, graph, lesson links, facts.
+- Create or update the map note in `Maps/`: goal (from clarify-goal), graph, lesson links, facts.
 - Create a lesson note in `Lessons/` for each new node, with `status: planned`. Reuse notes that already exist.
 - Apply status changes from the level check and set each node's class from its lesson status, as the vault rules say. Don't ask for confirmation.
