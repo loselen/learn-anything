@@ -1,0 +1,33 @@
+filters:
+  and:
+    - file.inFolder("Lessons")
+views:
+  - type: table
+    name: By status
+    groupBy:
+      property: note.status
+      direction: ASC
+    order:
+      - file.name
+      - note.topic
+      - note.kind
+      - note.next_review
+  - type: table
+    name: Due for review
+    filters:
+      and:
+        - 'status == "review"'
+        - "next_review <= today()"
+    order:
+      - file.name
+      - note.topic
+      - note.next_review
+  - type: table
+    name: Planned
+    filters:
+      and:
+        - 'status == "planned"'
+    order:
+      - note.topic
+      - file.name
+      - note.prerequisites

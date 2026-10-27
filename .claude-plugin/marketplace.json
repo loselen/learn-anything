@@ -1,0 +1,29 @@
+{
+  "name": "learning-system",
+  "owner": {
+    "name": "loselen"
+  },
+  "metadata": {
+    "description": "Learn anything, one small step at a time."
+  },
+  "plugins": [
+    {
+      "name": "learning-system",
+      "source": "./",
+      "description": "Clarify your goal, see where you are, plan the steps, and learn 1 step at a time.",
+      "version": "1.0.0",
+      "license": "MIT",
+      "strict": false,
+      "keywords": [
+        "learning",
+        "teaching",
+        "tutoring",
+        "obsidian",
+        "study",
+        "agent-skills"
+      ],
+      "homepage": "https://github.com/loselen/learning-system",
+      "repository": "https://github.com/loselen/learning-system"
+    }
+  ]
+}
