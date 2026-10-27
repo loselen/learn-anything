@@ -79,5 +79,9 @@ Judge from the evidence across cycles. Before you call it, give one final activi
 If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and save each cycle as it happens:
 
 - When a cycle starts, append `## Cycle N · YYYY-MM-DD` to the lesson note with `### Explanation`, `### Activity` and an empty `### My attempt`. On cycle 1, set `status: learning`.
-- When the learner says done, read `### My attempt`, then append `### Analysis`.
-- When the outcome is achieved, set `status: review` with a `next_review` date, mark the outcome met in the map note, and update the map's node classes as the vault rules say. Do this without asking.
+- When the learner says done, read `### My attempt`, then append `### Analysis`. End the analysis by judging the outcome: met or not yet, with the evidence.
+- If you judge it met, do all of this in the same turn as the analysis, without asking:
+  - Set the lesson `status: review`, `last_reviewed` to today and `next_review` 3 days out.
+  - In the map note's `## Outcomes`, set the matching row to `met YYYY-MM-DD`. If no row matches, add one.
+  - Regenerate the map's node classes as the vault rules say.
+- Never wait for the learner to say the outcome is met. Never end a turn that judged it met with the vault unchanged.

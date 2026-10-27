@@ -39,7 +39,7 @@ This vault is set up. Don't run setup again.
 - `## Map`: the Mermaid graph. Use rounded nodes and give each a class: `solid`, `shaky`, `next` (ready next) or `notyet`, as in `A(Power rule):::solid`. Node labels match lesson note titles.
   - `### Lessons`: a wikilink to every node. Mermaid nodes aren't links.
   - `### Facts (any order)`: the side list of facts.
-- `## Outcomes`: a table of Outcome and Status (`not yet` or `met YYYY-MM-DD`).
+- `## Outcomes`: a table of Outcome and Status (`not yet` or `met YYYY-MM-DD`). `teach-me` sets a row to met in the same turn it judges the outcome achieved, and adds the row if missing.
 
 ## Lesson note
 
