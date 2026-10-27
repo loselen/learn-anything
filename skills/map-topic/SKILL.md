@@ -39,4 +39,4 @@ If the user has a learning vault (a folder whose root `AGENTS.md` starts with `#
 
 - Create or update the map note in `Maps/`: goal, graph, lesson links, facts.
 - Create a lesson note in `Lessons/` for each new node, with `status: planned`. Reuse notes that already exist.
-- Propose status changes from the level check, and apply them after the user confirms.
+- Apply status changes from the level check and set each node's class from its lesson status, as the vault rules say. Don't ask for confirmation.

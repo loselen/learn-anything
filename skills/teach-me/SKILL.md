@@ -80,4 +80,4 @@ If the user has a learning vault (a folder whose root `AGENTS.md` starts with `#
 
 - When a cycle starts, append `## Cycle N · YYYY-MM-DD` to the lesson note with `### Explanation`, `### Activity` and an empty `### My attempt`. On cycle 1, set `status: learning`.
 - When the learner says done, read `### My attempt`, then append `### Analysis`.
-- When the outcome is achieved, propose `status: review` with a `next_review` date, and mark the outcome met in the map note after the user confirms.
+- When the outcome is achieved, set `status: review` with a `next_review` date, mark the outcome met in the map note, and update the map's node classes as the vault rules say. Do this without asking.

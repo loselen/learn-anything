@@ -10,7 +10,9 @@ Based on knowledge space theory (Doignon & Falmagne), think-aloud research (Eric
 
 ## Probe
 
-- Start near the goal on the graph. If they pass, spot-check one prerequisite. If they fail, move one level down and probe again.
+- Open with an easy item, one the learner can likely pass, so the check starts with a win. Never open with the hardest item.
+- Climb toward the goal on the graph, one step harder each time. After a pass, spot-check one prerequisite only if the next item is a stretch. After a fail, move one level down and probe again.
+- Keep the tone light: say it's a check of the material, not a test of them, and don't stack more than two fails in a row. Follow a fail with an item they can pass.
 - Give two items per node, with different surfaces, before concluding.
 - Match each item to the kind of knowledge:
 

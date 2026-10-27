@@ -52,7 +52,16 @@ This vault is set up. Don't run setup again.
 | `last_reviewed`, `next_review` | `YYYY-MM-DD` |
 | `sources` | Links to notes in `Sources/` |
 
-Status moves to `learning` when cycle 1 starts, to `review` when the outcome is achieved, and to `solid` when the owner confirms after a review.
+Status moves on its own, with no confirmation: to `learning` when cycle 1 starts, to `review` when the outcome is achieved, and to `solid` when the owner passes a review. A failed review goes back to `learning`.
+
+After any status change, regenerate the map's classes from the lesson statuses. Never ask, and never leave the graph stale:
+
+| Lesson status | Class |
+|---|---|
+| `solid` | `solid` |
+| `review` | `shaky` |
+| `planned` or `learning`, every prerequisite `solid` or `review` | `next` |
+| `planned` or `learning`, otherwise | `notyet` |
 
 Body:
 
@@ -67,7 +76,7 @@ Body:
 ## Rules
 
 1. Never write in `## In my own words` or `### My attempt`. Those belong to the owner.
-2. Set `solid`, or mark an outcome met, only after the owner confirms.
+2. Update statuses, map classes and outcomes yourself as the evidence arrives. Don't ask the owner to confirm.
 3. Never delete notes. Move them to `Archive/`.
 4. Search before creating a note, and reuse existing ones.
 5. Append only. Never rewrite earlier cycles or level checks.
@@ -75,4 +84,4 @@ Body:
 
 ## Review
 
-For each due note, have the owner redo the activity without looking. If they pass, schedule the next review further out: 3 days, then 1 week, 1 month, 3 months. If they fail, go back to 3 days.
+For each due note, have the owner redo the activity without looking. If they pass, set `solid` and schedule the next review further out: 3 days, then 1 week, 1 month, 3 months. If they fail, set `learning` and go back to 3 days.
