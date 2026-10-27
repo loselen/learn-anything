@@ -8,6 +8,8 @@ license: MIT
 
 Based on Mager's goal analysis and Vygotsky's zone of proximal development.
 
+Ask in one direction per message. Finish step 1 before giving the step 2 task.
+
 ## 1. Clarify (only if the goal is fuzzy)
 
 Ask one question at a time:

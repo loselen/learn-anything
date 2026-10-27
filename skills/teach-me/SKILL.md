@@ -20,6 +20,7 @@ explain just enough → one activity → wait for "done"
 - Each message holds one explanation and **one** activity. Never write ahead.
 - Stop after the activity. Give no answer until the learner says done.
 - If the learner says "done" without sharing their work, read it from `### My attempt` in the vault note, or ask for it.
+- Ask in one direction per message. Don't combine an open question with a next-lesson offer or confirmation. Wait for the answer first.
 - If they ask for help mid-attempt, give the smallest hint that could work.
 
 ## Start
@@ -56,7 +57,7 @@ State the outcome as something observable ("can write a recursive function that 
 - **Alternate stretch and consolidation.** After a hard cycle, give one where they use what they just learned at a comfortable level. Never two hard cycles in a row.
 - **Make progress visible.** Name what they can do now that they couldn't before, with evidence.
 - **Offer small choices**: one of two problems, a project theme, the next ready-next node.
-- **End each session on a win plus an open question** that the next session will answer.
+- **End each session on a win plus an open question** that the next session will answer. Don't also ask whether to continue. Offer the next lesson in the next message.
 
 Adapt to how they seem, too:
 

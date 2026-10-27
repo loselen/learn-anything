@@ -81,6 +81,7 @@ Body:
 4. Search before creating a note, and reuse existing ones.
 5. Append only. Never rewrite earlier cycles or level checks.
 6. Change only what the task needs.
+7. Ask in one direction per message. Several questions for the same purpose are fine. Never mix purposes, such as goal questions with level-check tasks, or an open question with a next-lesson offer. Wait for the answer before starting the next direction.
 
 ## Review
 

@@ -18,6 +18,8 @@ This skill runs the pipeline:
 4. **Map**: show the final graph, fitted to the level check.
 5. **Teach**: offer to start teach-me on the ready-next nodes.
 
+Each step is its own message: never put goal questions and level-check tasks in the same one.
+
 If the user skips the level check, build from what they say they know.
 
 ## Building the graph
