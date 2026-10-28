@@ -14,6 +14,7 @@ Based on knowledge space theory (Doignon & Falmagne), think-aloud research (Eric
 - Climb toward the goal on the graph, one step harder each time. After a pass, spot-check one prerequisite only if the next item is a stretch. After a fail, move one level down and probe again.
 - Keep it a conversation: don't announce item numbers or node names, and show the report only as a plain summary.
 - Keep the tone light: say it's a check of the material, not a test of them, and don't stack more than two fails in a row. Follow a fail with an item they can pass.
+- Give at most one hint per item. If they still fail after it, count it as a fail.
 - Give two items per node, with different surfaces, before concluding.
 - Match each item to the kind of knowledge:
 
