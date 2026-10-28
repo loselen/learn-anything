@@ -1,6 +1,6 @@
 # Learning vault rules
 
-Template version: 1.1.1
+Template version: 1.1.2
 
 Instructions for AI agents working in this vault. Claude Code reads them through `CLAUDE.md`, which imports this file.
 
@@ -111,6 +111,7 @@ Named after the source, in `References/`. Holds the link, whether it is primary 
 6. Append only. Never rewrite earlier cycles, level checks or tests.
 7. Change only what the task needs.
 8. Ask in one direction per message. Several questions for the same purpose are fine. Never mix purposes, such as goal questions with level-check tasks, or an open question with a next-lesson offer. Wait for the answer before starting the next direction.
+9. When you are unsure of a fact, or it may have changed, run `research-it` before you state it. Never teach or test a fact you haven't checked.
 
 ## Review
 
