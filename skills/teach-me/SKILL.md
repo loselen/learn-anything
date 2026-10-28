@@ -81,6 +81,7 @@ Judge from the evidence across cycles. Before you call it, give one final activi
 If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and save each cycle as it happens:
 
 - When a cycle starts, append `## Cycle N · YYYY-MM-DD` to the lesson note with `### Explanation`, `### Activity` and an empty `### My attempt`. On cycle 1, set `status: learning`.
+- Put the activity's answer in a collapsed `> [!success]- Answer` callout under `### Activity`, never in chat.
 - When the learner shares their attempt in chat, copy it verbatim under `### My attempt` of the current cycle before anything else.
 - Then append `### Analysis`. End the analysis by judging the outcome: met or not yet, with the evidence.
 - If you judge it met, do all of this in the same turn as the analysis, without asking:
