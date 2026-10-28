@@ -21,15 +21,20 @@ Ask one question at a time:
 
 ## 2. Check the distance (always)
 
-Have the learner attempt the goal task. If they get stuck, give one hint, the smallest that could work (where to look, what it resembles, which method to use). Never give a second.
+Have the learner attempt the goal task. When they get stuck, give hints one at a time, smallest first:
 
-| Result | Meaning | Action |
+1. Where to look
+2. What it resembles
+3. Which method to use
+4. A worked first step
+
+| Hints needed | Meaning | Action |
 |---|---|---|
-| Succeeds with no hint | Already there | Raise the goal one step |
-| Succeeds after the hint | Just above | Keep it |
-| Still stuck after the hint | Too far | Lower it |
+| 0 | Already there | Raise the goal one step |
+| 1–2 | Just above | Keep it |
+| 3+, or stuck | Too far | Lower it |
 
-To lower the goal, ask "What must they already be able to do to learn this?", take the most central answer as the new goal, and probe again. Repeat until a goal lands at "succeeds after the hint".
+To lower the goal, ask "What must they already be able to do to learn this?", take the most central answer as the new goal, and probe again. Repeat until a goal lands at 1–2 hints.
 
 Keep the original as the **long-term goal**. Tell the learner it's the destination and this is the first stop, not a judgment.
 
