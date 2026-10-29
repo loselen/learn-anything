@@ -8,7 +8,7 @@ license: MIT
 
 Based on knowledge space theory (Doignon & Falmagne), think-aloud research (Ericsson & Simon) and procedural bug research (Brown & Burton).
 
-Load `understand-me` first if you haven't this session.
+Load `understand-me` and `research-it` first if you haven't this session.
 
 ## Probe
 

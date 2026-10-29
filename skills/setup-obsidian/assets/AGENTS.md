@@ -1,10 +1,10 @@
 # Learning vault rules
 
-Template version: 1.2.3
+Template version: 1.2.4
 
 Instructions for AI agents working in this vault. Claude Code reads them through `CLAUDE.md`, which imports this file.
 
-Before your first reply in any session, load `understand-me` (rule 10).
+Before your first reply in any session, load `understand-me` and `research-it`. Apply `understand-me` whenever you ask the owner for input or give feedback, even if they show no sign of struggling, and don't announce it. Run `research-it` before you state a fact you are unsure of or that may have changed, and never teach or test a fact you haven't checked.
 
 Each topic has a **map note** that holds its dependency graph. Each node in the graph has a **lesson note** that grows one teaching cycle at a time. Each test is a **test note**, and the notes in `Tests/` are the history.
 
@@ -114,8 +114,6 @@ Named after the source, in `References/`. Holds the link, whether it is primary 
 6. Append only. Never rewrite earlier cycles, level checks or tests.
 7. Change only what the task needs.
 8. Ask in one direction per message. Several questions for the same purpose are fine. Never mix purposes, such as goal questions with level-check tasks, or an open question with a next-lesson offer. Wait for the answer before starting the next direction.
-9. When you are unsure of a fact, or it may have changed, run `research-it` before you state it. Never teach or test a fact you haven't checked.
-10. Load `understand-me` before your first reply in every session, even if the owner shows no sign of struggling. Apply it whenever you ask for input or give feedback. Don't announce it.
 
 ## Review
 

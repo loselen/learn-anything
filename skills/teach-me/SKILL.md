@@ -8,7 +8,7 @@ license: MIT
 
 Based on Bloom's mastery learning, Merrill's first principles of instruction, self-determination theory (Ryan & Deci) and the information-gap theory of curiosity (Loewenstein; Kang et al.).
 
-Load `understand-me` first if you haven't this session.
+Load `understand-me` and `research-it` first if you haven't this session.
 
 ```
 explain just enough → one activity → wait for "done"

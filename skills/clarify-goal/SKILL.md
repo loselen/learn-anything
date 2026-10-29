@@ -8,7 +8,7 @@ license: MIT
 
 Based on Mager's goal analysis and Vygotsky's zone of proximal development.
 
-Load `understand-me` first if you haven't this session.
+Load `understand-me` and `research-it` first if you haven't this session.
 
 Ask in one direction per message. Finish step 1 before giving the step 2 task.
 

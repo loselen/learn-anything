@@ -8,6 +8,8 @@ license: MIT
 
 Based on Gagné's learning hierarchies.
 
+Load `understand-me` and `research-it` first if you haven't this session.
+
 ## Pipeline
 
 This skill runs the pipeline:
