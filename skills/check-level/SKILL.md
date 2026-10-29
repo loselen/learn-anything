@@ -8,6 +8,8 @@ license: MIT
 
 Based on knowledge space theory (Doignon & Falmagne), think-aloud research (Ericsson & Simon) and procedural bug research (Brown & Burton).
 
+Load `understand-me` first if you haven't this session.
+
 ## Probe
 
 - Open with an easy item, one the learner can likely pass, so the check starts with a win. Never open with the hardest item.

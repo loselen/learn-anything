@@ -1,6 +1,6 @@
 ---
 name: understand-me
-description: Keep a learner's confidence intact when a learning step feels daunting. Use when a learner says they feel lost, stupid, behind, overwhelmed or "bad at this", gives up, stalls, goes quiet, keeps answering "idk" or "skip", or gets slower from one session to the next. Also use when a goal question, level check or exercise seems to be scaring them off, and when designing or reviewing a tutoring flow (clarify-goal, check-level, map-topic, teach-me) for places where a learner could burn out. Use it even if the learner never says they are discouraged.
+description: Keep a learner's confidence intact when a learning step feels daunting. Use when a learner says they feel lost, stupid, behind, overwhelmed or "bad at this", gives up, stalls, goes quiet, keeps answering "idk" or "skip", or gets slower from one session to the next. Also use when a goal question, level check or exercise seems to be scaring them off, and when designing or reviewing a tutoring flow (clarify-goal, check-level, map-topic, teach-me) for places where a learner could burn out. Load it at the start of every learning session, even if the learner never says they are discouraged.
 license: MIT
 ---
 

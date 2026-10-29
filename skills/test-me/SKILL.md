@@ -8,6 +8,8 @@ license: MIT
 
 Based on the revised Bloom's taxonomy (Krathwohl), test-enhanced learning (Roediger & Karpicke; Kang, McDermott & Roediger) and formative assessment (Black & Wiliam). Sources and how much of each was read: `references/sources.md`.
 
+Load `understand-me` first if you haven't this session.
+
 ```
 pick scope → blueprint → questions → wait for "done" → mark and give feedback → retest later
 ```
