@@ -33,5 +33,5 @@ Conventions for AI agents and humans editing this repository.
 pip install skills-ref
 for d in skills/*/; do agentskills validate "$d"; done
 claude plugin validate .                     # Claude Code plugin
-npx skills add . --list                      # should find 9 skills
+npx skills add . --list                      # should find 10 skills
 ```

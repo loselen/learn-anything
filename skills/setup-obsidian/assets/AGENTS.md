@@ -1,6 +1,6 @@
 # Learning vault rules
 
-Template version: 1.1.3
+Template version: 1.2.0
 
 Instructions for AI agents working in this vault. Claude Code reads them through `CLAUDE.md`, which imports this file.
 
@@ -31,6 +31,7 @@ This vault is set up. Don't run setup again.
 | `teach-me` | Lessons | Lesson cycles, `### My attempt` (from chat), status, map `## Outcomes` |
 | `test-me` | Lessons, maps, `Tests/` | Test notes, lesson status and review dates, map classes |
 | `research-it` | `References/` | Reference notes, lesson `references` |
+| `understand-me` | | Nothing |
 | `ask-obsidian` | Everything | Nothing |
 | `update-vault` | Rules, templates, dashboard | The same files, new folders, `Template version` |
 
@@ -112,6 +113,7 @@ Named after the source, in `References/`. Holds the link, whether it is primary 
 7. Change only what the task needs.
 8. Ask in one direction per message. Several questions for the same purpose are fine. Never mix purposes, such as goal questions with level-check tasks, or an open question with a next-lesson offer. Wait for the answer before starting the next direction.
 9. When you are unsure of a fact, or it may have changed, run `research-it` before you state it. Never teach or test a fact you haven't checked.
+10. Run `understand-me` in every session where you ask the owner for input or give feedback, from the first message. Don't announce it.
 
 ## Review
 

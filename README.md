@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-  <img src="docs/badge-skills.svg" alt="9 skills" height="24">
+  <img src="docs/badge-skills.svg" alt="10 skills" height="24">
   <img src="docs/badge-format.svg" alt="SKILL.md format" height="24">
   <a href="LICENSE"><img src="docs/badge-license.svg" alt="MIT license" height="24"></a>
 </p>
 
 <h3 align="center">Learn anything, one small step at a time.</h3>
 
-<p align="center">9 skills that turn your agent into a patient teacher.</p>
+<p align="center">10 skills that turn your agent into a patient teacher.</p>
 
 ---
 
@@ -73,6 +73,7 @@ flowchart LR
 | [`teach-me`](skills/teach-me/SKILL.md) | Teaches 1 step at a time, then waits for you |
 | [`test-me`](skills/test-me/SKILL.md) | Tests what you've learned, then plans the retest |
 | [`research-it`](skills/research-it/SKILL.md) | Checks facts against primary sources first |
+| [`understand-me`](skills/understand-me/SKILL.md) | Keeps you from burning out when a step feels hard |
 | [`setup-obsidian`](skills/setup-obsidian/SKILL.md) | Sets up your vault, once |
 | [`update-vault`](skills/update-vault/SKILL.md) | Updates an older vault, keeping your notes and edits |
 | [`ask-obsidian`](skills/ask-obsidian/SKILL.md) | Answers questions about your vault |
