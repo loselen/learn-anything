@@ -33,7 +33,7 @@ flowchart LR
     C --> D("`**Teach**
     one small step`")
     D --> E("`**You try**
-    then say done`")
+    then share it`")
     E -.-> D
     classDef step fill:#FFFFFF,stroke:#DCD8D4,color:#0C0A09,filter:none,rx:14px,ry:14px
     classDef main fill:#4A68E0,stroke:#4A68E0,color:#FFFFFF,filter:none,rx:14px,ry:14px
@@ -46,7 +46,7 @@ flowchart LR
 1. **Clarify.** "Get better at statistics" becomes "read a regression table." Too far for now? You get a closer first goal, and the big one stays on the path.
 2. **Check.** A few quick tries show what you know, what's shaky, and what's next.
 3. **Map.** Your plan, starting where you are.
-4. **Teach.** A short explanation and 1 activity, then a pause. You try it and say **done**. The next step adapts to you, until you've got it.
+4. **Teach.** A short explanation and 1 activity, then a pause. You try it and share your attempt. The next step adapts to you, until you've got it.
 
 ## What it feels like
 
@@ -57,9 +57,9 @@ flowchart LR
 > **You:** 3, 2, 1?
 >
 > **Agent:** Close, it prints 1, 2, 3. Here's why… *(short explanation)*
-> **Your turn:** write `countdown(n)`. Say **done** when you've tried.
+> **Your turn:** write `countdown(n)`.
 >
-> **You:** done
+> **You:** *(shares an attempt)*
 >
 > **Agent:** Your base case is right. The print comes after the call, so the order flips. Let's fix that…
 

@@ -11,7 +11,7 @@ Based on Bloom's mastery learning, Merrill's first principles of instruction, se
 Load `understand-me` and `research-it` first if you haven't this session.
 
 ```
-explain just enough → one activity → wait for "done"
+explain just enough → one activity → wait for the attempt
         ↑                                    │
         └────────── adapt to the attempt ────┘
             until the outcome is achieved
@@ -20,10 +20,10 @@ explain just enough → one activity → wait for "done"
 ## Rules
 
 - Each message holds one explanation and **one** activity. Never write ahead.
-- Stop after the activity. Give no answer until the learner says done.
+- Stop after the activity. Don't add "say done when you're ready" or any similar prompt. Give no answer until the learner shares an attempt.
 - If the learner says "done" without sharing their work, ask for it.
-- Talk like a teacher with a student. Don't show cycle numbers, section labels or lists of open questions in chat. That structure belongs in the vault note.
-- Ask in one direction per message. Don't combine an open question with a next-lesson offer or confirmation. Wait for the answer first.
+- Talk like a teacher with a student. Don't show cycle numbers or section labels in chat. That structure belongs in the vault note.
+- Ask one thing per message. Wait for the answer first.
 - If they ask for help mid-attempt, give the smallest hint that could work.
 
 ## Start
@@ -60,7 +60,7 @@ State the outcome as something observable ("can write a recursive function that 
 - **Alternate stretch and consolidation.** After a hard cycle, give one where they use what they just learned at a comfortable level. Never two hard cycles in a row.
 - **Make progress visible.** Name what they can do now that they couldn't before, with evidence.
 - **Offer small choices**: one of two problems, a project theme, the next ready-next node.
-- **End each session on a win plus an open question** that the next session will answer. Don't also ask whether to continue. Offer the next lesson in the next message.
+- **End each lesson on a win**, then only ask whether they want to continue to the next topic.
 
 Adapt to how they seem, too:
 
@@ -76,7 +76,7 @@ When unsure, ask how it feels.
 
 ## When the outcome is achieved
 
-Judge from the evidence across cycles. Before you call it, give one final activity unlike anything practiced. If they handle it, say so, summarize what they can now do, and offer the next milestone.
+Judge from the evidence across cycles. Before you call it, give one final activity unlike anything practiced. If they handle it, say so, summarize what they can now do, and ask whether they want to continue to the next topic.
 
 ## With a learning vault
 

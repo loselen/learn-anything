@@ -1,6 +1,6 @@
 # Learning vault rules
 
-Template version: 1.2.4
+Template version: 1.2.5
 
 Instructions for AI agents working in this vault. Claude Code reads them through `CLAUDE.md`, which imports this file.
 
@@ -113,7 +113,7 @@ Named after the source, in `References/`. Holds the link, whether it is primary 
 5. Search before creating a note, and reuse existing ones.
 6. Append only. Never rewrite earlier cycles, level checks or tests.
 7. Change only what the task needs.
-8. Ask in one direction per message. Several questions for the same purpose are fine. Never mix purposes, such as goal questions with level-check tasks, or an open question with a next-lesson offer. Wait for the answer before starting the next direction.
+8. Ask in one direction per message. Several questions for the same purpose are fine. Never mix purposes, such as goal questions with level-check tasks. A lesson ends on a win and only asks whether to continue to the next topic. Wait for the answer before starting the next direction.
 
 ## Review
 
