@@ -16,7 +16,9 @@ views:
     name: Due for review
     filters:
       and:
-        - 'status == "review"'
+        - or:
+            - 'status == "review"'
+            - 'status == "solid"'
         - "next_review <= today()"
     order:
       - file.name

@@ -8,7 +8,7 @@ license: MIT
 
 Based on Gagné's learning hierarchies.
 
-Load `understand-me` and `research-it` first if you haven't this session.
+Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
 
 ## Pipeline
 
@@ -48,4 +48,5 @@ If the user has a learning vault (a folder whose root `AGENTS.md` starts with `#
 
 - Create or update the map note in `Maps/`: goal (from clarify-goal), graph, lesson links, facts.
 - Create a lesson note in `Lessons/` for each new node, with `status: planned`. Reuse notes that already exist.
-- Apply status changes from the level check and set each node's class from its lesson status, as the vault rules say. Don't ask for confirmation.
+- For new notes, write check-level's `## Level checks` entries and apply its status table there.
+- Set each node's class from its lesson status, as the vault rules say. Don't ask for confirmation.

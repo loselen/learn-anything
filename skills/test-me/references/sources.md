@@ -28,7 +28,7 @@ Read: full text.
 - SA responses were scored 1, one half, or 0.
 - Feedback arrived right after each item. The effect of delayed feedback needs further research.
 
-Used in: "Write the test" steps 3 and 4, and "Mark and review".
+Used in: "Write the test" steps 3 and 4, and "Mark and review". Feedback after each item is why test-me asks and marks one question at a time.
 
 ## Roediger and Karpicke (2006)
 

@@ -71,7 +71,7 @@ flowchart LR
 | [`check-level`](skills/check-level/SKILL.md) | Finds what you know, and why mistakes happen |
 | [`map-topic`](skills/map-topic/SKILL.md) | Plans the steps, starting where you are |
 | [`teach-me`](skills/teach-me/SKILL.md) | Teaches 1 step at a time, then waits for you |
-| [`test-me`](skills/test-me/SKILL.md) | Tests what you've learned, then plans the retest |
+| [`test-me`](skills/test-me/SKILL.md) | Tests you 1 question at a time, then plans the retest |
 | [`research-it`](skills/research-it/SKILL.md) | Checks facts against primary sources first |
 | [`understand-me`](skills/understand-me/SKILL.md) | Keeps you from burning out when a step feels hard |
 | [`setup-obsidian`](skills/setup-obsidian/SKILL.md) | Sets up your vault, once |
@@ -105,7 +105,7 @@ Pick your agents when asked. To install everything without prompts, add `--all`.
 <details>
 <summary><b>Claude apps</b></summary>
 
-Download the `.skill` files from the [latest release](https://github.com/loselen/learn-anything/releases/latest), then upload them in your skill settings.
+Download all the `.skill` files from the [latest release](https://github.com/loselen/learn-anything/releases/latest), then upload them in your skill settings.
 
 </details>
 
@@ -185,6 +185,10 @@ Your agent needs access to the vault folder. Without it, you get files to copy i
 | Testing beats rereading | Roediger & Karpicke, test-enhanced learning | `test-me` |
 | Answer, then see feedback | Kang, McDermott & Roediger, test format and feedback | `test-me` |
 | Use results to shape the next step | Black & Wiliam, formative assessment | `test-me` |
+| Early wins build confidence | Bandura, self-efficacy | `understand-me` |
+| Small goals beat distant ones | Bandura & Schunk, proximal goals | `understand-me` |
+| Anxiety crowds working memory | Eysenck et al., attentional control | `understand-me` |
+| Feedback on the task, not the person | Kluger & DeNisi, feedback interventions | `understand-me` |
 
 ## Contribute
 

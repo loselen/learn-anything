@@ -33,7 +33,7 @@ Do not stack moves, apologize at length, or announce that you are doing any of t
 
 ### Where each input step tends to go wrong
 
-**Clarify the goal.** The risky part is having the learner attempt the goal task first, with hints counted until they are "too far". That is a planned failure at their first contact with the topic. Open with a task they will almost surely do, then climb. If the learner has to be shown the goal is too far, tell them in advance that the first attempt is expected to be hard and the hints are how you measure. The open question "what would you see someone doing?" is a blank page for a novice who lacks the vocabulary, so offer a few candidate answers to react to. When you lower the goal, call the new one a first stop and keep the original visible as the destination.
+**Clarify the goal.** The goal task can be a failure at first contact with the topic, so clarify-goal opens with an easier task and only then gives the goal task, after saying it may feel hard and the hint is how you measure. Keep that order. The open question "what would you see someone doing?" is a blank page for a novice, so clarify-goal offers a few example answers to react to. When you lower the goal, call the new one a first stop and keep the original visible as the destination.
 
 **Check the level.** Open with an easy item, never the hardest. Do not let more than two failures in a row happen; follow a fail with something passable. Call it a check of the material, not a test of them. Allow skipping an item, and count a skip as data.
 

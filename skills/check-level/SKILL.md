@@ -8,7 +8,7 @@ license: MIT
 
 Based on knowledge space theory (Doignon & Falmagne), think-aloud research (Ericsson & Simon) and procedural bug research (Brown & Burton).
 
-Load `understand-me` and `research-it` first if you haven't this session.
+Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
 
 ## Probe
 
@@ -44,7 +44,7 @@ Load `understand-me` and `research-it` first if you haven't this session.
 
 - **Solid**: passed.
 - **Shaky**: passed, but only recently learned. With a vault, these are lessons at `status: review`. Review these first.
-- **Ready next**: failed, with all prerequisites solid.
+- **Ready next**: failed, with every prerequisite solid or shaky.
 - **Not yet**: everything else.
 - Each failure with its type, plus any missing prerequisites found.
 
@@ -52,4 +52,12 @@ Hand the report back to map-topic.
 
 ## With a learning vault
 
-If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and append a dated entry to `## Level checks` in each lesson note you probed: result, failure type, and the hint that worked.
+If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules. For each node you probed whose lesson note exists, append a dated entry to `## Level checks` (result, failure type, and the hint that worked) and set its status:
+
+| Result | Lesson status |
+|---|---|
+| Passed both items with no hint | `solid`, `interval: 30`, `last_reviewed` today, `next_review` 30 days out |
+| Failed a lesson that was `review` or `solid` | `learning`, `interval: 3`, `next_review` 3 days out |
+| Anything else | Unchanged |
+
+When notes don't exist yet, hand the entries and statuses to map-topic, which writes them when it creates the notes.

@@ -6,9 +6,9 @@ license: MIT
 
 # Teach me
 
-Based on Bloom's mastery learning, Merrill's first principles of instruction, self-determination theory (Ryan & Deci) and the information-gap theory of curiosity (Loewenstein; Kang et al.).
+Based on Bloom's mastery learning, Merrill's first principles of instruction, self-determination theory (Ryan & Deci) and the information-gap theory of curiosity (Loewenstein, 1994; Kang et al., 2009, "The wick in the candle of learning").
 
-Load `understand-me` and `research-it` first if you haven't this session.
+Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
 
 ```
 explain just enough → one activity → wait for the attempt
@@ -25,6 +25,10 @@ explain just enough → one activity → wait for the attempt
 - Talk like a teacher with a student. Don't show cycle numbers or section labels in chat. That structure belongs in the vault note.
 - Ask one thing per message. Wait for the answer first.
 - If they ask for help mid-attempt, give the smallest hint that could work.
+
+## Check every answer key
+
+Before you save or use a key, check it: run code if you can execute it, solve a calculation a second way, and run facts through `research-it`. If the learner gave source material (notes, a textbook, an answer key), it outranks your own key. If you can't check a key, mark it `unverified` in its callout, and re-check before marking a different answer wrong.
 
 ## Start
 
@@ -60,7 +64,7 @@ State the outcome as something observable ("can write a recursive function that 
 - **Alternate stretch and consolidation.** After a hard cycle, give one where they use what they just learned at a comfortable level. Never two hard cycles in a row.
 - **Make progress visible.** Name what they can do now that they couldn't before, with evidence.
 - **Offer small choices**: one of two problems, a project theme, the next ready-next node.
-- **End each lesson on a win**, then only ask whether they want to continue to the next topic.
+- **End each lesson on a win**: an optional own-words summary, then only ask whether they want to continue to the next topic.
 
 Adapt to how they seem, too:
 
@@ -76,7 +80,7 @@ When unsure, ask how it feels.
 
 ## When the outcome is achieved
 
-Judge from the evidence across cycles. Before you call it, give one final activity unlike anything practiced. If they handle it, say so, summarize what they can now do, and ask whether they want to continue to the next topic.
+Judge from the evidence across cycles. Before you call it, give one final activity unlike anything practiced. If they handle it, say so, then ask for one or two sentences on the idea in their own words. Skipping is fine. After they reply, name what they can now do and ask whether they want to continue to the next topic.
 
 ## With a learning vault
 
@@ -87,7 +91,8 @@ If the user has a learning vault (a folder whose root `AGENTS.md` starts with `#
 - When the learner shares their attempt in chat, copy it verbatim under `### My attempt` of the current cycle before anything else.
 - Then append `### Analysis`. End the analysis by judging the outcome: met or not yet, with the evidence.
 - If you judge it met, do all of this in the same turn as the analysis, without asking:
-  - Set the lesson `status: review`, `last_reviewed` to today and `next_review` 3 days out.
+  - Set the lesson `status: review`, `interval: 3`, `last_reviewed` to today and `next_review` 3 days out.
   - In the map note's `## Outcomes`, set the matching row to `met YYYY-MM-DD`. If no row matches, add one.
   - Regenerate the map's node classes as the vault rules say.
+- When the learner gives their own-words summary, append it verbatim under `## In my words`.
 - Never wait for the learner to say the outcome is met. Never end a turn that judged it met with the vault unchanged.

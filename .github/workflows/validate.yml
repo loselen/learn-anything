@@ -1,0 +1,23 @@
+name: validate
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install skills-ref
+      - name: Validate every skill
+        run: for d in skills/*/; do agentskills validate "$d"; done
+      - name: Plugin and template versions match
+        run: |
+          v1=$(python -c "import json; print(json.load(open('.claude-plugin/marketplace.json'))['plugins'][0]['version'])")
+          v2=$(sed -n 's/^Template version: //p' skills/setup-obsidian/assets/AGENTS.md)
+          echo "marketplace $v1, template $v2"
+          test "$v1" = "$v2"
+      - name: Changelog has the current version
+        run: |
+          v=$(sed -n 's/^Template version: //p' skills/setup-obsidian/assets/AGENTS.md)
+          grep -q "^## $v" CHANGELOG.md

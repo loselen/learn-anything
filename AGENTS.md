@@ -9,9 +9,9 @@ Conventions for AI agents and humans editing this repository.
 | `skills/<name>/SKILL.md` | One skill per folder, in the [Agent Skills](https://agentskills.io) format |
 | `skills/setup-obsidian/assets/` | Starter vault files. The vault's `AGENTS.md` holds its rules; `CLAUDE.md` only imports it. |
 | `.claude-plugin/marketplace.json` | Lets Claude Code install the repo as a plugin |
+| `docs/` | README banner and badges (text drawn as outlines, so they render the same everywhere) |
 
 `setup-obsidian` runs once, to set up a vault, and `update-vault` brings an older vault up to date. The other skills check for the vault's `AGENTS.md` and save to it.
-| `docs/` | README banner and badges (text drawn as outlines, so they render the same everywhere) |
 
 ## Rules
 
@@ -24,8 +24,9 @@ Conventions for AI agents and humans editing this repository.
    - Knowledge kinds: procedure, principle, concept, structure, facts.
    - Lesson `status`: planned → learning → review → solid.
 6. README and banner follow the loselen design system: "loselen" always lowercase, sentence case, as few words as possible, Blue 500 `#4A68E0` as the only accent, and no other brand names unless install steps need them.
-7. On release, bump `Template version:` in `skills/setup-obsidian/assets/AGENTS.md` along with `marketplace.json`. `update-vault` relies on it.
+7. On release, bump `Template version:` in `skills/setup-obsidian/assets/AGENTS.md` along with `marketplace.json`, and add an entry to `CHANGELOG.md`. `update-vault` relies on the version. Batch changes: release at most once a day, and bump the minor version when vault files change.
 8. If you rename a section, property or skill, update every skill, the vault `AGENTS.md`, the templates and the README.
+9. Before a release, run the scenarios in `evals/scenarios.md` and record the results in the pull request.
 
 ## Check before committing
 
