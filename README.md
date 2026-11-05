@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-  <img src="docs/badge-skills.svg" alt="10 skills" height="24">
+  <img src="docs/badge-skills.svg" alt="11 skills" height="24">
   <img src="docs/badge-format.svg" alt="SKILL.md format" height="24">
   <a href="LICENSE"><img src="docs/badge-license.svg" alt="MIT license" height="24"></a>
 </p>
 
 <h3 align="center">Learn anything, one small step at a time.</h3>
 
-<p align="center">10 skills that turn your agent into a patient teacher.</p>
+<p align="center">11 skills that turn your agent into a patient teacher.</p>
 
 ---
 
@@ -56,9 +56,23 @@ Download the [experimental release](https://github.com/loselen/learn-anything/re
 
 Placement shows current performance and schedules review in 3 days. Failed reviews stay in a separate repair queue. Notes keep stable capability IDs through renames and across maps. Reveals and hints are exposure, never independent success.
 
-Use a scratch vault to try this release: set up an empty folder, start a lesson, save a question, pause, then resume in another session. Existing vaults use `update-vault`; review its additive migration plan first. Chat-only use cannot guarantee cross-session memory. Local storage does not mean local model inference. Analytics are off; there is no companion app or automatic discovery ranking.
+Use a scratch vault to try this release: set up an empty folder, start a lesson, save a question, pause, then resume in another session. Existing vaults use `update-vault`; review its additive migration plan first. Chat-only use cannot guarantee cross-session memory. Local storage does not mean local model inference. Analytics are off; the published prerelease has no companion app or automatic discovery ranking.
 
 See [state contract](skills/setup-obsidian/assets/learner-state.md), [migration](skills/update-vault/references/migration.md), and [evaluation results](evals/results-experimental.md).
+
+## Next experiment (unreleased)
+
+This branch adds `explore-next`: ask “What next?”, “Explore arithmetic for three minutes”, or “Review what is due”. It checks consent, prerequisites, taught scope and content verification before suggesting up to three activities, each with a plain reason. An unanswered task resumes first; a completed batch offers a stopping point.
+
+The bundled catalog has five checked arithmetic and Python starters. The local selector records its policy version, scores and exclusions, and can replay an input snapshot. Its scores are heuristics; clicks and previews never advance learning state. Existing capabilities and learner evidence keep their IDs.
+
+Try the selector without modifying a vault:
+
+```sh
+python skills/explore-next/scripts/select.py evals/fixtures/discovery-snapshot.json
+```
+
+The released `1.4.0-experimental.1` still contains ten skills; this unreleased branch contains eleven. A second release will wait for the next release day. See [selection policy](skills/explore-next/references/selection.md) and [phase C evaluation](evals/results-discovery.md).
 
 ## What it feels like
 
@@ -89,6 +103,7 @@ See [state contract](skills/setup-obsidian/assets/learner-state.md), [migration]
 | [`setup-obsidian`](skills/setup-obsidian/SKILL.md) | Sets up your vault, once |
 | [`update-vault`](skills/update-vault/SKILL.md) | Updates an older vault, keeping your notes and edits |
 | [`ask-obsidian`](skills/ask-obsidian/SKILL.md) | Answers questions about your vault |
+| [`explore-next`](skills/explore-next/SKILL.md) | Suggests a checked next activity with a reason |
 
 Just ask: "teach me recursion", "what should I learn first?", "test me on recursion", "what's due this week?" Your agent picks the right skill.
 

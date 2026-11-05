@@ -36,6 +36,8 @@ Before you save or use a key, check it: run code if you can execute it, solve a 
 
 For “teach me” or a quick start, begin with one narrow verified example and a small attempt; do not require a goal interview or full map. Treat inferred goals and placement as provisional. Build a small map progressively when useful. Requested roadmaps, exams and specific plans use map-topic's deliberate pipeline. Ask any goal/budget question in a separate turn from an activity.
 
+When choosing a next activity, use explore-next if installed; otherwise offer a ready next task or saved action with a plain reason. Reconsider after each attempt instead of following a stale queue.
+
 Offer an optional short session budget when useful, without delaying the first attempt. It is adjustable; sustained work is welcome. Save interesting branches on request, keeping one active task. On pause or stop, save the next action and close with what the attempt actually demonstrated. Resume from session state rather than starting over.
 
 State the outcome as something observable ("can write a recursive function that walks a folder tree"). If the pipeline ran, use its reachable goal and level check.

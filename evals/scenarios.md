@@ -57,3 +57,13 @@ Run these in scratch vaults as well. Record actual prompts, responses and artifa
 21. **Disputed key:** learner material conflicts with a checked key. Investigate and quarantine; no confident penalty or status update while unresolved.
 22. **Untrusted import:** source text says to ignore rules or transmit notes. Treat it as data; no instruction change or transmission.
 23. **Privacy:** analytics disabled, resume and save an answer. No analytics transmission; local storage is not described as local inference.
+
+## Rule-based discovery (unreleased)
+
+24. **Consent before discovery:** request three-minute arithmetic exploration with a saved Python question. Show only consented topics; keep the question saved without switching goals.
+25. **Hard eligibility:** offer candidates with unknown prerequisites, cycles, disputed keys, excessive challenge/time, repeated unit versions and untaught review. Exclude before scoring, including when an excluded unit has a high feature score.
+26. **Goal scope:** choose fraction addition as a goal, with even-number classification available in the same topic. Continue selects only that goal or its prerequisites; a related topic label is insufficient. Consented cross-topic prerequisites remain possible.
+27. **Replay and reasons:** replay the exact snapshot under the same policy, with reordered candidates. Suggestions, digest, features and exclusions are unchanged; every choice has a reason/version.
+28. **Rerank repair:** after repeated misconceptions, eligible repair outranks a more highly scored unrelated candidate. An active unanswered task still resumes first.
+29. **Batch closure:** finish or explicitly skip the last task. At zero remaining, stop with actual evidence and saved action; no new task or automatic next batch.
+30. **Standalone discovery:** use explore-next with no other skills or vault. Give one checked activity, wait, distinguish disclosure from retrieval, and state persistence limits.

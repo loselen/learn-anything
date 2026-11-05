@@ -20,7 +20,7 @@ This skill runs the pipeline:
 2. **Draft**: build a rough graph. Don't show it yet.
 3. **Check**: run check-level against the draft.
 4. **Map**: finish the graph, fitted to the level check, and give the learner the big picture.
-5. **Teach**: offer to start teach-me on the ready-next nodes.
+5. **Teach**: offer to start teach-me on the ready-next nodes; explore-next, if installed, can choose among eligible nodes with a reason.
 
 Each step is its own message: never put goal questions and level-check tasks in the same one.
 

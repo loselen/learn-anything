@@ -1,0 +1,272 @@
+{
+  "catalog_version": "starter-1",
+  "units": [
+    {
+      "id": "whole-addition",
+      "version": "1",
+      "capability_id": "8bab09e4-6255-5a46-a81a-dcd87ea0f36c",
+      "title": "Combine two groups",
+      "topic": "arithmetic",
+      "kind": "procedure",
+      "outcome": "Add two small whole-number groups.",
+      "introduction": "Combining a group of 2 with a group of 3 makes 5. You can count on from the first group.",
+      "prompt": "A tray has 4 cups. You add 3 more. How many cups are there?",
+      "key": "7",
+      "rubric": {
+        "version": "1",
+        "full_credit": "Produces 7, by counting on or any valid addition method.",
+        "partial_credit": "Identify the right approach but make one local slip; verify on a fresh item before independent success.",
+        "failure_types": [
+          "missing prerequisite",
+          "bug",
+          "slip",
+          "no transfer"
+        ]
+      },
+      "effort_minutes": 2,
+      "challenge": "intro",
+      "source": "catalog",
+      "purpose": "practice",
+      "modes": [
+        "continue",
+        "explore"
+      ],
+      "prerequisites": [],
+      "prerequisite_groups": [],
+      "verification": {
+        "status": "verified",
+        "method": "Independent calculation",
+        "key_version": "1",
+        "checked_on": "2026-11-05",
+        "sources": [],
+        "content_digest": "a905c75ad9002d510181acc48f8eb710145cbed662769c0abef8f2eaef1d5bb3"
+      },
+      "features": {
+        "interest": 0,
+        "evidence_value": 0.7,
+        "diversity": 0,
+        "repetition": 0
+      }
+    },
+    {
+      "id": "fraction-addition",
+      "version": "1",
+      "capability_id": "4a35b145-bff2-5e96-a11d-f831ea71a043",
+      "title": "Combine equal-sized parts",
+      "topic": "arithmetic",
+      "kind": "procedure",
+      "outcome": "Add fractions with different denominators.",
+      "introduction": "Use equally sized parts: 1/2 + 1/4 = 2/4 + 1/4 = 3/4.",
+      "prompt": "What is 1/2 + 1/3? Show the equally sized parts you used.",
+      "key": "5/6",
+      "rubric": {
+        "version": "1",
+        "full_credit": "Converts to 3/6 + 2/6 and obtains 5/6; accepts equivalent exact fractions with a valid method.",
+        "partial_credit": "Identify the right approach but make one local slip; verify on a fresh item before independent success.",
+        "failure_types": [
+          "missing prerequisite",
+          "bug",
+          "slip",
+          "no transfer"
+        ]
+      },
+      "effort_minutes": 4,
+      "challenge": "practice",
+      "source": "catalog",
+      "purpose": "practice",
+      "modes": [
+        "continue",
+        "explore"
+      ],
+      "prerequisites": [
+        "8bab09e4-6255-5a46-a81a-dcd87ea0f36c",
+        "afc444e6-d466-5642-8a37-1a853c957ba1",
+        "a392cd65-3a5c-5e0a-ab69-0ef9ee828e21"
+      ],
+      "prerequisite_groups": [],
+      "verification": {
+        "status": "verified",
+        "method": "Fraction arithmetic plus independent common-denominator calculation",
+        "key_version": "1",
+        "checked_on": "2026-11-05",
+        "sources": [
+          "https://docs.python.org/3/library/fractions.html"
+        ],
+        "content_digest": "41af0d27961bcd62385bcc90c8c11319e1918694d652743678c61d43d292b075"
+      },
+      "features": {
+        "interest": 0,
+        "evidence_value": 0.7,
+        "diversity": 0,
+        "repetition": 0
+      }
+    },
+    {
+      "id": "even-classification",
+      "version": "1",
+      "capability_id": "0dc07724-5a13-51a7-8bd9-59288d2e740f",
+      "title": "Recognize even integers",
+      "topic": "arithmetic",
+      "kind": "concept",
+      "outcome": "Classify integers divisible by 2, including zero and negatives.",
+      "introduction": "An integer is even if it equals 2 times an integer. For example, 6 = 2 × 3; 5 cannot be written this way with an integer.",
+      "prompt": "Which of -4, 0 and 3 are even? Give an integer multiplier for each one you select.",
+      "key": "-4 and 0",
+      "rubric": {
+        "version": "1",
+        "full_credit": "Selects exactly -4 and 0, with multipliers -2 and 0.",
+        "partial_credit": "Identify the right approach but make one local slip; verify on a fresh item before independent success.",
+        "failure_types": [
+          "missing prerequisite",
+          "bug",
+          "slip",
+          "no transfer"
+        ]
+      },
+      "effort_minutes": 3,
+      "challenge": "intro",
+      "source": "catalog",
+      "purpose": "practice",
+      "modes": [
+        "continue",
+        "explore"
+      ],
+      "prerequisites": [],
+      "prerequisite_groups": [],
+      "verification": {
+        "status": "verified",
+        "method": "Integer divisibility and reconstruction by multiplication",
+        "key_version": "1",
+        "checked_on": "2026-11-05",
+        "sources": [],
+        "content_digest": "10bf3cffba8df08d3b8c9600fabc3c6382c7b8a6e575480ce17be20c3eed2706"
+      },
+      "features": {
+        "interest": 0,
+        "evidence_value": 0.7,
+        "diversity": 0,
+        "repetition": 0
+      }
+    },
+    {
+      "id": "print-sequence",
+      "version": "1",
+      "capability_id": "06609f57-4e20-5844-bcbf-0e7e926309c2",
+      "title": "Trace two statements",
+      "topic": "python",
+      "kind": "principle",
+      "outcome": "Predict the order of output from consecutive print calls.",
+      "introduction": "print displays its argument. Consecutive statements run in order: print(\"A\") then print(\"B\") displays A on one line and B on the next.",
+      "prompt": "What does this display?\n\nprint(\"start\")\nprint(\"finish\")",
+      "key": "start\nfinish",
+      "rubric": {
+        "version": "1",
+        "full_credit": "Gives start then finish on separate lines.",
+        "partial_credit": "Identify the right approach but make one local slip; verify on a fresh item before independent success.",
+        "failure_types": [
+          "missing prerequisite",
+          "bug",
+          "slip",
+          "no transfer"
+        ]
+      },
+      "effort_minutes": 2,
+      "challenge": "intro",
+      "source": "catalog",
+      "purpose": "practice",
+      "modes": [
+        "continue",
+        "explore"
+      ],
+      "prerequisites": [],
+      "prerequisite_groups": [],
+      "verification": {
+        "status": "verified",
+        "method": "Executed with an isolated Python process and independently traced statements",
+        "key_version": "1",
+        "checked_on": "2026-11-05",
+        "sources": [
+          "https://docs.python.org/3/library/functions.html#print"
+        ],
+        "content_digest": "16d542e06adc4c914b1415286530b7f4aff8f9f477b3fb9cb2a3a3c8513b7ef0"
+      },
+      "features": {
+        "interest": 0,
+        "evidence_value": 0.7,
+        "diversity": 0,
+        "repetition": 0
+      }
+    },
+    {
+      "id": "function-parts",
+      "version": "1",
+      "capability_id": "acf79421-b51c-5392-885f-45edac59a61c",
+      "title": "Find a function body and call",
+      "topic": "python",
+      "kind": "structure",
+      "outcome": "Distinguish a function definition, its body, and a call.",
+      "introduction": "def names a function; its indented statements are the body. Defining it does not run its body. A later name() call runs it.",
+      "prompt": "In this snippet, which line defines the function, which line is its body, and which line calls it?\n\ndef greet():\n    print(\"hello\")\ngreet()",
+      "key": "Definition: def greet():; body: print(\"hello\"); call: greet()",
+      "rubric": {
+        "version": "1",
+        "full_credit": "Identifies all three parts and their relationships; no requirement to predict output.",
+        "partial_credit": "Identify the right approach but make one local slip; verify on a fresh item before independent success.",
+        "failure_types": [
+          "missing prerequisite",
+          "bug",
+          "slip",
+          "no transfer"
+        ]
+      },
+      "effort_minutes": 3,
+      "challenge": "practice",
+      "source": "catalog",
+      "purpose": "practice",
+      "modes": [
+        "continue",
+        "explore"
+      ],
+      "prerequisites": [
+        "06609f57-4e20-5844-bcbf-0e7e926309c2"
+      ],
+      "prerequisite_groups": [],
+      "verification": {
+        "status": "verified",
+        "method": "Parsed syntax tree plus executed definition-only and definition-with-call variants",
+        "key_version": "1",
+        "checked_on": "2026-11-05",
+        "sources": [
+          "https://docs.python.org/3/reference/compound_stmts.html#function-definitions"
+        ],
+        "content_digest": "fd82de6691b204be2fe66f08583ee000268d4c704dd7af709e5e84bac727baf8"
+      },
+      "features": {
+        "interest": 0,
+        "evidence_value": 0.7,
+        "diversity": 0,
+        "repetition": 0
+      }
+    }
+  ],
+  "bridge_capabilities": [
+    {
+      "capability_id": "afc444e6-d466-5642-8a37-1a853c957ba1",
+      "title": "Make equivalent fractions",
+      "kind": "procedure",
+      "outcome": "Scale numerator and denominator by the same nonzero whole number.",
+      "prerequisites": [],
+      "prerequisite_groups": [],
+      "provenance": "Authored prerequisite; diagnose before treating as known."
+    },
+    {
+      "capability_id": "a392cd65-3a5c-5e0a-ab69-0ef9ee828e21",
+      "title": "Find a common denominator",
+      "kind": "procedure",
+      "outcome": "Find a positive common multiple of two small denominators.",
+      "prerequisites": [],
+      "prerequisite_groups": [],
+      "provenance": "Authored prerequisite; diagnose before treating as known."
+    }
+  ]
+}

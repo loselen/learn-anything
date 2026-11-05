@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Phase C adds explore-next, a five-unit verified starter catalog, and replayable rules-1 selection.
+- Eligibility checks precede ranking; suggestions preserve topic consent, active tasks, review scope and session endpoints.
+- Eleven skills on the development branch; the published prerelease retains its original ten packages.
+
+
 ## 1.4.0-experimental.1
 
 - Experimental phases A–B: stable capability IDs, explicit AND/OR prerequisites, independent evidence and visible failed-review repair.

@@ -23,6 +23,8 @@ If the vault has an `AGENTS.md` at its root, read it first. It tells you where t
 
 ## Steps
 
+For next-activity recommendations, hand off to explore-next if installed; otherwise offer the saved action or eligible review/repair with a reason and preserve the chosen goal.
+
 For “resume”, read `Sessions/Current.md` first; offer its saved action or due review/repair with a plain reason. Summarize capabilities from linked attempts, distinguishing placement from retention. Saved questions live in `Sessions/Questions.md`.
 
 1. **Classify** the question. Finding a note → search. Status → properties. Relationships → links. Summary → start at a hub note, such as a map note.

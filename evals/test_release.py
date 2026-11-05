@@ -13,7 +13,7 @@ class ReleaseTests(unittest.TestCase):
         self.assertIn('Template version: '+version+'\n', rules)
         self.assertIn('## '+version+'\n', (ROOT/'CHANGELOG.md').read_text())
         skills = list((ROOT/'skills').glob('*/SKILL.md'))
-        self.assertEqual(len(skills), 10)
+        self.assertEqual(len(skills), 11)
         for skill in skills:
             metadata = yaml.safe_load(skill.read_text().split('---', 2)[1])
             self.assertEqual(metadata['name'], skill.parent.name)
