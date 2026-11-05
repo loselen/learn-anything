@@ -46,3 +46,9 @@ Seven requested scenarios and four additional probes were executed through the r
 - This work is unreleased. The 2026-11-05 prerelease tag/assets stay immutable; AGENTS.md limits releases to one per day. Version metadata stays at the previously published version until the next batched release is prepared. PR #16 contains the development changes.
 
 Try the read-only demo with `python skills/explore-next/scripts/select.py evals/fixtures/discovery-snapshot.json`, or load explore-next in a scratch learning conversation and ask “Explore arithmetic for three minutes”. The demo never modifies a vault. A real host agent must gather explicit preferences, verify candidate assertions, persist the input snapshot/recommendation, and hand the chosen unit to teaching/review. No live recommendation daemon or application platform was added.
+
+## Experimental.2 publication
+
+The owner explicitly authorized publishing `v1.4.0-experimental.2` on 2026-11-05 as a continuation and exception to the one-release-per-day convention. This supersedes the unreleased scheduling note above; prior evaluation evidence and its limitations are unchanged. Only release metadata and documentation changed after the evaluated discovery implementation. Template/plugin versions advance together; no new required vault schema or learner content change is introduced.
+
+Pre-publication checks rerun: 22 deterministic tests, all eleven agentskills validators, plugin validation, eleven-skill discovery and diff whitespace checks passed. Existing scenario evidence covers scenarios 1–23 through evaluator roleplays and discovery scenarios 24–30 through executed CLI probes and evaluator-authored turns. Fresh installed-host scenarios remain not run; this prerelease makes no claim to satisfy that validation level. No real vault or installed skills were modified.

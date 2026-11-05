@@ -50,19 +50,19 @@ flowchart LR
 
 ## Experimental release
 
-Download the [experimental release](https://github.com/loselen/learn-anything/releases/tag/v1.4.0-experimental.1) separately from the stable latest release.
+Download the [experimental release](https://github.com/loselen/learn-anything/releases/tag/v1.4.0-experimental.2) separately from the stable latest release.
 
 `1.4.0-experimental.1` adds a quick start alongside the deliberate roadmap. Ask “Teach me recursion, quick start” to try one narrow task, or “Make me a roadmap” for the full pipeline. “Save that question”, “Pause here” and “Resume” preserve a next action and questions with an optional vault. A short budget is adjustable; sustained work is welcome.
 
 Placement shows current performance and schedules review in 3 days. Failed reviews stay in a separate repair queue. Notes keep stable capability IDs through renames and across maps. Reveals and hints are exposure, never independent success.
 
-Use a scratch vault to try this release: set up an empty folder, start a lesson, save a question, pause, then resume in another session. Existing vaults use `update-vault`; review its additive migration plan first. Chat-only use cannot guarantee cross-session memory. Local storage does not mean local model inference. Analytics are off; the published prerelease has no companion app or automatic discovery ranking.
+Use a scratch vault to try this release: set up an empty folder, start a lesson, save a question, pause, then resume in another session. Existing vaults use `update-vault`; review its additive migration plan first. Chat-only use cannot guarantee cross-session memory. Local storage does not mean local model inference. Analytics are off; there is no companion app; experimental.2 adds the discovery policy below.
 
 See [state contract](skills/setup-obsidian/assets/learner-state.md), [migration](skills/update-vault/references/migration.md), and [evaluation results](evals/results-experimental.md).
 
-## Next experiment (unreleased)
+## Discovery experiment
 
-This branch adds `explore-next`: ask “What next?”, “Explore arithmetic for three minutes”, or “Review what is due”. It checks consent, prerequisites, taught scope and content verification before suggesting up to three activities, each with a plain reason. An unanswered task resumes first; a completed batch offers a stopping point.
+`1.4.0-experimental.2` adds `explore-next`: ask “What next?”, “Explore arithmetic for three minutes”, or “Review what is due”. It checks consent, prerequisites, taught scope and content verification before suggesting up to three activities, each with a plain reason. An unanswered task resumes first; a completed batch offers a stopping point.
 
 The bundled catalog has five checked arithmetic and Python starters. The local selector records its policy version, scores and exclusions, and can replay an input snapshot. Its scores are heuristics; clicks and previews never advance learning state. Existing capabilities and learner evidence keep their IDs.
 
@@ -72,7 +72,7 @@ Try the selector without modifying a vault:
 python skills/explore-next/scripts/select.py evals/fixtures/discovery-snapshot.json
 ```
 
-The released `1.4.0-experimental.1` still contains ten skills; this unreleased branch contains eleven. A second release will wait for the next release day. See [selection policy](skills/explore-next/references/selection.md) and [phase C evaluation](evals/results-discovery.md).
+`1.4.0-experimental.2` contains eleven skills and continues the previous ten-skill prerelease. The previous prerelease’s tag and packages remain unchanged. See [selection policy](skills/explore-next/references/selection.md) and [phase C evaluation](evals/results-discovery.md).
 
 ## What it feels like
 
