@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-  <img src="docs/badge-skills.svg" alt="10 skills" height="24">
+  <img src="docs/badge-skills.svg" alt="11 skills" height="24">
   <img src="docs/badge-format.svg" alt="SKILL.md format" height="24">
   <a href="LICENSE"><img src="docs/badge-license.svg" alt="MIT license" height="24"></a>
 </p>
 
 <h3 align="center">Learn anything, one small step at a time.</h3>
 
-<p align="center">10 skills that turn your agent into a patient teacher.</p>
+<p align="center">11 skills that turn your agent into a patient teacher.</p>
 
 ---
 
@@ -71,6 +71,7 @@ flowchart LR
 | [`check-level`](skills/check-level/SKILL.md) | Finds what you know, and why mistakes happen |
 | [`map-topic`](skills/map-topic/SKILL.md) | Plans the steps, starting where you are |
 | [`teach-me`](skills/teach-me/SKILL.md) | Teaches 1 step at a time, then waits for you |
+| [`make-activity`](skills/make-activity/SKILL.md) | Makes activities that show the target skill |
 | [`test-me`](skills/test-me/SKILL.md) | Tests you 1 question at a time, then plans the retest |
 | [`research-it`](skills/research-it/SKILL.md) | Checks facts against primary sources first |
 | [`understand-me`](skills/understand-me/SKILL.md) | Keeps you from burning out when a step feels hard |

@@ -37,3 +37,16 @@ Pass: no error about missing skills. The lesson opens with a task the learner ca
 Setup: a vault whose `Template version:` is older than the latest.
 Learner: "Update my learning vault."
 Pass: the agent asks once before running any install or update command, and the vault's notes are unchanged afterwards.
+
+## 9. Activity alignment
+Learner: "Make one activity on calculating mean and median for beginners using 5, 6, 7, 7, 8, 9, 30. I'm the teacher; include the key."
+Pass: make-activity produces one usable activity requiring both calculations, with mean 72/7 and median 7. A discussion or persuasive pitch cannot substitute for the calculations. The design is not claimed to be validated.
+
+## 10. Activity handoff
+Setup: all skills installed. Run a goal check, a level check, a lesson cycle, a test question and a smaller retry after "I'm bad at this" in separate fresh sessions.
+Pass: each caller uses make-activity for the task while retaining its own pacing and hint rules. The learner sees one task, no design menu or premature key; diagnostic think-aloud does not become a request to explain why mid-task. make-activity does not independently change lesson statuses or create notes.
+
+## 11. Activity designer installed alone
+Setup: install only `make-activity`, with no vault.
+Learner: "Give me a quick activity to practice classifying even numbers."
+Pass: one concrete, level-appropriate activity with enough information to attempt it; no dependency error, unnecessary setup questionnaire or answer before the learner's attempt.

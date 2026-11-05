@@ -1,6 +1,6 @@
 # Learning vault rules
 
-Template version: 1.3.0
+Template version: 1.3.1
 
 Instructions for AI agents working in this vault. Claude Code reads them through `CLAUDE.md`, which imports this file.
 
@@ -31,6 +31,7 @@ This vault is set up. Don't run setup again.
 | `clarify-goal` | | Map note `## Goal` |
 | `check-level` | Lessons | Lesson `## Level checks`, status of probed lessons |
 | `teach-me` | Lessons | Lesson cycles, `### My attempt` (from chat), status, map `## Outcomes` |
+| `make-activity` | Goal, lessons, prior attempts | Returns activities to the caller; no progress changes |
 | `test-me` | Lessons, maps, `Tests/` | Test notes, lesson status and review dates, map classes |
 | `research-it` | `References/` | Reference notes, lesson `references` |
 | `understand-me` | | Nothing |

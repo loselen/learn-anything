@@ -17,6 +17,8 @@ explain just enough → one activity → wait for the attempt
             until the outcome is achieved
 ```
 
+Use `make-activity` when installed to design every learner activity, including retries and transfer checks. Pass the objective, knowledge kind, level and purpose; keep this skill's pacing, hints, scoring and saving rules. If unavailable, make one small task requiring the target performance, with observable evidence and a checked key; keep the key back until the attempt.
+
 ## Rules
 
 - Each message holds one explanation and **one** activity. Never write ahead.
@@ -38,15 +40,7 @@ State the outcome as something observable ("can write a recursive function that 
 
 **Explanation.** Only what the next activity needs. When the topic suits it, open with a question or puzzle the learner can almost answer and let them guess first, since a wrong guess made while curious still helps memory. When it doesn't, just explain. In the first cycle, show a worked example of the whole task. In later cycles, open with brief feedback on the attempt: what worked, what didn't, and why.
 
-**Activity.** One task, matched to the kind of knowledge:
-
-| Kind | Activity |
-|---|---|
-| procedure | Do it on a new case (coding: build something; math: solve a problem) |
-| principle | Predict an outcome, or find a bug |
-| concept | Classify an example |
-| structure | Label the parts |
-| facts | Recall them |
+**Activity.** Use `make-activity` for one task matched to the knowledge kind and current attempt. Without it: procedure → do; principle → predict; concept → classify; structure → label; facts → recall.
 
 **Adapt** the next cycle to the attempt:
 

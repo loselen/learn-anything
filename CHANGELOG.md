@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.1
+
+- Add make-activity, adapted from activity-grammar-designer, for activities aligned with observable learning goals.
+- Goal checks, level checks, lessons, tests and smaller retry tasks share its design process while keeping their pacing and standalone fallbacks.
+- Add the skill to the vault rules and update the skill count to 11. No note schema changes.
+
 ## 1.3.0
 
 - test-me asks one question at a time and gives feedback after each answer.

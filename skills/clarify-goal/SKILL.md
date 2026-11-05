@@ -12,6 +12,8 @@ Load `understand-me` and `research-it` first if you haven't this session and the
 
 Ask in one direction per message. Finish step 1 before giving the step 2 task.
 
+Use `make-activity` when installed to design every learner activity, including retries and transfer checks. Pass the objective, knowledge kind, level and purpose; keep this skill's pacing, hints, scoring and saving rules. If unavailable, make one small task requiring the target performance, with observable evidence and a checked key; keep the key back until the attempt.
+
 ## 1. Clarify (only if the goal is fuzzy)
 
 Ask one question at a time:

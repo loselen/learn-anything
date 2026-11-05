@@ -18,6 +18,8 @@ Signs the learner feels daunted: "I'm bad at this", giving up, repeated "idk" or
 
 A long pause followed by progress is productive struggle. Leave it alone. If you cannot tell which one you are seeing, ask one short question about how it feels and make it cheap to answer ("too easy, about right, or too hard?").
 
+When a move needs a new or smaller task, use `make-activity` if installed, passing the target objective or prerequisite, the last attempt and the support needed. Keep one small ask and this skill's pacing. Without it, choose a simpler case with a checked answer. Do not call it for emotional support or preference questions alone.
+
 ### Pick one move
 
 Use the smallest move that fits, and make only one per message.

@@ -14,6 +14,8 @@ Load `understand-me` and `research-it` first if you haven't this session and the
 pick scope → blueprint → ask one question → wait for the answer → feedback → next question → results → retest later
 ```
 
+Use `make-activity` when installed to design every learner activity, including retries and transfer checks. Pass the objective, knowledge kind, level and purpose; keep this skill's pacing, hints, scoring and saving rules. If unavailable, make one small task requiring the target performance, with observable evidence and a checked key; keep the key back until the attempt.
+
 ## Rules
 
 - Test only what has been taught. Never ask about a `planned` lesson.

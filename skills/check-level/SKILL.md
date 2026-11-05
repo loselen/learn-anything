@@ -10,6 +10,8 @@ Based on knowledge space theory (Doignon & Falmagne), think-aloud research (Eric
 
 Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
 
+Use `make-activity` when installed to design every learner activity, including retries and transfer checks. Pass the objective, knowledge kind, level and purpose; keep this skill's pacing, hints, scoring and saving rules. If unavailable, make one small task requiring the target performance, with observable evidence and a checked key; keep the key back until the attempt.
+
 ## Probe
 
 - Open with an easy item, one the learner can likely pass, so the check starts with a win. Never open with the hardest item.
@@ -18,15 +20,7 @@ Load `understand-me` and `research-it` first if you haven't this session and the
 - Keep the tone light: say it's a check of the material, not a test of them, and don't stack more than two fails in a row. Follow a fail with an item they can pass.
 - Give at most one hint per item. If they still fail after it, count it as a fail.
 - Give two items per node, with different surfaces, before concluding.
-- Match each item to the kind of knowledge:
-
-  | Kind | Item |
-  |---|---|
-  | procedure | Do it on a new case |
-  | principle | Predict an outcome, or find a bug |
-  | concept | Classify an example |
-  | structure | Label the parts |
-  | facts | Recall them |
+- Use `make-activity` to match each item to its knowledge kind. Without it: procedure → do; principle → predict; concept → classify; structure → label; facts → recall.
 
 - Ask the learner to "keep saying what you're thinking." Don't ask them to explain their reasoning during the task, because that changes how they think. Ask why afterwards.
 
