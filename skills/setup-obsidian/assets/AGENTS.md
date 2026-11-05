@@ -1,6 +1,6 @@
 # Learning vault rules
 
-Template version: 1.4.0-experimental.2
+Template version: 1.4.0-experimental.3
 
 Instructions for AI agents working in this vault. Claude Code reads them through `CLAUDE.md`, which imports this file.
 

@@ -217,6 +217,10 @@ Your agent needs access to the vault folder. Without it, you get files to copy i
 | Anxiety crowds working memory | Eysenck et al., attentional control | `understand-me` |
 | Feedback on the task, not the person | Kluger & DeNisi, feedback interventions | `understand-me` |
 
+## Personalization
+
+Optional [local measurement and difficulty suggestions](skills/explore-next/references/personalization.md) use independent delayed and transfer outcomes after a baseline. Review scheduling runs in shadow against the existing ladder; reports never change learner evidence. Suggestions require opt-in and learner acceptance. No real learner baseline or measured learning gain exists yet. The companion interface is skipped; bandit selection remains deferred.
+
 ## Contribute
 
 Issues and pull requests are welcome. See [`AGENTS.md`](AGENTS.md) for the rules. Your agent can follow them too.

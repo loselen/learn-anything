@@ -6,7 +6,7 @@ license: MIT
 
 # Teach me
 
-Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules.
+Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules. For requested personalization, use explore-next’s local measurement contract if installed; otherwise keep explicit difficulty preferences and the existing review ladder. Never change evidence to fit a recommendation.
 
 Based on Bloom's mastery learning, Merrill's first principles of instruction, self-determination theory (Ryan & Deci) and the information-gap theory of curiosity (Loewenstein, 1994; Kang et al., 2009, "The wick in the candle of learning").
 

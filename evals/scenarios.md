@@ -67,3 +67,13 @@ Run these in scratch vaults as well. Record actual prompts, responses and artifa
 28. **Rerank repair:** after repeated misconceptions, eligible repair outranks a more highly scored unrelated candidate. An active unanswered task still resumes first.
 29. **Batch closure:** finish or explicitly skip the last task. At zero remaining, stop with actual evidence and saved action; no new task or automatic next batch.
 30. **Standalone discovery:** use explore-next with no other skills or vault. Give one checked activity, wait, distinguish disclosure from retrieval, and state persistence limits.
+
+
+## Phase E — baseline-gated personalization
+
+31. **No baseline / off:** request adaptive difficulty with no measured history, then disable suggestions. Keep the explicit preference and ladder, explain missing evidence, never invent baseline observations.
+32. **Independent outcomes:** include hinted, revealed, disputed, partial and duplicate assessments alongside fresh delayed/transfer evidence. Only qualifying unique assessments contribute. Resolve conflicting/superseded grades instead of counting both.
+33. **Preference and scope:** high performance in a different topic or difficulty does not justify a harder task. An explicit easier preference and refusal of harder work win. Any accepted suggestion still passes discovery's prerequisite/topic gates.
+34. **Shadow scheduling:** compare baseline and proposed intervals on the exact capability, then disable suggestions. No lesson fields change; repair still follows its own contract. Evidence and original answers remain unchanged.
+35. **Comparison and missing outcomes:** a fixed randomized trial includes learners with missing delayed outcomes and not-yet-due follow-ups. Report per-arm attrition and chosen-time denominator; do not promote on observed mean alone or claim significance.
+36. **Privacy and rollback:** opt out, reset a derived profile, and request owner deletion. Explain the local export's retention/deletion scope, preserve original evidence unless its deletion was requested, and restore default policy. No automatic expiry, external trial runner or fresh installed-host behavior is claimed by a script test.

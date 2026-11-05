@@ -1,0 +1,14 @@
+{
+  "topic": "python",
+  "preference": {
+    "enabled": false,
+    "challenge": "practice",
+    "allow_harder": false
+  },
+  "baseline": [],
+  "history": [],
+  "review": {
+    "capability_id": "example-capability",
+    "interval": 3
+  }
+}

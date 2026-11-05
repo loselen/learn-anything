@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0-experimental.3
+
+- Phase E adds opt-in local baseline measurement, reversible difficulty suggestions and a shadow review scheduler.
+- Fixed-policy comparison reports delayed outcomes, transfer, attrition and retained score relative to chosen time; no automatic promotion or bandit.
+- Phase D is skipped. Adaptive use remains gated on actual baseline evidence and learner choice.
+
 ## 1.4.0-experimental.2
 
 - Phase C adds explore-next, a five-unit verified starter catalog, and replayable rules-1 selection.

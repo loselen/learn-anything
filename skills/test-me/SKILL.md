@@ -6,7 +6,7 @@ license: MIT
 
 # Test me
 
-Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules.
+Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules. For requested personalization, use explore-next’s local measurement contract if installed; otherwise keep explicit difficulty preferences and the existing review ladder. Never change evidence to fit a recommendation.
 
 Based on the revised Bloom's taxonomy (Krathwohl), test-enhanced learning (Roediger & Karpicke; Kang, McDermott & Roediger) and formative assessment (Black & Wiliam). Sources and how much of each was read: `references/sources.md`.
 
