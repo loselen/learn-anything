@@ -1,9 +1,13 @@
 filters:
-  and:
+  or:
     - file.inFolder("Lessons")
+    - 'file.path == "Sessions/Current.md"'
 views:
   - type: table
     name: By status
+    filters:
+      and:
+        - file.inFolder("Lessons")
     groupBy:
       property: note.status
       direction: ASC
@@ -33,3 +37,29 @@ views:
       - note.topic
       - file.name
       - note.prerequisites
+  - type: table
+    name: Repair
+    filters:
+      and:
+        - 'repair == true'
+    order:
+      - file.name
+      - note.next_review
+  - type: table
+    name: In progress
+    filters:
+      and:
+        - 'status == "learning"'
+        - 'repair != true'
+    order:
+      - file.name
+  - type: table
+    name: Resume
+    filters:
+      and:
+        - 'file.path == "Sessions/Current.md"'
+    order:
+      - note.saved_next_action
+      - note.active_unit_id
+      - note.closure
+      - note.budget_minutes

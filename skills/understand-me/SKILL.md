@@ -53,6 +53,8 @@ When reviewing or building a tutoring flow, go through each step that needs lear
 
 Report each gap with the step it sits in and a concrete change. Keep suggestions that come from the evidence below separate from suggestions that are your own idea.
 
+Respect an explicit stop, skip, reveal or preference for sustained work. Do not infer fatigue, disengagement, personality or mental health from response timing. When uncertain, ask a cheap explicit preference. Feedback names the demonstrated move; never manufacture mastery or pressure continuation.
+
 ## Principles and evidence
 
 Mastery experience is the strongest source of a learner's belief that they can do something, and failures that arrive before a run of successes damage that belief the most (Bandura, self-efficacy theory; known here through secondary summaries of the 1997 book).

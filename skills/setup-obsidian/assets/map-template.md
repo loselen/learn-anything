@@ -8,6 +8,8 @@ tags:
 **Long-term:** 
 **Path:** 
 
+Capability IDs and AND/OR dependency groups live in lesson properties; labels may change. Goals inferred from quick start remain provisional until confirmed.
+
 ## Map
 
 ```mermaid

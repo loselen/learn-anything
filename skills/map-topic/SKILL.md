@@ -6,6 +6,8 @@ license: MIT
 
 # Map topic
 
+Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules.
+
 Based on Gagné's learning hierarchies.
 
 Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
@@ -29,7 +31,7 @@ If the user skips the level check, build from what they say they know.
 - Start from the goal task and ask, "What must someone already be able to do to learn this?" Each answer becomes a node one level down. Repeat until you reach what the learner already knows.
 - Phrase nodes as abilities ("solve a 2×2 linear system"), not topics ("linear algebra").
 - Put isolated facts in a side list. They have no prerequisites.
-- When two different prerequisites each lead to a node, show both as alternatives.
+- Record AND requirements and explicit OR groups using stable capability IDs, as the shared contract defines. Check unknown references and hard cycles before giving a study order.
 
 ## The map
 

@@ -1,12 +1,14 @@
 # Learning vault rules
 
-Template version: 1.3.0
+Template version: 1.4.0-experimental.1
 
 Instructions for AI agents working in this vault. Claude Code reads them through `CLAUDE.md`, which imports this file.
 
 Talk with the owner in their language. Before your first reply in any session, load `understand-me` and `research-it`. Apply `understand-me` whenever you ask the owner for input or give feedback, even if they show no sign of struggling, and don't announce it. Run `research-it` before you state a fact you are unsure of or that may have changed, and never teach or test a fact you haven't checked.
 
 Each topic has a **map note** that holds its dependency graph. Each node in the graph has a **lesson note** that grows one teaching cycle at a time. Each test is a **test note**, and the notes in `Tests/` are the history.
+
+Read [learner-state.md](learner-state.md) for schema 2 identity, dependency groups, evidence, repair and session rules; it takes precedence over legacy defaults below.
 
 ## Folders
 
@@ -18,8 +20,9 @@ Each topic has a **map note** that holds its dependency graph. Each node in the 
 | `References/` | One note per reference: a source you relied on, with its link |
 | `Templates/` | `map-template.md`, `lesson-template.md`, `test-template.md` |
 | `Archive/` | Retired notes |
+| `Sessions/` | Current session and saved questions |
 
-`Dashboard.base` at the root shows lessons by status, due for review, and planned.
+`Dashboard.base` at the root shows lessons by status, due for review, repair, in progress, planned, and saved session action.
 
 ## Skills
 
@@ -34,7 +37,7 @@ This vault is set up. Don't run setup again.
 | `test-me` | Lessons, maps, `Tests/` | Test notes, lesson status and review dates, map classes |
 | `research-it` | `References/` | Reference notes, lesson `references` |
 | `understand-me` | | Nothing |
-| `ask-obsidian` | Everything | Nothing |
+| `ask-obsidian` | Everything, session state | Nothing |
 | `update-vault` | Rules, templates, dashboard | The same files, new folders, `Template version` |
 
 `map-topic` runs the pipeline: `clarify-goal` → draft graph → `check-level` → final map. Then `teach-me` teaches, and `test-me` tests what was taught.
@@ -58,13 +61,18 @@ The map note is the agent's memory. Give the owner the big picture in your own w
 |---|---|
 | `topic` | Links to map notes |
 | `kind` | `procedure`, `principle`, `concept`, `structure` or `facts` |
-| `prerequisites` | Links to lesson notes |
+| `capability_id` | Stable UUID, unchanged by renames or map reuse |
+| `prerequisites` | Legacy AND links to lesson notes |
+| `prerequisite_groups` | AND of OR groups of capability IDs |
+| `placement`, `retention`, `repair` | Evidence and repair fields from learner-state.md |
 | `status` | `planned` → `learning` → `review` → `solid` |
 | `last_reviewed`, `next_review` | `YYYY-MM-DD` |
 | `interval` | Days until the next review: 3, 7, 30 or 90 |
 | `references` | Links to notes in `References/` |
 
-Status moves on its own, with no confirmation: to `learning` when cycle 1 starts, to `review` when the outcome is achieved, and to `solid` when the owner passes a review. A failed review goes back to `learning`.
+`Sessions/Current.md` holds the saved next action and active prompt reference; `Sessions/Questions.md` holds saved curiosity branches.
+
+Status moves on its own, with no confirmation: to `learning` when cycle 1 starts, to `review` when the outcome is achieved, and to `solid` when the owner passes a review. A failed review goes back to `learning` with `repair: true`, visible in Repair until successfully repaired.
 
 After any status change, regenerate the map's classes from the lesson statuses. Never ask, and never leave the graph stale:
 
@@ -72,7 +80,7 @@ After any status change, regenerate the map's classes from the lesson statuses. 
 |---|---|
 | `solid` | `solid` |
 | `review` | `shaky` |
-| `planned` or `learning`, every prerequisite `solid` or `review` | `next` |
+| `planned` or `learning`, dependency formula satisfied by `solid` or `review` notes | `next` |
 | `planned` or `learning`, otherwise | `notyet` |
 
 Body:
@@ -111,16 +119,16 @@ Named after the source, in `References/`. Holds the link, whether it is primary 
 1. The agent is the interface. Talk with the owner like a teacher with a student. Structure such as cycle numbers, item numbers, section labels and open-question lists goes in the vault, never in the chat.
 2. Write in `### My attempt`, `## My answers` or `## In my words` only to save what the owner shared in chat, verbatim.
 3. Update statuses, map classes and outcomes yourself as the evidence arrives. Don't ask the owner to confirm.
-4. Never delete notes. Move them to `Archive/`.
+4. Archive retired notes by default. Explicit owner deletion requests follow learner-state.md, including derived data.
 5. Search before creating a note, and reuse existing ones.
 6. Append only. Never rewrite earlier cycles, level checks or tests.
 7. Change only what the task needs.
-8. Ask in one direction per message. Several questions for the same purpose are fine. Never mix purposes, such as goal questions with level-check tasks. A lesson ends on a win: one optional own-words summary, then only whether to continue to the next topic. Wait for the answer before starting the next direction.
+8. Ask in one direction per message. Several questions for the same purpose are fine. Never mix purposes, such as goal questions with level-check tasks. Close with actual evidence and a saved next action; respect an early stop. Offer an optional summary or continuation separately. Wait before starting the next direction.
 
 ## Review
 
-A lesson is due when its `status` is `review` or `solid` and `next_review` is today or earlier. Run reviews with `test-me`. For each due note, test the owner without looking.
+A lesson is due when its `status` is `review` or `solid` and `next_review` is today or earlier. Run reviews with `test-me`. For each due note, test the owner without looking, using fresh verified items and predeclared per-capability coverage. Only fully assessed, independent delayed retrieval changes retention or advances intervals; exposure is recorded without a pass.
 
 - Pass: set `status: solid`, step `interval` up one (3 → 7 → 30 → 90, then stay at 90), set `last_reviewed` to today and `next_review` to today plus `interval`.
-- Fail: set `status: learning`, `interval: 3`, `last_reviewed` to today and `next_review` 3 days out.
+- Fail: set `repair: true`, `status: learning`, `interval: 3`, `last_reviewed` to today and `next_review` 3 days out.
 - No `interval` yet: use the days between `last_reviewed` and `next_review`, or 3 if either is empty.

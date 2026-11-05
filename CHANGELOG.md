@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0-experimental.1
+
+- Experimental phases A–B: stable capability IDs, explicit AND/OR prerequisites, independent evidence and visible failed-review repair.
+- Quick start, adjustable session budgets, saved questions and next actions, and evidence-based closure.
+- Additive migration helper and deterministic state checks; no real vaults modified.
+- Placement now schedules a 3-day review instead of claiming 30-day retention.
+- Discovery ranking, companion UI and adaptive personalization remain deferred.
+
+
 ## 1.3.0
 
 - test-me asks one question at a time and gives feedback after each answer.

@@ -6,9 +6,13 @@ license: MIT
 
 # Clarify goal
 
+Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules.
+
 Based on Mager's goal analysis and Vygotsky's zone of proximal development.
 
 Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
+
+For a quick start, defer this interview: let teach-me gather provisional evidence through one narrow task. Use this full route for requested roadmaps, exams or deliberate planning.
 
 Ask in one direction per message. Finish step 1 before giving the step 2 task.
 
@@ -21,7 +25,7 @@ Ask one question at a time:
 3. Write each answer as an observable performance.
 4. Confirm: "If all of these happen, is the goal achieved?" A "yes, but…" points to a missing performance.
 
-## 2. Check the distance (always)
+## 2. Check the distance (deliberate planning)
 
 Say first that this shows where to start and isn't a grade, and that the last task may feel hard. Open with an easier task on the way to the goal, one they will very likely get. If they get it, give the goal task. If they miss it, treat the goal as too far and skip the goal task.
 

@@ -9,14 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install skills-ref PyYAML
+      - name: Validate release
+        run: |
+          python -m unittest discover -s evals -p 'test_*.py' -v
+          for d in skills/*/; do agentskills validate "$d"; done
       - name: Build one .skill file per skill
         run: |
           mkdir -p dist
           cd skills
-          for d in */; do n="${d%/}"; zip -qr "../dist/$n.skill" "$n"; done
+          for d in */; do n="${d%/}"; zip -qr "../dist/$n.skill" "$n" -x '*/__pycache__/*' '*.pyc'; done
           ls -l ../dist
       - name: Publish the release
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*.skill
           generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          make_latest: ${{ !contains(github.ref_name, '-') }}

@@ -48,6 +48,18 @@ flowchart LR
 3. **Map.** Your plan, starting where you are.
 4. **Teach.** A short explanation and 1 activity, then a pause. You try it and share your attempt. The next step adapts to you, until you've got it.
 
+## Experimental release
+
+Download the [experimental release](https://github.com/loselen/learn-anything/releases/tag/v1.4.0-experimental.1) separately from the stable latest release.
+
+`1.4.0-experimental.1` adds a quick start alongside the deliberate roadmap. Ask “Teach me recursion, quick start” to try one narrow task, or “Make me a roadmap” for the full pipeline. “Save that question”, “Pause here” and “Resume” preserve a next action and questions with an optional vault. A short budget is adjustable; sustained work is welcome.
+
+Placement shows current performance and schedules review in 3 days. Failed reviews stay in a separate repair queue. Notes keep stable capability IDs through renames and across maps. Reveals and hints are exposure, never independent success.
+
+Use a scratch vault to try this release: set up an empty folder, start a lesson, save a question, pause, then resume in another session. Existing vaults use `update-vault`; review its additive migration plan first. Chat-only use cannot guarantee cross-session memory. Local storage does not mean local model inference. Analytics are off; there is no companion app or automatic discovery ranking.
+
+See [state contract](skills/setup-obsidian/assets/learner-state.md), [migration](skills/update-vault/references/migration.md), and [evaluation results](evals/results-experimental.md).
+
 ## What it feels like
 
 > **You:** I want to write a function that walks a folder tree.

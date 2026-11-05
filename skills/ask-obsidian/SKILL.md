@@ -7,6 +7,8 @@ compatibility: Works best with file access to the vault or the Obsidian CLI (Obs
 
 # Ask Obsidian
 
+Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules.
+
 Narrow first, then read. Never read the whole vault.
 
 ## Access
@@ -20,6 +22,8 @@ Narrow first, then read. Never read the whole vault.
 If the vault has an `AGENTS.md` at its root, read it first. It tells you where things live.
 
 ## Steps
+
+For “resume”, read `Sessions/Current.md` first; offer its saved action or due review/repair with a plain reason. Summarize capabilities from linked attempts, distinguishing placement from retention. Saved questions live in `Sessions/Questions.md`.
 
 1. **Classify** the question. Finding a note → search. Status → properties. Relationships → links. Summary → start at a hub note, such as a map note.
 2. **Narrow** with search operators: `path:Lessons`, `tag:#topic`, `section:(term1 term2)`, `[status:review]`.

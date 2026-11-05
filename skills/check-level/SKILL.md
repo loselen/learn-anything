@@ -6,6 +6,8 @@ license: MIT
 
 # Check level
 
+Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules.
+
 Based on knowledge space theory (Doignon & Falmagne), think-aloud research (Ericsson & Simon) and procedural bug research (Brown & Burton).
 
 Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
@@ -42,9 +44,9 @@ Load `understand-me` and `research-it` first if you haven't this session and the
 
 ## Report
 
-- **Solid**: passed.
+- **Solid**: passed a delayed independent review; placement alone is provisional. Placement successes are **shaky** until reviewed.
 - **Shaky**: passed, but only recently learned. With a vault, these are lessons at `status: review`. Review these first.
-- **Ready next**: failed, with every prerequisite solid or shaky.
+- **Ready next**: failed, with its dependency formula satisfied by solid or shaky capabilities.
 - **Not yet**: everything else.
 - Each failure with its type, plus any missing prerequisites found.
 
@@ -56,8 +58,8 @@ If the user has a learning vault (a folder whose root `AGENTS.md` starts with `#
 
 | Result | Lesson status |
 |---|---|
-| Passed both items with no hint | `solid`, `interval: 30`, `last_reviewed` today, `next_review` 30 days out |
-| Failed a lesson that was `review` or `solid` | `learning`, `interval: 3`, `next_review` 3 days out |
+| Passed both items with no hint | placement demonstrated; `review`, `interval: 3`, `next_review` 3 days out; preserve an existing review/solid schedule |
+| Failed a lesson that was `review` or `solid` | `learning`, `repair: true`, `interval: 3`, `next_review` 3 days out |
 | Anything else | Unchanged |
 
 When notes don't exist yet, hand the entries and statuses to map-topic, which writes them when it creates the notes.

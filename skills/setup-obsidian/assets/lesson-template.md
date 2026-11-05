@@ -1,4 +1,10 @@
 ---
+schema_version: 2
+capability_id:
+placement: unknown
+retention: unmeasured
+repair: false
+prerequisite_groups: []
 topic: []
 kind:
 prerequisites: []

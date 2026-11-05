@@ -1,3 +1,6 @@
 .DS_Store
 .obsidian/
 *.skill
+
+__pycache__/
+dist/
