@@ -1,6 +1,6 @@
 ---
 name: understand-me
-description: Keep a learner's confidence intact when a learning step feels daunting. Use when a learner says they feel lost, stupid, behind, overwhelmed or "bad at this", gives up, stalls, goes quiet, keeps answering "idk" or "skip", or gets slower from one session to the next. Also use when a goal question, level check or exercise seems to be scaring them off, and when designing or reviewing a tutoring flow (clarify-goal, check-level, map-topic, teach-me) for places where a learner could burn out. Load it at the start of every learning session, even if the learner never says they are discouraged.
+description: Keep learning manageable with small asks and task-focused feedback. Apply quietly in tutoring; especially use when the learner says they feel lost, overwhelmed or "bad at this", repeatedly answers "idk", or asks for a smaller step. Also use to review tutoring flows. Load once and reuse; don't diagnose personality, motivation or fatigue from timing.
 license: MIT
 ---
 
@@ -14,11 +14,11 @@ Read "In a live session" when a learner is struggling now. Read "Reviewing a flo
 
 ### Read the signal first
 
-Signs the learner feels daunted: "I'm bad at this", giving up, repeated "idk" or "skip", answers getting shorter, being correct but slower each session, or going quiet after a failed item.
-
-A long pause followed by progress is productive struggle. Leave it alone. If you cannot tell which one you are seeing, ask one short question about how it feels and make it cheap to answer ("too easy, about right, or too hard?").
+Use explicit reports ("I'm bad at this", "too hard") and the work itself, not response timing. Repeated "idk" or skips call for a smaller ask, not a diagnosis. If an adjustment really needs a preference, ask cheaply ("too easy, about right, or too hard?"); don't add that question to every turn.
 
 ### Pick one move
+
+For a smaller or new task, use `make-activity` if installed, passing the objective or prerequisite, last attempt and support needed. Keep one small ask. Alone, use a simpler case with a checked answer. Don't call it for emotional support or preference questions.
 
 Use the smallest move that fits, and make only one per message.
 

@@ -1,0 +1,11 @@
+# Markdown to SQLite
+
+Use setup-learning's `scripts/memory.py`. PyYAML is optional for normal teaching but required for this import. Don't install it without authorization. Stop other writers and back up the source folder first. Import itself never rewrites source notes or rules.
+
+1. Run `python MEMORY --root DEST import-markdown SOURCE --dry-run`. This validates every frontmatter mapping, resolves links unambiguously and exercises database/graph constraints in scratch memory. No destination is created. Fix unknown links, duplicate IDs/properties and hard cycles before proceeding.
+2. For a separate new destination run `init`. For an in-place migration with existing rules use `init --database-only`. Custom rules are left intact; the runtime is installed. If a destination database already exists, back it up first; imports require empty learning tables.
+3. Run `import-markdown SOURCE`, then `check` and `context`. The import is one transaction, with a content digest for identical retries; changed-source reimports refuse to overwrite newer database memory. Original Markdown bytes (including CRLF), custom properties, test prose, session files and references are retained in `legacy_documents`. Lesson bodies also become searchable notes. Stable capability IDs and explicit schedules/placement/retention/repair are retained; missing retention stays unmeasured. No guessed repair or verified assessment is manufactured.
+4. Legacy prose remains prose, not reconstructed cycles/grades. Old test answers and saved questions remain readable as imported notes. An old active prompt is preserved in the session's saved action with its original reference; inspect and resume that prompt before starting a new task. Record typed units/attempts for new work only.
+5. Merge the new learning rules into the root `AGENTS.md`, preserving custom instructions. Ask before resolving conflicting owner edits. Leave original Markdown in place as a frozen source; new writes go to SQLite only. Remove/replace no old files automatically.
+
+No two-way sync. New Markdown exports go into a fresh folder. Existing `My Summary.md` is never overwritten by migration; summarize-me must preserve/merge its owner edits on explicit request.

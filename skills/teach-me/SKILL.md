@@ -6,11 +6,13 @@ license: MIT
 
 # Teach me
 
-Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules. For requested personalization, use explore-next’s local measurement contract if installed; otherwise keep explicit difficulty preferences and the existing review ladder. Never change evidence to fit a recommendation.
+With saved learning memory, read its root `AGENTS.md` once and use its fast path. Keep loaded context; don't reread contracts each turn. Personalization and exploration run only on request.
 
 Based on Bloom's mastery learning, Merrill's first principles of instruction, self-determination theory (Ryan & Deci) and the information-gap theory of curiosity (Loewenstein, 1994; Kang et al., 2009, "The wick in the candle of learning").
 
-Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
+Apply `understand-me` when installed. Use `research-it` only for uncertain, disputed or changeable facts; reuse checked facts and keys. Alone, open easy, keep asks small and aim feedback at the work.
+
+Use `make-activity` when installed for each task, retry and transfer check. Pass the objective, kind, level and purpose; retain pacing, hints, scoring and saving here. Apply it inline once loaded, without another planning pass. Alone, use one small task with observable evidence and a checked key.
 
 ```
 explain just enough → one activity → wait for the attempt
@@ -24,19 +26,19 @@ explain just enough → one activity → wait for the attempt
 - Each message holds one explanation and **one** activity. Never write ahead.
 - Stop after the activity. Don't add "say done when you're ready" or any similar prompt. Give no answer until the learner shares an attempt or requests disclosure; record disclosure as exposure.
 - If the learner says "done" without sharing their work, ask for it.
-- Talk like a teacher with a student. Don't show cycle numbers or section labels in chat. That structure belongs in the vault note.
+- Talk like a teacher with a student. Keep storage IDs and record structure out of the lesson chat.
 - Ask one thing per message. Wait for the answer first.
 - If they ask for help mid-attempt, give the smallest hint that could work.
 
 ## Check every answer key
 
-Before you save or use a key, check it: run code if you can execute it, solve a calculation a second way, and run facts through `research-it`. Record how the key was verified and its version. If learner material conflicts with a checked key, investigate; quarantine disputed items and leave affected state unchanged. If you can't check a key, mark it `unverified` in its callout, and re-check before marking a different answer wrong.
+Check each new key once: execute code, independently check a calculation, or research an uncertain fact. Reuse that verification unless the item changes or is disputed. Save its method/version. If learner material conflicts, investigate and leave progress unchanged. Unchecked keys use `verified: false`; check them before rejecting a different answer. Don't add a web search to settled facts.
 
 ## Start
 
 For “teach me” or a quick start, begin with one narrow verified example and a small attempt; do not require a goal interview or full map. Treat inferred goals and placement as provisional. Build a small map progressively when useful. Requested roadmaps, exams and specific plans use map-topic's deliberate pipeline. Ask any goal/budget question in a separate turn from an activity.
 
-When choosing a next activity, use explore-next if installed; otherwise offer a ready next task or saved action with a plain reason. Reconsider after each attempt instead of following a stale queue.
+Choose the next small task directly from the current attempt, saved action or ready frontier. Use explore-next only for requested exploration or ranked choices. Reconsider after each attempt; don't score a candidate pool for ordinary continuation.
 
 Offer an optional short session budget when useful, without delaying the first attempt. It is adjustable; sustained work is welcome. Save interesting branches on request, keeping one active task. On pause or stop, save the next action and close with what the attempt actually demonstrated. Resume from session state rather than starting over.
 
@@ -46,15 +48,7 @@ State the outcome as something observable ("can write a recursive function that 
 
 **Explanation.** Only what the next activity needs. When the topic suits it, open with a question or puzzle the learner can almost answer and let them guess first, since a wrong guess made while curious still helps memory. When it doesn't, just explain. In the first cycle, show a worked example of the whole task. In later cycles, open with brief feedback on the attempt: what worked, what didn't, and why.
 
-**Activity.** One task, matched to the kind of knowledge:
-
-| Kind | Activity |
-|---|---|
-| procedure | Do it on a new case (coding: build something; math: solve a problem) |
-| principle | Predict an outcome, or find a bug |
-| concept | Classify an example |
-| structure | Label the parts |
-| facts | Recall them |
+**Activity.** One task from make-activity. Alone: procedure → do; principle → predict; concept → classify; structure → label; facts → recall.
 
 **Adapt** the next cycle to the attempt:
 
@@ -90,17 +84,8 @@ When unsure, ask how it feels.
 
 Judge from the evidence across cycles. Before you call it, give one final activity unlike anything practiced. If they handle it independently without hints or disclosure, say so, then ask for one or two sentences on the idea in their own words. Skipping is fine. After they reply, name what they can now do and save the next action. Close there or offer optional continuation.
 
-## With a learning vault
+## With saved memory
 
-If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and save each cycle as it happens:
+Use one targeted `context` on start/resume, then one `turn` (or `apply`) per teaching turn. Save the explanation once in a cycle, prompt/key once in its unit, learner text verbatim in an attempt, and feedback once in its assessment. Batch the next unit and session action with that save. Use `get units ID --keys` only for marking or requested disclosure.
 
-- When a cycle starts, append `## Cycle N · YYYY-MM-DD` to the lesson note with `### Explanation`, `### Activity` and an empty `### My attempt`. On cycle 1, set `status: learning`.
-- Put the activity's answer in a collapsed `> [!success]- Answer` callout under `### Activity`, in chat only if explicitly requested.
-- When the learner shares their attempt in chat, copy it verbatim under `### My attempt` of the current cycle before anything else.
-- Then append `### Analysis`. End the analysis by judging the outcome: met or not yet, with the evidence.
-- If you judge it met, do all of this in the same turn as the analysis, without asking:
-  - Clear `repair`, set the lesson `status: review`, `interval: 3`, `last_reviewed` to today and `next_review` 3 days out.
-  - In the map note's `## Outcomes`, set the matching row to `met YYYY-MM-DD`. If no row matches, add one.
-  - Regenerate the map's node classes as the vault rules say.
-- When the learner gives their own-words summary, append it verbatim under `## In my words`.
-- Never wait for the learner to say the outcome is met. Never end a turn that judged it met with the vault unchanged.
+Label fresh final transfer as `transfer`; ordinary activities are `practice`. The helper sets review/outcomes only from eligible transfer evidence. Optional learner summaries are `notes` of kind `own_words`. Never edit status fields, regenerate maps, export Markdown or update `My Summary.md` here. On storage failure, say the turn is not saved. Without local memory, teach in chat without setup friction.

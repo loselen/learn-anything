@@ -6,11 +6,13 @@ license: MIT
 
 # Check level
 
-Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules.
+With saved memory, follow its root `AGENTS.md`; load it once, not per item.
 
 Based on knowledge space theory (Doignon & Falmagne), think-aloud research (Ericsson & Simon) and procedural bug research (Brown & Burton).
 
-Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
+Apply `understand-me` when installed. Research only uncertain, disputed or changeable facts; reuse checked items. Alone, open easy and keep feedback about the work.
+
+Use `make-activity` when installed for each task, retry and transfer check. Pass the objective, kind, level and purpose; retain pacing, hints, scoring and saving here. Apply it inline once loaded, without another planning pass. Alone, use one small task with observable evidence and a checked key.
 
 ## Probe
 
@@ -20,15 +22,7 @@ Load `understand-me` and `research-it` first if you haven't this session and the
 - Keep the tone light: say it's a check of the material, not a test of them, and don't stack more than two fails in a row. Follow a fail with an item they can pass.
 - Give at most one hint per item. If they still fail after it, count it as a fail.
 - Give two items per node, with different surfaces, before concluding.
-- Match each item to the kind of knowledge:
-
-  | Kind | Item |
-  |---|---|
-  | procedure | Do it on a new case |
-  | principle | Predict an outcome, or find a bug |
-  | concept | Classify an example |
-  | structure | Label the parts |
-  | facts | Recall them |
+- Use make-activity to match the kind. Alone: procedure → do; principle → predict; concept → classify; structure → label; facts → recall.
 
 - Ask the learner to "keep saying what you're thinking." Don't ask them to explain their reasoning during the task, because that changes how they think. Ask why afterwards.
 
@@ -52,14 +46,6 @@ Load `understand-me` and `research-it` first if you haven't this session and the
 
 Hand the report back to map-topic.
 
-## With a learning vault
+## With saved memory
 
-If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules. For each node you probed whose lesson note exists, append a dated entry to `## Level checks` (result, failure type, and the hint that worked) and set its status:
-
-| Result | Lesson status |
-|---|---|
-| Passed both items with no hint | placement demonstrated; `review`, `interval: 3`, `next_review` 3 days out; preserve an existing review/solid schedule |
-| Failed a lesson that was `review` or `solid` | `learning`, `repair: true`, `interval: 3`, `next_review` 3 days out |
-| Anything else | Unchanged |
-
-When notes don't exist yet, hand the entries and statuses to map-topic, which writes them when it creates the notes.
+Reuse capabilities by ID. Save each placement unit, verbatim attempt and assessment in one `turn`/`apply`; record failure type and support. The helper needs two distinct independent checked successes to establish placement (`review`, due in 3 days), never retained mastery. Existing longer schedules stay unchanged. Placement failures identify gaps; only fully assessed due retrieval changes an existing review schedule. Hand the evidence IDs to map-topic, not another copy of the prose. No Markdown writes or summary refresh.

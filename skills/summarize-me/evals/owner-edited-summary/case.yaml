@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: owner-edited-summary
+expected_outcome: |
+  The owner sentence remains verbatim in the refreshed root summary and is attributed to owner-shared context. The helper's expected_file_hash guard is respected. Sparse evidence is acknowledged and no mastery or personality diagnosis is invented.

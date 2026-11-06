@@ -4,7 +4,7 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location('state', ROOT / 'skills/setup-obsidian/scripts/state.py')
+spec = importlib.util.spec_from_file_location('state', ROOT / 'evals/reference_state.py')
 s = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(s)
 
@@ -106,10 +106,11 @@ class StateTests(unittest.TestCase):
             self.assertEqual(report['blocked'], ['next'])
             self.assertEqual(report['unknown'], [('next', 'Base')])
 
-    def test_packaged_contracts_match(self):
-        canonical = (ROOT/'skills/setup-obsidian/assets/learner-state.md').read_bytes()
-        for contract in ROOT.glob('skills/*/references/learner-state.md'):
-            self.assertEqual(contract.read_bytes(), canonical)
+    def test_hot_path_has_one_installed_contract(self):
+        rules = (ROOT/'skills/setup-learning/assets/AGENTS.md').read_text()
+        self.assertIn('# Learning memory rules', rules)
+        self.assertFalse(list(ROOT.glob('skills/*/references/learner-state.md')))
+        self.assertIn('one compact `turn', rules)
 
 
 if __name__ == '__main__':

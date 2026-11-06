@@ -6,11 +6,11 @@ license: MIT
 
 # Map topic
 
-Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules.
+With saved memory, follow its root `AGENTS.md` once. Deliberate mapping is for a requested roadmap; don't run this pipeline for every small lesson.
 
 Based on Gagné's learning hierarchies.
 
-Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
+Apply `understand-me` when installed. Research uncertain or changeable facts only; reuse checked sources.
 
 ## Pipeline
 
@@ -35,20 +35,12 @@ If the user skips the level check, build from what they say they know.
 
 ## The map
 
-The map is the agent's memory, not the learner's reading. Never paste it into chat.
-
-- A Mermaid `graph TD` with rounded nodes (`A(Power rule)`), the goal on top, and arrows from prerequisite to dependent. Mark each node with one status: **solid**, **shaky**, **ready next** or **not yet**. Keep it under about 20 nodes.
-- One study order, starting from the ready-next nodes.
+The database graph is memory, not the learner's reading. Keep a requested map under about 20 capabilities. Store stable IDs and prerequisite groups, not Mermaid source. Map classes (**solid**, **shaky**, **ready next**, **not yet**) and the frontier are derived; Mermaid is generated only on export. Choose one study order starting at ready-next capabilities.
 
 ## Tell the learner
 
 Talk it through like a teacher: what they already have, where to start, roughly what comes after, and, if the goal was lowered, how the path reaches the long-term goal. Name a few nodes in passing. Don't list them all or show statuses, arrows or code.
 
-## With a learning vault
+## With saved memory
 
-If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and save the final map there. Without a vault, keep it in your working notes for the session.
-
-- Create or update the map note in `Maps/`: goal (from clarify-goal), graph, lesson links, facts.
-- Create a lesson note in `Lessons/` for each new node, with `status: planned`. Reuse notes that already exist.
-- For new notes, write check-level's `## Level checks` entries and apply its status table there.
-- Set each node's class from its lesson status, as the vault rules say. Don't ask for confirmation.
+Search once for reusable capability IDs. Batch topics, new capabilities (default planned), topic membership, outcomes and prerequisite groups/members in one `apply`. Every group is required; any member satisfies it. The helper rejects unknown references, empty groups and hard cycles before committing. Reuse check-level's evidence rather than writing it again. Do not regenerate Markdown or refresh My Summary.md. Without memory, keep a small plan in the chat context.
