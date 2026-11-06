@@ -16,10 +16,10 @@ jobs:
       - name: Plugin and template versions match
         run: |
           v1=$(python -c "import json; print(json.load(open('.claude-plugin/marketplace.json'))['plugins'][0]['version'])")
-          v2=$(sed -n 's/^Template version: //p' skills/setup-obsidian/assets/AGENTS.md)
+          v2=$(sed -n 's/^Template version: //p' skills/setup-learning/assets/AGENTS.md)
           echo "marketplace $v1, template $v2"
           test "$v1" = "$v2"
       - name: Changelog has the current version
         run: |
-          v=$(sed -n 's/^Template version: //p' skills/setup-obsidian/assets/AGENTS.md)
+          v=$(sed -n 's/^Template version: //p' skills/setup-learning/assets/AGENTS.md)
           grep -q "^## $v" CHANGELOG.md

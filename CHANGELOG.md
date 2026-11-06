@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0-experimental.4
+
+- SQLite is the main learning memory: bounded context, one transactional turn save, retry IDs, derived progress and map classes. No per-turn Markdown bookkeeping.
+- Obsidian is an optional one-way export; legacy Markdown imports preserve originals without inventing verified historical assessments.
+- Add summarize-me: explicitly requested root `My Summary.md` snapshots, never automatic lesson/startup updates.
+- Rename setup-obsidian → setup-learning, update-vault → update-learning, ask-obsidian → ask-memory.
+- Include stable 1.3.1's make-activity and its caller handoffs. Apply activity design inline; avoid repeated planning, research, scoring and personalization on ordinary turns.
+- Keep experimental.3's discovery and baseline-gated personalization as opt-in workflows.
+
 ## 1.4.0-experimental.3
 
 - Phase E adds opt-in local baseline measurement, reversible difficulty suggestions and a shadow review scheduler.
@@ -21,6 +30,12 @@
 - Placement now schedules a 3-day review instead of claiming 30-day retention.
 - Discovery ranking, companion UI and adaptive personalization remain deferred.
 
+
+## 1.3.1
+
+- Add make-activity for aligned diagnostics, practice, retries, transfer checks and test questions.
+- Goal checks, placement, teaching, testing and smaller-task support share the activity designer while retaining their own pacing, hint and evidence rules.
+- Activity design is a practical synthesis, not a validated framework.
 
 ## 1.3.0
 

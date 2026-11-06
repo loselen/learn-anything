@@ -6,11 +6,13 @@ license: MIT
 
 # Clarify goal
 
-Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules.
+With saved memory, follow its root `AGENTS.md` once; don't reload contracts for each question.
 
 Based on Mager's goal analysis and Vygotsky's zone of proximal development.
 
-Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
+Apply `understand-me` when installed. Research only uncertain, disputed or changeable facts. Alone, open easy and keep asks small.
+
+Use `make-activity` when installed for goal tasks and retries. Pass the objective, kind, level and purpose; retain this skill's pacing and hint rules. Apply it inline once loaded. Alone, use a small task with a checked key.
 
 For a quick start, defer this interview: let teach-me gather provisional evidence through one narrow task. Use this full route for requested roadmaps, exams or deliberate planning.
 
@@ -46,6 +48,6 @@ Keep the original as the **long-term goal**. Tell the learner it's the destinati
 - **Reachable goal**: one concrete, testable task.
 - **Long-term goal** and the milestones between them, if the goal was lowered.
 
-## With a learning vault
+## With saved memory
 
-If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and hand the result to `map-topic`, which writes it in the map note's `## Goal`: **Now** (the reachable goal), **Long-term**, and **Path**. Don't create the map note yourself.
+Hand the reachable goal, long-term goal and path to map-topic for one `topics` write. Save diagnostic responses once as placement evidence, not as copied goal prose. No map file or personal summary update.

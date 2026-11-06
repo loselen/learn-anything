@@ -44,6 +44,6 @@ Scores round to 6 decimals; ties break by unit ID then version. Derived features
 
 The record includes policy version, SHA-256 of canonical JSON input, eligible candidates with features/scores, exclusions and reasons. Identical input and policy produce identical output regardless of candidate order. Keep the snapshot locally to reproduce with the same policy; the digest alone cannot reconstruct candidates. Candidate selection has no access to raw answers, analytics, view/dwell time or inferred personality. It never updates status or retention. Stop at `batch_remaining: 0`; decrement only after the active task is finished or explicitly skipped, not after opening a preview. Do not queue future activities without reranking after new evidence.
 
-## Existing vaults
+## SQLite memory
 
-No new required vault properties or template version are introduced in this unreleased change. The skill adds an optional Recommendations body section and local snapshot files only when used. Existing session records remain readable; recommendation snapshots are derived records and follow the vault's owner-requested deletion rules. The existing skill table may omit explore-next until a later batched vault update; this does not require rerunning setup or rewriting learner notes.
+This policy remains opt-in, outside the ordinary teaching path. Build snapshots from targeted database records only when running discovery. Store the exact input and returned result in a session-linked `recommendations` row; no Markdown section or sidecar file is required. Recommendations never mutate capability evidence. Owner-requested deletion includes these derived records.

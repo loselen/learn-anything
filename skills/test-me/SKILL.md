@@ -6,11 +6,13 @@ license: MIT
 
 # Test me
 
-Read [the shared state contract](references/learner-state.md) before placement, evidence, scheduling or session writes. With a vault, also follow its rules. For requested personalization, use explore-next’s local measurement contract if installed; otherwise keep explicit difficulty preferences and the existing review ladder. Never change evidence to fit a recommendation.
+With saved memory, follow its root `AGENTS.md` once. Keep explicit difficulty preferences and the review ladder; personalization analysis is opt-in, not part of a normal test.
 
 Based on the revised Bloom's taxonomy (Krathwohl), test-enhanced learning (Roediger & Karpicke; Kang, McDermott & Roediger) and formative assessment (Black & Wiliam). Sources and how much of each was read: `references/sources.md`.
 
-Load `understand-me` and `research-it` first if you haven't this session and they are installed. If not, still open easy, keep each ask small, aim feedback at the work, and check facts you are unsure of.
+Apply `understand-me` when installed. Research only uncertain, disputed or changeable facts; reuse checked sources. Alone, open easy and keep feedback about the work.
+
+Use `make-activity` when installed for each question and recheck. Pass the objective, kind, level and purpose; retain test coverage, pacing, scoring and saving here. Apply it inline once loaded. Alone, use a small task with a checked key.
 
 ```
 pick scope → blueprint → ask one question → wait for the answer → feedback → next question → results → retest later
@@ -25,7 +27,7 @@ pick scope → blueprint → ask one question → wait for the answer → feedba
 - Order questions from easiest to hardest. After two misses in a row, ask the easiest remaining question next.
 - Say how much is left in a few words ("two to go"), never as a numbered list.
 - Ask in one direction per message. Don't mix a feedback question with a next-lesson offer.
-- Talk like a teacher with a student. Don't show the blueprint, the key or note structure in chat. That belongs in the vault.
+- Talk like a teacher with a student. Keep blueprints, keys and storage structure out of the learner-facing question.
 
 ## Scope
 
@@ -42,7 +44,7 @@ By default, test what is due first (`status` `review` or `solid`, `next_review` 
 
 ## Check every answer key
 
-Before you save or use a key, check it: run code if you can execute it, solve a calculation a second way, and run facts through `research-it`. Record how the key was verified and its version. If learner material conflicts with a checked key, investigate; quarantine disputed items and leave affected state unchanged. If you can't check a key, mark it `unverified` in its callout, and re-check before marking a different answer wrong.
+Check each new key once: execute code, independently check a calculation, or research an uncertain fact. Reuse that verification unless the item changes or is disputed. Save its method/version. If learner material conflicts, investigate and leave progress unchanged. Unchecked keys use `verified: false`; check before rejecting a different answer. Don't research settled facts again.
 
 ## Mark and review
 
@@ -58,7 +60,7 @@ Before you save or use a key, check it: run code if you can execute it, solve a 
 ## Output
 
 - **In chat:** one question per message, then per-question feedback, then the results.
-- **Kept back:** blueprint, the remaining questions, the key and the retest plan. With a vault, they go in the test note, with each key in a collapsed `> [!success]- Answer` callout. Without one, keep them to yourself and reveal a key after that question is answered or disclosure is requested, recording exposure.
+- **Kept back:** blueprint, remaining questions, keys and retest plan. With saved memory they are database records; ordinary context omits keys. Without memory keep keys back until answered or disclosure is requested. Record disclosure as exposure.
 
 Reply in chat. Make a file only if asked, in the format they name.
 
@@ -66,16 +68,8 @@ Reply in chat. Make a file only if asked, in the format they name.
 
 Most studies used college students and fact-heavy material, so they say little about problem solving or younger learners. The six verbs overlap, so use the grid for coverage, not ranking.
 
-## With a learning vault
+## With saved memory
 
-If the user has a learning vault (a folder whose root `AGENTS.md` starts with `# Learning vault rules`), follow its rules and save the test as it happens:
+Read one targeted context and earlier units to avoid repeats. A short due review can be one unit per capability; don't construct an exam for a quick review. For a multi-item test, batch `tests`, checked `units` and ordered `test_items` before the first answer; coverage then locks.
 
-- Search `Tests/` for earlier tests on the same lessons, and write new questions.
-- Create the test note in `Tests/` from the test template, with the blueprint and the questions. Put each key in a collapsed `> [!success]- Answer` callout.
-- After each answer, append it verbatim under `## My answers` as `### Q<n>` before marking it, then append its mark, failure type and feedback under `## Results` as `### Q<n>`.
-- After the last question, append `### Summary` under `## Results`: marks per node and the status changes made. Mark the test `partial` in the summary if the learner stopped early.
-- Update lessons in the same turn as the summary, without asking. Only fully assessed `review` and `solid` lessons change; repair lessons follow the shared repair contract:
-  - Pass: set `status: solid`, step `interval` up and set `last_reviewed` and `next_review`, as the vault's `## Review` says.
-  - Fail: set `status: learning`, `repair: true`, `interval: 3`, `last_reviewed` to today and `next_review` 3 days out.
-  - Ordinary `learning` keeps its status; repair clears only after fresh independent transfer through teach-me. The marks stay in the test note.
-- Regenerate the map's node classes as the vault rules say.
+Save each verbatim attempt and assessment with one `turn`/`apply`, alongside the session action. On finish/early stop include `finalize_tests: [ID]`: only complete eligible coverage changes that capability, and missing/disputed/supported coverage stays unchanged. Use `delayed` only for due retrieval; otherwise `practice`. Failed due review enters repair; successful transfer through teach-me clears it. No status edits, map rewrites, exports or personal summary refresh.
