@@ -33,6 +33,7 @@ class MemoryTests(unittest.TestCase):
 
     def write(self, records, **extra):
         self.counter += 1
+        extra.setdefault('expected_revision', m.revision(self.db))
         return m.apply(self.db, dict(operation_id='op'+str(self.counter), records=records, **extra))
 
     def record(self, table, **data):
@@ -109,7 +110,7 @@ class MemoryTests(unittest.TestCase):
             self.write([self.record('notes', id='n', title='N', body='Must roll back'), self.activity('bad', capability='unknown')])
         self.assertEqual(self.db.execute('SELECT count(*) FROM notes').fetchone()[0], 0)
         self.assertEqual(m.revision(self.db), before)
-        payload = {'operation_id': 'same', 'records': []}
+        payload = {'operation_id': 'same', 'expected_revision': m.revision(self.db), 'records': []}
         m.apply(self.db, payload)
         with self.assertRaises(ValueError):
             m.apply(self.db, dict(payload, today='2026-11-01'))

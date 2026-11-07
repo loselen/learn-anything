@@ -12,7 +12,7 @@ Based on Bloom's mastery learning, Merrill's first principles of instruction, se
 
 Apply `understand-me` when installed. Use `research-it` only for uncertain, disputed or changeable facts; reuse checked facts and keys. Alone, open easy, keep asks small and aim feedback at the work.
 
-Use `make-activity` when installed for each task, retry and transfer check. Pass the objective, kind, level and purpose; retain pacing, hints, scoring and saving here. Apply it inline once loaded, without another planning pass. Alone, use one small task with observable evidence and a checked key.
+Use `make-activity` inline for tasks, retries and transfer, with the objective/kind/level/purpose. Keep pacing, hints and saving here. Alone, give one small task with a checked key.
 
 ```
 explain just enough → one activity → wait for the attempt

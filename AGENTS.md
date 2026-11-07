@@ -10,6 +10,7 @@ Conventions for AI agents and humans editing this repository.
 | `skills/setup-learning/assets/` | Learning-folder rules; `CLAUDE.md` only imports `AGENTS.md`. |
 | `skills/setup-learning/scripts/` | SQLite runtime/schema and optional Markdown importer. |
 | `.claude-plugin/marketplace.json` | Lets Claude Code install the repo as a plugin |
+| `scripts/package_skills.py` | Fresh-directory package builds and release tag/version guard |
 | `docs/` | README banner and badges (text drawn as outlines, so they render the same everywhere) |
 
 `setup-learning` initializes SQLite memory once; `update-learning` upgrades or imports older vaults. Other skills follow the learning folder's `AGENTS.md`. SQLite is authoritative; Markdown is an explicit export. Keep the hot path to bounded context and one transactional save. Never auto-refresh `My Summary.md`.
@@ -38,3 +39,5 @@ claude plugin validate .                     # Claude Code plugin
 npx skills add . --list                      # should find 13 skills
 python -m unittest discover -s evals -p 'test_*.py' -v
 ```
+
+Build packages with `python scripts/package_skills.py --output NEW_FOLDER` (add `--tag vVERSION` for release validation). Never publish ignored `dist/` contents: they may be historical packages. Historical reference tests cover old Markdown compatibility, not the current SQLite reducer; keep their results distinct from live-runtime regressions.

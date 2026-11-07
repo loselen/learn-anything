@@ -18,15 +18,22 @@ jobs:
           python -m unittest discover -s evals -p 'test_*.py' -v
           for d in skills/*/; do agentskills validate "$d"; done
       - name: Build one .skill file per skill
+        run: python scripts/package_skills.py --output "$RUNNER_TEMP/learning-skills" --tag "$GITHUB_REF_NAME"
+      - name: Select release notes
+        id: notes
         run: |
-          mkdir -p dist
-          cd skills
-          for d in */; do n="${d%/}"; zip -qr "../dist/$n.skill" "$n" -x '*/__pycache__/*' '*.pyc'; done
-          ls -l ../dist
+          version="${GITHUB_REF_NAME#v}"
+          notes="evals/release-${version#*-}.md"
+          echo "title=${version/-experimental./ experimental }" >> "$GITHUB_OUTPUT"
+          if test -f "$notes"; then
+            echo "path=$notes" >> "$GITHUB_OUTPUT"
+          fi
       - name: Publish the release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.skill
-          generate_release_notes: true
+          files: ${{ runner.temp }}/learning-skills/*.skill
+          name: ${{ steps.notes.outputs.title }}
+          body_path: ${{ steps.notes.outputs.path }}
+          generate_release_notes: ${{ steps.notes.outputs.path == '' }}
           prerelease: ${{ contains(github.ref_name, '-') }}
           make_latest: ${{ !contains(github.ref_name, '-') }}

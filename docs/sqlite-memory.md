@@ -1,4 +1,4 @@
-# Experimental.4: fast local memory
+# Experimental.5: reliable local memory
 
 ## Design and implementation order
 
@@ -12,7 +12,7 @@ The goal is less agent bookkeeping, not more infrastructure. No server, MCP inst
 
 ## Storage
 
-`.learning/memory.sqlite3` is authoritative; `.learning/memory.py` is the installed interface. Python 3.10+ with SQLite is sufficient. Database schema **1** is independent of old Markdown schema **2** and package version **1.4.0-experimental.4**.
+`.learning/memory.sqlite3` is authoritative; `.learning/memory.py` is the installed interface. Python 3.10+ with SQLite is sufficient. Database schema **1** is independent of old Markdown schema **2** and package version **1.4.0-experimental.5**.
 
 | Tables | Responsibility |
 |---|---|
@@ -30,6 +30,8 @@ The goal is less agent bookkeeping, not more infrastructure. No server, MCP inst
 
 `schema.sql` is the exact field/constraint contract. Primary/foreign-key indexes support ID-based context, evidence joins, prerequisite lookups and due queues. Free-text search is bounded substring matching, not semantic retrieval or an unbounded agent file scan; it can scan text tables and is not promised to be constant-time. Add FTS only if measured vault sizes require it.
 
+Experimental.5 retains schema 1: structured blueprints use the existing text field, and archival changes only note metadata. After an explicit runtime update, `optimize` installs compatible indexes without changing learning data or revision. Initialization journals file installation and publishes the database last; an interrupted install can be retried with the same command/version without overwriting owner edits.
+
 WAL, foreign keys, a five-second busy timeout, full synchronization and `BEGIN IMMEDIATE` provide local transactions. Evidence, progress, outcomes, session state and retry records commit together. A stale revision or any failed constraint rolls the batch back. Append-only IDs prevent accidental overwrites. The database serializes writers; owner-edited external files are not covered by its transaction. Backups use SQLite's online backup API.
 
 ## Agent hot path
@@ -39,6 +41,8 @@ WAL, foreign keys, a five-second busy timeout, full synchronization and `BEGIN I
 After an answer, reuse context and save the response, feedback, next activity and session in one `turn`. The result returns IDs and revision. Don't fetch context again unless it is missing, stale or a session resumes. Keys stay out of context; retrieve a specific key only if absent from the current marking context. Store content once; don't copy the whole chat into notes.
 
 Derived views remove map synchronization. Standard status and interval rules remain; placement, practice, transfer and delayed retrieval are distinct. Evidence assertions still come from the tutor—SQLite cannot establish whether an activity really tested transfer. Existing experimental discovery/personalization helpers are retained, opt-in, and not automatically invoked on each lesson. make-activity is applied inline after loading, not a nested planning pipeline.
+
+The runtime rejects missing revisions and repeated-unit independent evidence, preserves hint-only active tasks, and requires transfer to leave repair. Conditional slip rechecks must be linked in an immutable blueprint before the first attempt; they do not turn one successful placement response into two. SQLite projections for optional policies live in explore-next's `scripts/snapshot.py`; full taught scope and consent remain explicit host assertions. See [release validation](../evals/results-experimental.5.md).
 
 ## Optional outputs and migration
 

@@ -1,3 +1,4 @@
+"""Historical Markdown compatibility only; live state behavior is tested in test_sqlite."""
 import importlib.util
 from pathlib import Path
 import tempfile
@@ -9,7 +10,7 @@ s = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(s)
 
 
-class StateTests(unittest.TestCase):
+class HistoricalReferenceTests(unittest.TestCase):
     def event(self, **kw):
         return dict(id='a1', purpose='delayed review', complete=True, correct=True, **kw)
 

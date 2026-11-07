@@ -125,6 +125,8 @@ CREATE INDEX IF NOT EXISTS unit_capability ON units(capability_id,created_at);
 CREATE INDEX IF NOT EXISTS attempt_unit ON attempts(unit_id,created_at);
 CREATE INDEX IF NOT EXISTS assessment_attempt ON assessments(attempt_id,created_at);
 CREATE INDEX IF NOT EXISTS note_capability ON notes(capability_id,created_at);
+CREATE INDEX IF NOT EXISTS evidence_capability ON applied_evidence(capability_id);
+CREATE INDEX IF NOT EXISTS session_updated ON sessions(updated_at DESC);
 CREATE VIEW IF NOT EXISTS capability_state AS
  SELECT c.*, CASE WHEN c.status='solid' THEN 'solid' WHEN c.status='review' THEN 'shaky'
  WHEN NOT EXISTS (

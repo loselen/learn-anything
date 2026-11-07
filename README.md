@@ -12,18 +12,20 @@
 
 A short explanation. One activity. You try it. The next step fits your attempt.
 
-## Experimental.4
+## Experimental.5
 
 **Less bookkeeping, more learning.** SQLite stores notes, attempts, progress and session memory. Your agent reads only the context it needs and saves a turn in one transaction. No Markdown rewrites, graph updates or automatic summaries between activities.
 
-This prerelease combines experimental.3 with stable 1.3.1's activity designer. Discovery and personalization remain available on request—not on every lesson. It is experimental, not a measured claim about model response speed. See [experimental.4](https://github.com/loselen/learn-anything/releases/tag/v1.4.0-experimental.4) and its validation limits before migrating real notes.
+Experimental.5 makes progress tracking, interrupted setup and session continuity more reliable. Discovery and personalization remain available on request—not on every lesson. It is experimental, not a measured claim about model response speed. See [experimental.5](https://github.com/loselen/learn-anything/releases/tag/v1.4.0-experimental.5) and its validation limits before migrating real notes.
+
+See [what changed](CHANGELOG.md#140-experimental5) and [release validation](evals/results-experimental.5.md).
 
 ## Install
 
-Install experimental.4 separately from stable:
+Install experimental.5 separately from stable:
 
 ```sh
-npx skills add https://github.com/loselen/learn-anything/tree/v1.4.0-experimental.4 --all
+npx skills add https://github.com/loselen/learn-anything/tree/v1.4.0-experimental.5 --all
 ```
 
 The stable release remains separate:
@@ -102,7 +104,7 @@ The old storage skill names were `setup-obsidian`, `update-vault` and `ask-obsid
 
 - [Architecture and schema](docs/sqlite-memory.md)
 - [Memory API](skills/setup-learning/references/api.md)
-- [Experimental.4 validation](evals/results-sqlite.md)
+- [Experimental.5 validation](evals/results-experimental.5.md)
 - [Contributing](AGENTS.md)
 
 Memory stays local; model-provider processing is separate. SQLite, backups and exports aren't encrypted. No analytics or background sync.

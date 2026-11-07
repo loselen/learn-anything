@@ -264,8 +264,9 @@ def select(snapshot):
 if __name__ == '__main__':
     try:
         if len(sys.argv) != 2:
-            raise ValueError('usage: select.py snapshot.json')
-        snapshot = json.loads(Path(sys.argv[1]).read_text(), parse_constant=lambda value: (_ for _ in ()).throw(ValueError('nonfinite JSON number')))
+            raise ValueError('usage: select.py snapshot.json (or - for stdin)')
+        raw = sys.stdin.read() if sys.argv[1] == '-' else Path(sys.argv[1]).read_text()
+        snapshot = json.loads(raw, parse_constant=lambda value: (_ for _ in ()).throw(ValueError('nonfinite JSON number')))
         print(json.dumps(select(snapshot), ensure_ascii=False, indent=2, allow_nan=False))
     except (KeyError, TypeError, ValueError) as error:
         print(json.dumps(dict(error=str(error), policy_version=POLICY_VERSION)), file=sys.stderr)

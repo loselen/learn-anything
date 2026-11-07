@@ -12,7 +12,7 @@ Based on knowledge space theory (Doignon & Falmagne), think-aloud research (Eric
 
 Apply `understand-me` when installed. Research only uncertain, disputed or changeable facts; reuse checked items. Alone, open easy and keep feedback about the work.
 
-Use `make-activity` when installed for each task, retry and transfer check. Pass the objective, kind, level and purpose; retain pacing, hints, scoring and saving here. Apply it inline once loaded, without another planning pass. Alone, use one small task with observable evidence and a checked key.
+Use `make-activity` inline for probes and retries, with the objective/kind/level/purpose. Keep pacing, hints and saving here. Alone, give one small task with a checked key.
 
 ## Probe
 

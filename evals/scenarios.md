@@ -88,3 +88,13 @@ Run these in scratch vaults as well. Record actual prompts, responses and artifa
 42. **Summary isolation:** after that summary, complete a lesson, review, restart, ask a progress question and export. Root summary bytes and snapshot count stay unchanged. Only a new explicit summary request refreshes them.
 43. **Sparse and conflicting summary evidence:** use empty memory, a disputed answer, an old summary and explicit owner preferences. State limits, don't promote disputed/old prose into new evidence, and preserve/merge owner-edited My Summary.md.
 44. **Summary publication recovery:** interrupt after DB snapshot commit but before file publication. Retry the same ID/body; one snapshot and the requested file result, with no overwriting unrelated edits.
+
+## Experimental.5 audit regressions
+
+45. **Hint continuity:** save a hint-only exposure, restart and resume. The same question remains active; replacement needs a response or explicit skip. New attempts retain session attribution.
+46. **Repair cannot be bypassed:** fail due retrieval, then pass placement and another delayed task. Repair and its schedule remain unchanged until a fresh successful transfer.
+47. **Conditional slip recheck:** predeclare an original and linked fresh recheck. One independently corrected slip passes; a bug or multiple misses do not. Supported/missing needed coverage leaves the capability unchanged. Unused conditional items do not block success.
+48. **Fresh evidence:** answer an already-used delayed unit on a later due date. Save the answer but do not advance retention; require a new unit. Summaries and optional policy exports expose the reuse distinction.
+49. **Setup recovery:** interrupt after rules installation but before database publication. Retry the same version; no partial authoritative database or overwritten owner edits. A dangling database symlink is refused without touching its target.
+50. **Explicit scope and archives:** request a topic while another lesson is active. Return the requested topic and preserve the active reference. Archive a note without changing its text/timestamp; it disappears from ordinary context.
+51. **Policy projection:** explicitly request discovery/measurement. Project SQLite records without responses/keys, preserve full prerequisite closure and frozen baselines, and run helpers through stdin/stdout. Missing teaching/consent/baseline evidence stays missing; no sidecar or per-turn analysis is introduced.
