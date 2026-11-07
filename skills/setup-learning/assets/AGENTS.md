@@ -1,6 +1,6 @@
 # Learning memory rules
 
-Template version: 1.4.0-experimental.4
+Template version: 1.4.0-experimental.5
 
 ## Fast path
 
@@ -16,11 +16,11 @@ Run `--help` for commands. Read the setup-learning skill's `references/api.md` o
 ## Evidence
 
 - Capability IDs survive title changes and topic reuse. Prerequisite groups are AND-of-OR: all groups required, any member satisfies one. Unknowns and hard cycles are rejected. Only non-archived `review`/`solid` prerequisites count as ready. Map classes are calculated, never stored separately.
-- Two distinct independent, checked placement successes establish placement, not retention: `review`, interval 3, due in 3 days. Preserve an existing review/solid schedule.
+- Two distinct independent, checked placement successes establish placement, not retention: `review`, interval 3, due in 3 days. Preserve an existing review/solid schedule; placement cannot reschedule repair.
 - A fresh independent checked transfer establishes the outcome: `review`, clear repair, interval 3, due in 3 days. Practice alone never establishes mastery.
 - Fully assessed independent delayed retrieval on/after the due date advances 3 → 7 → 30 → 90: `solid`, retention demonstrated. Failed complete retrieval: `learning`, repair true, interval 3. Repair clears only with successful transfer.
-- Hints, revealed answers, skips, partial, unverified and disputed work are evidence, not independent passes or assessed failures. Save them without promoting or demoting. Keys require a verification method. Check a familiar calculation/code task once; don't research settled facts again.
-- Declare every test item before the first attempt. `finalize_tests` changes only capabilities with complete eligible coverage. Don't reshape coverage after seeing answers. Corrections append a superseding assessment; already-applied grades require explicit schedule reconciliation, not silent regrading.
+- Hints, revealed answers, skips, partial, unverified, disputed and reused-unit work are evidence, not independent passes or assessed failures. Save them without promoting or demoting. Hint/disclosure-only exposure leaves the prompt active. Keys require a verification method; check settled calculations/code once, not with repeated research.
+- Declare every test item and conditional slip-recheck link in the blueprint before the first attempt (see API). `finalize_tests` changes only capabilities with complete eligible coverage. Don't reshape coverage after seeing answers. Corrections append a superseding assessment; already-applied grades require explicit schedule reconciliation, not silent regrading.
 
 ## Continuity and ownership
 

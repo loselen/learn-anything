@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0-experimental.5
+
+- Enforce fresh independent evidence, transfer-only repair, required revisions and predeclared conditional slip rechecks.
+- Preserve hinted active prompts, link attempts to sessions, honor explicit context scope, and allow note archival without editing content.
+- Make initialization retryable and refuse database symlinks; add index-only updates and batched Markdown export queries.
+- Add read-only SQLite projections for opt-in selection and frozen-baseline analysis, and build release packages into fresh directories with tag/version checks.
+- Add live-runtime audit regressions; historical Markdown tests remain separately labeled. No real learning vault was migrated during development.
+
 ## 1.4.0-experimental.4
 
 - SQLite is the main learning memory: bounded context, one transactional turn save, retry IDs, derived progress and map classes. No per-turn Markdown bookkeeping.

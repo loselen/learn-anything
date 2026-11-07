@@ -12,7 +12,7 @@ Based on Mager's goal analysis and Vygotsky's zone of proximal development.
 
 Apply `understand-me` when installed. Research only uncertain, disputed or changeable facts. Alone, open easy and keep asks small.
 
-Use `make-activity` when installed for goal tasks and retries. Pass the objective, kind, level and purpose; retain this skill's pacing and hint rules. Apply it inline once loaded. Alone, use a small task with a checked key.
+Use `make-activity` inline for goal tasks and retries, with the objective/kind/level/purpose. Keep pacing and hints here. Alone, use a small task with a checked key.
 
 For a quick start, defer this interview: let teach-me gather provisional evidence through one narrow task. Use this full route for requested roadmaps, exams or deliberate planning.
 

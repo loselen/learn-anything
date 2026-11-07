@@ -211,8 +211,9 @@ def compare(snapshot):
 if __name__ == '__main__':
     try:
         if len(sys.argv) != 3 or sys.argv[1] not in ('analyze', 'compare'):
-            raise ValueError('usage: personalize.py analyze|compare snapshot.json')
-        value = json.loads(Path(sys.argv[2]).read_text(), parse_constant=lambda v: (_ for _ in ()).throw(ValueError('nonfinite JSON')))
+            raise ValueError('usage: personalize.py analyze|compare snapshot.json (or - for stdin)')
+        text = sys.stdin.read() if sys.argv[2] == '-' else Path(sys.argv[2]).read_text()
+        value = json.loads(text, parse_constant=lambda v: (_ for _ in ()).throw(ValueError('nonfinite JSON')))
         result = (analyze if sys.argv[1] == 'analyze' else compare)(value)
         print(json.dumps(result, indent=2, allow_nan=False))
     except (KeyError, TypeError, ValueError) as error:

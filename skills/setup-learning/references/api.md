@@ -52,7 +52,7 @@ Answer turn (use the unit ID returned above):
 
 Batch a next `unit` and `explanation` into the same answer turn when continuing. Give its `capability_id` if capability is omitted. Use `purpose: transfer` for fresh independent final transfer, `placement` for diagnostic items, `delayed` only for due retrieval. The activity still needs a fresh checked prompt; labels alone don't prove independence or transfer.
 
-Support flags describe actual exposure. A hint-only turn doesn't replace the active prompt. For disclosure/skip without an answer, save an explicit exposure attempt with `revealed`/`skipped` true and no assessment. Update the next action appropriately. Never count that as an independent pass/failure. A requested skip permits a new active unit. A new prompt cannot replace an unanswered unit without an attempt/skip.
+Support flags describe actual exposure. For hint/disclosure/skip without an answer, save an exposure attempt with `response: ""`, the relevant flag true and no assessment. Hints and disclosure leave the prompt active; an answer or explicit skip permits replacement. Never count exposure as an independent pass/failure. `turn` links attempts to its session automatically. A repeated attempt on the same unit cannot establish new independent evidence; use a fresh unit for reassessment.
 
 ## Less frequent writes
 
@@ -69,27 +69,32 @@ Support flags describe actual exposure. A hint-only turn doesn't replace the act
 }
 ```
 
-Tables/fields are defined in `scripts/schema.sql`; read only the relevant definition when a new operation needs it. Mutable records accept partial updates; evidence/cycles/notes are append-only. Every record needs an ID. Time fields default to current UTC. Recommendation snapshots/results, baseline snapshots and preference values accept nested JSON directly; the helper encodes them. Don't include status/schedule fields in capability writes; transitions are derived. Don't include `outcomes.met_on`; successful transfer sets it. Declare outcomes before transfer. Own-words notes use kind `own_words`, with verbatim body.
+Tables/fields are defined in `scripts/schema.sql`; read only the relevant definition when a new operation needs it. Mutable records accept partial updates; evidence/cycles/note content are append-only. Notes allow an `id` + `archived` metadata update without changing their text or timestamp. Every record needs an ID. Time fields default to current UTC. Recommendation/baseline snapshots, preference values and structured test blueprints accept nested JSON directly. Don't include status/schedule fields in capability writes; transitions are derived. Don't include `outcomes.met_on`; successful transfer sets it. Declare outcomes before transfer. Own-words notes use kind `own_words`, with verbatim body.
 
 Groups: create `prerequisite_groups(id,capability_id)` and `prerequisite_members(id,group_id,prerequisite_id)` in the same batch. All groups are required; any member satisfies one. The transaction validates the complete graph. Archived prerequisites don't unlock readiness.
 
 Tests: create `tests(id,topic_id?,blueprint)` and all versioned `units`, then `test_items(id,test_id,unit_id,ordinal)` before the first attempt. Save responses and assessments as usual; test items don't promote immediately. Include `finalize_tests: [TEST_ID]` in the last/early-stop `apply` or `turn`. Only complete eligible per-capability coverage affects scheduling. Tests containing unassessed or supported items close as partial. Declare any fresh slip recheck before exposure; don't expand coverage retroactively.
 
+For conditional slip rechecks, use a structured blueprint, e.g. `{"description":"Due review", "rechecks":{"RECHECK_UNIT_ID":"ORIGINAL_UNIT_ID"}}`. Both units must already be declared in that test; the recheck comes later and has the same capability/purpose (`practice` or `delayed`). One independent checked full-mark recheck can resolve one `failure_type: "slip"`, not a bug or multiple failures. An unused conditional recheck does not block a pass. A needed but missing/supported recheck leaves that capability unchanged. Original and recheck grades remain in the applied evidence; never rewrite the original response or score. Placement still requires two full independent successes; repair still requires fresh successful transfer.
+
 Corrections: append an assessment with `supersedes: CURRENT_ASSESSMENT_ID`; never replace a response. A grade already applied to scheduling is blocked until an explicitly authorized maintenance reconciliation. This release deliberately does not guess historical schedule rollback. Archive capabilities/topics with `archived: 1`; never silently delete history. Owner-requested deletion/reset is explicit maintenance, including derived data, summary files, exports and backups—not a teaching-turn command.
 
-`operation_id` makes identical retries no-ops, including after restart. Reusing it with different content fails. A stale expected revision fails without writes; reload targeted context and create a new operation reflecting the new state. SQLite `BEGIN IMMEDIATE`, foreign keys and WAL give one atomic local write; don't copy a live `.sqlite3` file alone—use `backup`.
+`operation_id` makes identical retries no-ops, including after restart. Reusing it with different content fails. `expected_revision` is required for both `turn` and `apply`; missing or stale revisions fail without writes. Reload targeted context after a conflict and create a new operation reflecting the new state. SQLite `BEGIN IMMEDIATE`, foreign keys and WAL give one atomic local write; don't copy a live `.sqlite3` file alone—use `backup`.
 
 ## Explicit operations only
 
 ```sh
 python .learning/memory.py backup NEW_BACKUP.sqlite3
 python .learning/memory.py check
+python .learning/memory.py optimize
 python .learning/memory.py export NEW_OBSIDIAN_FOLDER
 python .learning/memory.py summary-context
 python .learning/memory.py summary-save - < summary.json
 ```
 
 Exports require a new destination, include a manifest, and omit structured unit keys unless `--include-keys` is explicitly requested. Imported prose/Legacy files may contain original keys; inspect before sharing. Exported notes are snapshots; edits aren't synchronized back. Normal teaching never calls export or scans all notes. A previously written My Summary.md is copied as-is, not regenerated.
+
+`optimize` installs compatible indexes after an explicit runtime update; it changes neither schema version nor learning revision. Ordinary reads never install indexes. Interrupted initialization keeps `.learning/init.json`; retry the same `init` command from the same setup-learning version. Changed owner files are refused, not overwritten. The database is published only after the runtime and rules are installed.
 
 `summary-save` requires `id`, actual owner `request`, `body` starting `# My Summary`, `evidence_ids` (`table:id` strings), and `expected_revision`. Only summarize-me/explicit personal snapshot requests call it. If My Summary.md contains owner edits, read/merge them and include `expected_file_hash` (SHA-256 of those exact bytes). The helper rejects changed/unowned output otherwise. It saves the database snapshot before the atomic file write; on interruption retry the same payload ID to finish publishing. This is recoverable publication, not a cross-filesystem transaction. Don't include a new timestamp/body on retry.
 

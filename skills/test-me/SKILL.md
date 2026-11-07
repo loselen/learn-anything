@@ -12,7 +12,7 @@ Based on the revised Bloom's taxonomy (Krathwohl), test-enhanced learning (Roedi
 
 Apply `understand-me` when installed. Research only uncertain, disputed or changeable facts; reuse checked sources. Alone, open easy and keep feedback about the work.
 
-Use `make-activity` when installed for each question and recheck. Pass the objective, kind, level and purpose; retain test coverage, pacing, scoring and saving here. Apply it inline once loaded. Alone, use a small task with a checked key.
+Use `make-activity` inline for questions and rechecks, with the objective/kind/level/purpose. Keep coverage, pacing, scoring and saving here. Alone, use a small task with a checked key.
 
 ```
 pick scope → blueprint → ask one question → wait for the answer → feedback → next question → results → retest later
@@ -51,10 +51,10 @@ Check each new key once: execute code, independently check a calculation, or res
 - Mark each answer in the next message: one or two sentences on what worked, what didn't and why. If it was correct, ask the next question in the same message.
 - On a miss, ask them to explain the idea back in their own words before the next question. Then ask the next question.
 - After the last question, give the results: open with what they can now do, then the nodes to revisit, then when the retest is.
-- Score per node, not one total. A node passes on full marks, or on one slip that a recheck fixes. Classify each miss as check-level does: missing prerequisite, bug, slip or no transfer.
+- Score per node, not one total. A node passes on full marks, or one slip fixed independently on a fresh, predeclared conditional recheck. Link rechecks in the blueprint as the API describes; don't add coverage after answers. Classify misses as check-level does.
 - "Yes, I get it" tells you little. The explain-back on each miss is the check.
 - If the learner stops early, score only the nodes whose questions were all answered. Leave the rest unchanged.
-- Use the shared 3 → 7 → 30 → 90 day ladder for delayed review; repair hands off to teach-me first. Retest with fresh items. The first test is practice. The retest is the measure.
+- Use the shared 3 → 7 → 30 → 90 day ladder for delayed review; repair hands off to teach-me first. Immediate tests are practice; due delayed retrieval measures retention. Always use fresh items.
 - Let the node scores set what `teach-me` teaches next.
 
 ## Output

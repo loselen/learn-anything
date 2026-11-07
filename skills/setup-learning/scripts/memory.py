@@ -13,7 +13,7 @@ import sys
 import tempfile
 import uuid
 
-VERSION = '1.4.0-experimental.4'
+VERSION = '1.4.0-experimental.5'
 SCHEMA = 1
 MUTABLE = {'topics', 'capabilities', 'topic_capabilities', 'outcomes', 'sessions',
            'questions', 'preferences', 'sources', 'capability_sources'}
@@ -21,7 +21,8 @@ APPEND = {'units', 'cycles', 'tests', 'test_items', 'attempts', 'assessments',
           'notes', 'recommendations', 'baselines', 'prerequisite_groups', 'prerequisite_members'}
 DERIVED = {'status', 'placement', 'retention', 'repair', 'interval', 'last_reviewed', 'next_review'}
 TIME_TABLES = {'sessions', 'units', 'cycles', 'tests', 'attempts', 'assessments', 'notes', 'recommendations', 'baselines'}
-JSON_FIELDS = {'recommendations': ('snapshot', 'result'), 'baselines': ('snapshot',), 'preferences': ('value',)}
+JSON_FIELDS = {'recommendations': ('snapshot', 'result'), 'baselines': ('snapshot',),
+               'preferences': ('value',), 'tests': ('blueprint',)}
 
 
 def now():
@@ -94,7 +95,11 @@ def atomic_file(path, content, expected=None):
             raise ValueError('new output appeared; refusing overwrite')
         if expected is not None and path.read_bytes() != expected:
             raise ValueError('output changed; refusing overwrite')
-        os.replace(name, path)
+        if expected is None:
+            # Publish without replacing a file that appeared after the check.
+            os.link(name, path)
+        else:
+            os.replace(name, path)
     finally:
         if os.path.exists(name):
             os.unlink(name)
@@ -107,35 +112,48 @@ def initialize(root, install=True):
         raise ValueError('symlinked memory folder')
     folder.mkdir(parents=True, exist_ok=True)
     path = db_path(root)
+    if path.is_symlink():
+        raise ValueError('symlinked database path')
     if path.exists():
         raise ValueError('memory already exists; use update-learning')
-    for name in ('memory.py', 'schema.sql', 'legacy.py'):
-        target = folder / name
-        origin = Path(__file__).with_name(name)
-        if target.is_symlink() or (target.exists() and target.read_bytes() != origin.read_bytes()):
-            raise ValueError('existing runtime differs; preserve it and use update-learning: '+name)
     assets = Path(__file__).resolve().parent.parent / 'assets'
+    outputs = {folder / name: Path(__file__).with_name(name).read_bytes()
+               for name in ('memory.py', 'schema.sql', 'legacy.py')}
     if install:
         if not all((assets / name).is_file() for name in ('AGENTS.md', 'CLAUDE.md')):
             raise ValueError('initialize from the setup-learning skill, whose assets include the rules')
-        for name in ('AGENTS.md', 'CLAUDE.md'):
-            target = root / name
-            if target.exists() or target.is_symlink():
-                raise ValueError(f'{name} already exists; preserve it and use init --database-only')
-    db = sqlite3.connect(path)
+        outputs.update({root / name: (assets / name).read_bytes() for name in ('AGENTS.md', 'CLAUDE.md')})
+    journal = folder / 'init.json'
+    expected = {str(p.relative_to(root)): hashlib.sha256(body).hexdigest() for p, body in outputs.items()}
+    if journal.is_symlink():
+        raise ValueError('symlinked initialization journal')
+    recovering = journal.exists()
+    if recovering and json.loads(journal.read_text()) != expected:
+        raise ValueError('interrupted initialization used different files; reconcile before retrying')
+    for target, body in outputs.items():
+        if target.is_symlink() or (target.exists() and (
+                target.read_bytes() != body or (target.parent == root and not recovering))):
+            raise ValueError(f'{target.name} already exists or changed; preserve it and use init --database-only or reconcile')
+    if not recovering:
+        atomic_file(journal, canonical(expected).encode())
+    # A journal makes partial file installation retryable, without claiming ownership
+    # of arbitrary existing rules. Publish the database only after all files exist.
+    for target, body in outputs.items():
+        if not target.exists():
+            atomic_file(target, body)
+    fd, staging = tempfile.mkstemp(dir=folder, prefix='.init-', suffix='.sqlite3')
+    os.close(fd)
+    db = sqlite3.connect(staging)
     try:
         db.executescript(Path(__file__).with_name('schema.sql').read_text())
         db.execute('PRAGMA journal_mode=WAL')
     finally:
         db.close()
-    os.chmod(path, 0o600)
-    if install:
-        for name in ('AGENTS.md', 'CLAUDE.md'):
-            atomic_file(root / name, (assets / name).read_bytes())
-    for name in ('memory.py', 'schema.sql', 'legacy.py'):
-        origin = Path(__file__).with_name(name)
-        if origin.resolve() != (folder / name).resolve():
-            shutil.copyfile(origin, folder / name)
+    try:
+        atomic_file(path, Path(staging).read_bytes())
+    finally:
+        Path(staging).unlink()
+    journal.unlink()
     return {'schema': SCHEMA, 'database': str(path), 'version': VERSION}
 
 
@@ -159,6 +177,14 @@ def check_graph(db):
         raise ValueError('empty prerequisite group or hard dependency cycle: ' + ', '.join(sorted(nodes-ready)))
 
 
+def evidence_used(db, capability, identities):
+    # JSON string tokens are quoted/escaped by canonical(), not LIKE patterns.
+    # Parse only candidate matches: an escaped quote inside another ID is not a token boundary.
+    return any(identity in json.loads(row[0]) for identity in identities for row in db.execute(
+        'SELECT assessment_ids FROM applied_evidence WHERE capability_id=? AND instr(assessment_ids,?)>0',
+        (capability, canonical(identity))))
+
+
 def put(db, table, data, importing=False):
     if table not in MUTABLE | APPEND or not isinstance(data, dict) or not data.get('id'):
         raise ValueError('unknown table, missing ID, or invalid record')
@@ -170,7 +196,8 @@ def put(db, table, data, importing=False):
     if set(data) - columns:
         raise ValueError(f'unknown {table} fields: {sorted(set(data)-columns)}')
     old = db.execute(f'SELECT * FROM {table} WHERE id=?', (data['id'],)).fetchone()
-    if table in APPEND and old:
+    archive_only = table == 'notes' and set(data) <= {'id', 'archived'}
+    if table in APPEND and old and not archive_only:
         if all(old[k] == v for k, v in data.items()):
             return
         raise ValueError(f'append-only record changed: {table}/{data["id"]}')
@@ -186,8 +213,9 @@ def put(db, table, data, importing=False):
             raise ValueError('invalid superseding assessment')
         if current:
             # Schedule corrections require explicit reconciliation, not a second promotion.
-            affected = db.execute('SELECT 1 FROM applied_evidence WHERE assessment_ids LIKE ?',
-                                  ('%"'+current['id']+'"%',)).fetchone()
+            capability = db.execute('SELECT u.capability_id FROM attempts t JOIN units u ON u.id=t.unit_id WHERE t.id=?',
+                                    (data['attempt_id'],)).fetchone()[0]
+            affected = evidence_used(db, capability, [current['id']])
             if affected:
                 raise ValueError('already applied assessment; reconcile its schedule before correcting')
     if table == 'units' and data.get('verified') and not data.get('verification', '').strip():
@@ -202,9 +230,10 @@ def put(db, table, data, importing=False):
         if not test or test['closure'] != 'active' or started or exposed:
             raise ValueError('test coverage is locked after the first attempt')
     if table == 'sessions' and old and old['active_unit_id'] and data.get('active_unit_id', old['active_unit_id']) != old['active_unit_id']:
-        if not db.execute('SELECT 1 FROM attempts WHERE unit_id=?', (old['active_unit_id'],)).fetchone():
+        if not db.execute("SELECT 1 FROM attempts WHERE unit_id=? AND (length(response)>0 OR skipped=1)",
+                          (old['active_unit_id'],)).fetchone():
             raise ValueError('unanswered active prompt; resume it or record an explicit skip')
-    if table in TIME_TABLES:
+    if table in TIME_TABLES and not archive_only:
         field = 'updated_at' if table == 'sessions' else 'created_at'
         data.setdefault(field, now())
     names = list(data)
@@ -227,36 +256,36 @@ def put(db, table, data, importing=False):
 
 def eligible(row):
     return (row['complete'] and row['verified'] and row['unit_verified'] and row['independent']
-            and not any(row[k] for k in ('hinted', 'revealed', 'skipped', 'disputed', 'unit_supported')))
+            and not any(row[k] for k in ('hinted', 'revealed', 'skipped', 'disputed', 'unit_supported', 'unit_reused')))
 
 
-EVIDENCE_SQL = '''SELECT a.*, t.unit_id,t.hinted,t.revealed,t.skipped,t.created_at AS attempted_at,
+EVIDENCE_SQL = '''SELECT a.*, t.unit_id,t.hinted,t.revealed,t.skipped,t.created_at AS attempted_at,t.rowid AS attempt_order,
  u.capability_id,u.purpose,u.verified AS unit_verified,u.created_at AS unit_created,
  EXISTS(SELECT 1 FROM attempts exposure WHERE exposure.unit_id=u.id
-        AND (exposure.hinted=1 OR exposure.revealed=1 OR exposure.skipped=1)) AS unit_supported
+        AND (exposure.hinted=1 OR exposure.revealed=1 OR exposure.skipped=1)) AS unit_supported,
+ EXISTS(SELECT 1 FROM attempts prior WHERE prior.unit_id=u.id AND prior.rowid<t.rowid) AS unit_reused
  FROM current_assessments a JOIN attempts t ON t.id=a.attempt_id JOIN units u ON u.id=t.unit_id'''
 
 
-def transition(db, capability_id, purpose, evidence, day, identity):
+def transition(db, capability_id, purpose, evidence, day, identity, resolved_slip=False):
     if not evidence or not all(eligible(r) for r in evidence):
         return False
     ids = sorted(r['id'] for r in evidence)
-    used = db.execute('SELECT assessment_ids FROM applied_evidence WHERE capability_id=?', (capability_id,))
-    if any(set(ids) & set(json.loads(r[0])) for r in used):
+    if evidence_used(db, capability_id, ids):
         return False
     state = dict(db.execute('SELECT * FROM capabilities WHERE id=?', (capability_id,)).fetchone())
-    passed = all(r['score'] == 1 for r in evidence)
+    passed = all(r['score'] == 1 for r in evidence) or (resolved_slip and purpose in ('practice', 'delayed'))
     update = {}
     if purpose == 'placement':
         if not passed or len({r['unit_id'] for r in evidence}) < 2:
             return False
         update['placement'] = 'demonstrated'
-        if state['status'] not in ('review', 'solid'):
+        if state['status'] not in ('review', 'solid') and not state['repair']:
             update.update(status='review', interval=3, next_review=str(day+timedelta(days=3)))
     elif purpose == 'transfer' and passed:
         update.update(status='review', repair=0, interval=3, next_review=str(day+timedelta(days=3)))
         db.execute('UPDATE outcomes SET met_on=? WHERE capability_id=? AND met_on IS NULL', (str(day), capability_id))
-    elif purpose == 'delayed' and state['status'] in ('review', 'solid'):
+    elif purpose == 'delayed' and state['status'] in ('review', 'solid') and not state['repair']:
         # The review must be due and conducted on/after the saved due date.
         if not state['next_review'] or str(day) < state['next_review']:
             return False
@@ -298,6 +327,28 @@ def assess_pending(db, new_ids, day):
     return changed
 
 
+def test_rechecks(db, test):
+    """Optional immutable blueprint mapping: recheck unit ID -> original unit ID."""
+    try:
+        blueprint = json.loads(test['blueprint'])
+    except json.JSONDecodeError:
+        return {}
+    if not isinstance(blueprint, dict) or 'rechecks' not in blueprint:
+        return {}
+    rechecks = blueprint['rechecks']
+    if not isinstance(rechecks, dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in rechecks.items()):
+        raise ValueError('blueprint rechecks must map recheck unit IDs to original unit IDs')
+    if len(set(rechecks.values())) != len(rechecks) or set(rechecks) & set(rechecks.values()):
+        raise ValueError('one fresh recheck per original; chained rechecks are not allowed')
+    items = {r['id']: r for r in db.execute('''SELECT u.id,u.capability_id,u.purpose,i.ordinal
+        FROM test_items i JOIN units u ON u.id=i.unit_id WHERE i.test_id=?''', (test['id'],))}
+    for retry, original in rechecks.items():
+        a, b = items.get(retry), items.get(original)
+        if not a or not b or a['capability_id'] != b['capability_id'] or a['purpose'] != b['purpose'] or a['purpose'] not in ('practice', 'delayed') or a['ordinal'] <= b['ordinal']:
+            raise ValueError('declare a later recheck for the same capability and purpose in the same test')
+    return rechecks
+
+
 def finalize_test(db, identity, day):
     test = db.execute('SELECT * FROM tests WHERE id=?', (identity,)).fetchone()
     if not test:
@@ -307,21 +358,46 @@ def finalize_test(db, identity, day):
     units = rows(db, 'SELECT u.* FROM test_items i JOIN units u ON u.id=i.unit_id WHERE i.test_id=? ORDER BY i.ordinal', (identity,))
     if not units:
         raise ValueError('test has no predeclared coverage')
+    rechecks = test_rechecks(db, test)
+    reverse = {original: retry for retry, original in rechecks.items()}
     groups = {}
     for unit in units:
+        if unit['id'] in rechecks:
+            continue
         groups.setdefault((unit['capability_id'], unit['purpose']), []).append(unit['id'])
     changed, partial = [], False
+    incomplete = set()
+    prepared = []
     for (capability, purpose), unit_ids in groups.items():
         evidence = []
         for unit_id in unit_ids:
-            candidates = list(db.execute(EVIDENCE_SQL+' WHERE u.id=? ORDER BY t.created_at DESC,t.id DESC LIMIT 1', (unit_id,)))
+            candidates = list(db.execute(EVIDENCE_SQL+''' WHERE u.id=?
+                AND t.rowid=(SELECT max(rowid) FROM attempts WHERE unit_id=u.id)''', (unit_id,)))
             if not candidates or not eligible(candidates[0]):
                 partial = True
+                incomplete.add(capability)
                 break
             evidence.extend(candidates)
         else:
-            if transition(db, capability, purpose, evidence, day, 'test:'+identity+':'+capability+':'+purpose):
-                changed.append(capability)
+            failures = [r for r in evidence if r['score'] != 1]
+            resolved = False
+            if len(failures) == 1 and failures[0]['failure_type'] == 'slip':
+                original = failures[0]
+                retry_id = reverse.get(original['unit_id'])
+                retry = db.execute(EVIDENCE_SQL+''' WHERE u.id=?
+                    AND t.rowid=(SELECT max(rowid) FROM attempts WHERE unit_id=u.id)''', (retry_id,)).fetchone()
+                if retry_id and (not retry or not eligible(retry)):
+                    partial = True
+                    incomplete.add(capability)
+                elif retry and retry['score'] == 1 and retry['attempt_order'] > original['attempt_order'] and retry['attempted_at'] >= original['attempted_at']:
+                    evidence.append(retry)
+                    resolved = True
+            prepared.append((capability, purpose, evidence, resolved))
+    # Missing coverage in any purpose leaves the entire capability unchanged.
+    for capability, purpose, evidence, resolved in prepared:
+        if capability not in incomplete and transition(db, capability, purpose, evidence, day,
+                'test:'+identity+':'+capability+':'+purpose, resolved_slip=resolved):
+            changed.append(capability)
     db.execute('UPDATE tests SET closure=? WHERE id=?', ('partial' if partial else 'closed', identity))
     return changed
 
@@ -336,24 +412,35 @@ def apply(db, payload, importing=False, fingerprint=None):
             if old['digest'] != fingerprint:
                 raise ValueError('operation ID reused with different content')
             return json.loads(old['result'])
+        if not importing and type(payload.get('expected_revision')) is not int:
+            raise ValueError('expected_revision required')
         if payload.get('expected_revision', revision(db)) != revision(db):
             raise ValueError('stale revision; reload targeted context')
         day = date.fromisoformat(payload.get('today', str(date.today())))
-        assessment_ids = []
+        assessment_ids, graph_changed, tests_changed = [], False, set()
         for record in payload.get('records', []):
             table, data = record['table'], record['data']
+            if table in {'prerequisite_groups', 'prerequisite_members'} or (
+                    table == 'capabilities' and not db.execute('SELECT 1 FROM capabilities WHERE id=?', (data['id'],)).fetchone()):
+                graph_changed = True
             put(db, table, data, importing)
             if table == 'assessments':
                 assessment_ids.append(data['id'])
-        if any(r['table'] in {'capabilities', 'prerequisite_groups', 'prerequisite_members'} for r in payload.get('records', [])):
+            if table in {'tests', 'test_items'}:
+                tests_changed.add(data['id'] if table == 'tests' else data['test_id'])
+        if graph_changed:
             check_graph(db)
+        for identity in tests_changed:
+            test_rechecks(db, db.execute('SELECT * FROM tests WHERE id=?', (identity,)).fetchone())
         changed = assess_pending(db, assessment_ids, day)
         for identity in payload.get('finalize_tests', []):
             changed.extend(finalize_test(db, identity, day))
         db.execute("UPDATE meta SET value=CAST(value AS INTEGER)+1 WHERE key='revision'")
         saved = {}
         for record in payload.get('records', []):
-            saved.setdefault(record['table'], []).append(record['data']['id'])
+            identities = saved.setdefault(record['table'], [])
+            if record['data']['id'] not in identities:
+                identities.append(record['data']['id'])
         result = {'revision': revision(db), 'changed_capabilities': sorted(set(changed)), 'saved': saved}
         db.execute('INSERT INTO operations VALUES (?,?,?,?)', (payload['operation_id'], fingerprint, canonical(result), now()))
     return result
@@ -380,10 +467,17 @@ def turn(db, payload):
     cap = payload.get('capability')
     if cap:
         add('capabilities', cap)
+    session = dict(payload.get('session', {}))
+    current = db.execute("SELECT * FROM sessions WHERE closure!='closed' ORDER BY (closure='active') DESC,updated_at DESC LIMIT 1").fetchone()
+    session.setdefault('id', current['id'] if current else new_id('session'))
+    # A new session must precede its attempts to satisfy their foreign key.
+    if not db.execute('SELECT 1 FROM sessions WHERE id=?', (session['id'],)).fetchone():
+        add('sessions', {k: v for k, v in session.items() if k != 'active_unit_id'})
     attempt = payload.get('attempt')
     if attempt:
         attempt = dict(attempt)
         attempt.setdefault('id', new_id('attempt'))
+        attempt.setdefault('session_id', session['id'])
         for flag in ('hinted', 'revealed', 'skipped'):
             # Explicit support flags keep exposure distinct from retrieval.
             if flag not in attempt:
@@ -409,12 +503,9 @@ def turn(db, payload):
         if 'explanation' in payload:
             add('cycles', {'id': new_id('cycle'), 'capability_id': unit['capability_id'],
                            'unit_id': unit['id'], 'explanation': payload['explanation']})
-    session = dict(payload.get('session', {}))
-    current = db.execute("SELECT * FROM sessions WHERE closure!='closed' ORDER BY (closure='active') DESC,updated_at DESC LIMIT 1").fetchone()
-    session.setdefault('id', current['id'] if current else new_id('session'))
     if unit:
         session.setdefault('active_unit_id', unit['id'])
-    elif attempt and current and current['active_unit_id'] == attempt['unit_id']:
+    elif attempt and current and current['active_unit_id'] == attempt['unit_id'] and (attempt.get('response') or attempt['skipped']):
         session.setdefault('active_unit_id', None)
     if current and current['closure'] == 'paused' and 'closure' not in session:
         session['closure'] = 'active'
@@ -428,10 +519,10 @@ def context(db, capability=None, topic=None, limit=5):
     limit = max(1, min(limit, 50))
     result = {'revision': revision(db)}
     result['session'] = rows(db, "SELECT * FROM sessions WHERE closure!='closed' ORDER BY (closure='active') DESC,updated_at DESC LIMIT 1")
-    if not capability and result['session'] and result['session'][0]['active_unit_id']:
+    if result['session'] and result['session'][0]['active_unit_id']:
         unit = rows(db, 'SELECT id,capability_id,purpose,prompt,version FROM units WHERE id=?', (result['session'][0]['active_unit_id'],))
         result['active_prompt'] = unit
-        if unit:
+        if unit and not capability and not topic:
             capability = unit[0]['capability_id']
     if capability:
         result['capability'] = rows(db, 'SELECT * FROM capability_state WHERE id=?', (capability,))
@@ -504,6 +595,16 @@ def backup(db, target):
     return {'backup': str(path)}
 
 
+def optimize(db):
+    """Explicit index-only update for existing schema-1 folders; no logical writes."""
+    statements = Path(__file__).with_name('schema.sql').read_text().split(';')
+    indexes = [sql.strip() for sql in statements if sql.strip().startswith('CREATE INDEX IF NOT EXISTS')]
+    with transaction(db):
+        for sql in indexes:
+            db.execute(sql)
+    return {'schema': SCHEMA, 'indexes_checked': len(indexes), 'revision': revision(db)}
+
+
 def summary_context(db, limit=100):
     """Explicit, bounded synthesis input. Not called by context/apply/export."""
     limit = max(1, min(limit, 500))
@@ -519,9 +620,10 @@ def summary_context(db, limit=100):
         'capabilities': rows(db, 'SELECT * FROM capability_state WHERE archived=0 ORDER BY last_reviewed DESC,next_review DESC LIMIT ?', (limit,)),
         'outcomes': rows(db, 'SELECT * FROM outcomes LIMIT ?', (limit,)),
         'evidence': rows(db, '''SELECT a.id,a.score,a.feedback,a.independent,a.complete,a.verified,a.disputed,a.created_at,
-          t.id AS attempt_id,substr(t.response,1,1600) AS response,t.hinted,t.revealed,t.skipped,u.capability_id,u.purpose,u.verified AS unit_verified,
+          t.id AS attempt_id,substr(t.response,1,1600) AS response,t.hinted,t.revealed,t.skipped,u.id AS unit_id,u.version,u.capability_id,u.purpose,u.verified AS unit_verified,
           EXISTS(SELECT 1 FROM attempts exposure WHERE exposure.unit_id=u.id
-           AND (exposure.hinted=1 OR exposure.revealed=1 OR exposure.skipped=1)) AS unit_supported
+           AND (exposure.hinted=1 OR exposure.revealed=1 OR exposure.skipped=1)) AS unit_supported,
+          EXISTS(SELECT 1 FROM attempts prior WHERE prior.unit_id=u.id AND prior.rowid<t.rowid) AS unit_reused
           FROM current_assessments a JOIN attempts t ON t.id=a.attempt_id JOIN units u ON u.id=t.unit_id
           ORDER BY a.created_at DESC LIMIT ?''', (limit,)),
         'notes': rows(db, 'SELECT id,title,kind,substr(body,1,2000) AS body FROM notes WHERE archived=0 ORDER BY created_at DESC LIMIT ?', (limit,)),
@@ -556,7 +658,7 @@ def save_summary(db, root, payload):
         else:
             if payload['expected_revision'] != revision(db):
                 raise ValueError('stale summary context; reload before summarizing')
-            allowed = {'topics', 'capabilities', 'attempts', 'assessments', 'notes', 'preferences', 'outcomes', 'questions', 'legacy_documents'}
+            allowed = {'topics', 'capabilities', 'attempts', 'assessments', 'notes', 'preferences', 'outcomes', 'questions', 'sessions', 'legacy_documents'}
             for ref in payload['evidence_ids']:
                 table, identity = ref.split(':', 1)
                 if table not in allowed or not db.execute(f'SELECT 1 FROM {table} WHERE id=?', (identity,)).fetchone():
@@ -611,51 +713,66 @@ def export_markdown(db, root, target, include_keys=False):
         rev = revision(db)
         capabilities = rows(db, 'SELECT * FROM capability_state ORDER BY title,id')
         names = {c['id']: filename(c['title'], c['id']) for c in capabilities}
+        node_ids = {c['id']: 'N'+hashlib.sha256(c['id'].encode()).hexdigest()[:12] for c in capabilities}
+
+        def grouped(sql, key):
+            result = {}
+            for row in db.execute(sql):
+                result.setdefault(row[key], []).append(dict(row))
+            return result
+
+        units_by_capability = grouped('''SELECT u.*,c.explanation FROM units u
+            LEFT JOIN cycles c ON c.unit_id=u.id ORDER BY u.created_at,u.id''', 'capability_id')
+        attempts_by_unit = grouped('SELECT * FROM attempts ORDER BY created_at,id', 'unit_id')
+        grades_by_attempt = grouped('SELECT * FROM assessments ORDER BY created_at,id', 'attempt_id')
+        notes_by_capability = grouped('SELECT * FROM notes ORDER BY created_at,id', 'capability_id')
+        members_by_topic = grouped('''SELECT c.*,t.topic_id FROM capability_state c
+            JOIN topic_capabilities t ON t.capability_id=c.id ORDER BY c.title,c.id''', 'topic_id')
+        dependencies = grouped('''SELECT g.capability_id,m.prerequisite_id FROM prerequisite_groups g
+            JOIN prerequisite_members m ON m.group_id=g.id ORDER BY g.id,m.prerequisite_id''', 'capability_id')
+        outcomes_by_topic = grouped('SELECT * FROM outcomes ORDER BY id', 'topic_id')
+        units_by_test = grouped('''SELECT i.test_id,i.ordinal,u.id,u.capability_id,u.prompt FROM test_items i
+            JOIN units u ON u.id=i.unit_id ORDER BY i.ordinal''', 'test_id')
         for cap in capabilities:
             identity = cap['id']
             props = {k: cap[k] for k in ('status', 'kind', 'placement', 'retention', 'repair', 'interval', 'last_reviewed', 'next_review')}
             props['capability_id'] = identity
             header = '---\n'+'\n'.join(k+': '+json.dumps(v, ensure_ascii=False) for k, v in props.items())+'\n---\n'
             content = header+'# '+cap['title']+'\n\n'+cap['objective']+'\n'
-            for unit in rows(db, '''SELECT u.*,c.explanation FROM units u LEFT JOIN cycles c ON c.unit_id=u.id
-                                   WHERE u.capability_id=? ORDER BY u.created_at,u.id''', (identity,)):
+            for unit in units_by_capability.get(identity, []):
                 content += '\n## '+unit['purpose']+' · '+unit['id']+'\n\n'
                 if unit['explanation']:
                     content += unit['explanation']+'\n\n'
                 content += '### Activity\n\n'+unit['prompt']+'\n'
                 if include_keys:
                     content += '\n> [!success]- Answer\n'+'\n'.join('> '+line for line in unit['answer'].splitlines())+'\n'
-                for attempt in rows(db, 'SELECT * FROM attempts WHERE unit_id=? ORDER BY created_at,id', (unit['id'],)):
+                for attempt in attempts_by_unit.get(unit['id'], []):
                     content += '\n### My attempt · '+attempt['id']+'\n\n'+attempt['response']+'\n'
-                    for grade in rows(db, 'SELECT * FROM assessments WHERE attempt_id=? ORDER BY created_at,id', (attempt['id'],)):
+                    for grade in grades_by_attempt.get(attempt['id'], []):
                         content += '\n### Analysis · '+grade['id']+'\n\n'+grade['feedback']+'\n'
-            for note in rows(db, 'SELECT * FROM notes WHERE capability_id=? ORDER BY created_at,id', (identity,)):
+            for note in notes_by_capability.get(identity, []):
                 content += '\n## '+('In my words' if note['kind'] == 'own_words' else note['title'])+'\n\n'+note['body']+'\n'
             emit('Lessons/'+names[identity]+'.md', content)
         for topic in rows(db, 'SELECT * FROM topics ORDER BY title,id'):
-            members = rows(db, '''SELECT c.* FROM capability_state c JOIN topic_capabilities t ON t.capability_id=c.id
-                                  WHERE t.topic_id=?''', (topic['id'],))
-            node_ids = {c['id']: 'N'+hashlib.sha256(c['id'].encode()).hexdigest()[:12] for c in capabilities}
+            members = members_by_topic.get(topic['id'], [])
             graph = ['graph TD']
             for c in members:
                 label = c['title'].replace('"', '&quot;').replace('\n', ' ')
                 graph.append('    '+node_ids[c['id']]+'("'+label+'"):::'+c['map_class'])
-                for dep in rows(db, '''SELECT m.prerequisite_id FROM prerequisite_groups g JOIN prerequisite_members m
-                                      ON m.group_id=g.id WHERE g.capability_id=?''', (c['id'],)):
+                for dep in dependencies.get(c['id'], []):
                     graph.append('    '+node_ids[dep['prerequisite_id']]+' --> '+node_ids[c['id']])
             content = '# '+topic['title']+'\n\n## Goal\n\n'+topic['goal']+'\n\n'+topic['long_term']+'\n\n'+topic['path']
             content += '\n\n## Map\n\n```mermaid\n'+'\n'.join(graph)+'\n```\n\nOR alternatives share a prerequisite group in SQLite; arrows alone do not show that formula.\n'
             content += '\n'.join('- [[Lessons/'+names[c['id']]+']]' for c in members)+'\n\n## Outcomes\n\n'
-            content += '\n'.join('- '+o['description']+': '+(o['met_on'] or 'not yet') for o in rows(db, 'SELECT * FROM outcomes WHERE topic_id=?', (topic['id'],)))+'\n'
+            content += '\n'.join('- '+o['description']+': '+(o['met_on'] or 'not yet') for o in outcomes_by_topic.get(topic['id'], []))+'\n'
             emit('Maps/'+filename(topic['title'], topic['id'])+'.md', content)
-        for note in rows(db, 'SELECT * FROM notes WHERE capability_id IS NULL ORDER BY id'):
+        for note in notes_by_capability.get(None, []):
             emit('Notes/'+filename(note['title'], note['id'])+'.md', '# '+note['title']+'\n\n'+note['body'])
         for source in rows(db, 'SELECT * FROM sources ORDER BY id'):
             emit('References/'+filename(source['title'], source['id'])+'.md', '# '+source['title']+'\n\n'+source['url']+'\n\n'+source['body'])
         for test in rows(db, 'SELECT * FROM tests ORDER BY id'):
             content = '# Test '+test['id']+'\n\n'+test['blueprint']+'\n\nStatus: '+test['closure']+'\n'
-            for unit in rows(db, '''SELECT i.ordinal,u.id,u.capability_id,u.prompt FROM test_items i JOIN units u ON u.id=i.unit_id
-                                   WHERE i.test_id=? ORDER BY i.ordinal''', (test['id'],)):
+            for unit in units_by_test.get(test['id'], []):
                 content += '\n## Q'+str(unit['ordinal'])+'\n\n'+unit['prompt']+'\n\n[[Lessons/'+names[unit['capability_id']]+']]\n'
             emit('Tests/'+filename('Test', test['id'])+'.md', content)
         emit('Sessions/Current.md', '# Saved sessions\n\n```json\n'+json.dumps(rows(db, 'SELECT * FROM sessions'), indent=2, ensure_ascii=False)+'\n```\n')
@@ -704,6 +821,7 @@ def main():
     save = sub.add_parser('backup')
     save.add_argument('target', type=Path)
     sub.add_parser('check')
+    sub.add_parser('optimize', help='Install compatible indexes after an explicit runtime update')
     summary = sub.add_parser('summary-context')
     summary.add_argument('--limit', type=int, default=100)
     summary_write = sub.add_parser('summary-save')
@@ -739,6 +857,8 @@ def main():
                 result = due(db, args.today)
             elif args.command == 'backup':
                 result = backup(db, args.target)
+            elif args.command == 'optimize':
+                result = optimize(db)
             elif args.command == 'check':
                 check_graph(db)
                 result = {'integrity': db.execute('PRAGMA integrity_check').fetchone()[0], 'foreign_key_errors': rows(db, 'PRAGMA foreign_key_check'), 'revision': revision(db)}
