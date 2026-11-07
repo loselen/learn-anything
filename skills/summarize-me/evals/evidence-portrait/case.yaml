@@ -1,4 +1,0 @@
-schema_version: "1.1"
-name: evidence-portrait
-expected_outcome: |
-  Root My Summary.md and one SQLite summary snapshot contain a dated, evidence-grounded portrait. Placement is provisional, explicit preferences are included, and no personality, diagnosis or retained mastery is invented. Evidence records and source revision are retained without progress changes from summarizing.

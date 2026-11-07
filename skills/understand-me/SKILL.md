@@ -8,7 +8,7 @@ license: MIT
 
 Learners burn out when they meet a failure before they have had any success, and the failure makes the next attempt harder. Anxiety uses up working memory, so a daunted learner thinks worse at the moment they are asked to think hardest, and that produces more failure. This skill breaks the loop at the steps where the learner has to give input: clarifying the goal, checking the level, and doing the activity in the teaching cycle.
 
-Read "In a live session" when a learner is struggling now. Read "Reviewing a flow" when you are building or auditing the steps themselves.
+Use "In a live session" when a learner is struggling now, and "Reviewing a flow" when building or auditing the steps.
 
 ## In a live session
 
@@ -51,20 +51,10 @@ When reviewing or building a tutoring flow, go through each step that needs lear
 - Can the learner see progress inside the step, not only at the end?
 - Can the learner say "too hard" cheaply, and does the flow respond?
 
-Report each gap with the step it sits in and a concrete change. Keep suggestions that come from the evidence below separate from suggestions that are your own idea.
+Report each gap with the step it sits in and a concrete change. Keep suggestions backed by [the evidence](references/evidence.md) separate from your own ideas.
 
 Respect an explicit stop, skip, reveal or preference for sustained work. Do not infer fatigue, disengagement, personality or mental health from response timing. When uncertain, ask a cheap explicit preference. Feedback names the demonstrated move; never manufacture mastery or pressure continuation.
 
-## Principles and evidence
+## Evidence
 
-Mastery experience is the strongest source of a learner's belief that they can do something, and failures that arrive before a run of successes damage that belief the most (Bandura, self-efficacy theory; known here through secondary summaries of the 1997 book).
-
-Small goals with visible progress build confidence and interest. In Bandura and Schunk (1981), children given proximal subgoals progressed quickly and developed more efficacy and interest in arithmetic than children given distant goals. Schunk's later summary says proximal goals help because they allow frequent checks on progress.
-
-Anxiety weakens the efficiency of working memory's central executive (Eysenck and colleagues, attentional control theory). This is why the ask should be small and cheap to answer.
-
-Frequent low-stakes retrieval can lower test anxiety. In Agarwal et al. (2014), 72% of 1,408 middle and high school students said regular retrieval practice made them less nervous for tests. This is classroom self-report, not an experiment on AI tutoring. Secondary reporting adds that highly test-anxious students sometimes avoid self-testing altogether, which is the reason to offer a skip.
-
-Feedback can backfire. In Kluger and DeNisi's (1996) meta-analysis of 607 effects, feedback improved performance on average (d = .41) but lowered it in over a third of cases, and it worked less well the more it pulled attention toward the self and away from the task. Mueller and Dweck (1998) found that praise for intelligence hurt motivation more than praise for effort, but a later replication did not reproduce the performance harm, so treat that part as contested and rely on the task-focused rule.
-
-Limits: no source here tests this exact loop. Applying these findings to clarify, check and teach steps is inference, and the one-tap difficulty rating is a design idea, not a finding.
+The research behind these moves, and its limits, is in [evidence](references/evidence.md). Read it only when reviewing a flow or asked why.

@@ -100,7 +100,7 @@ class MemoryTests(unittest.TestCase):
         self.assertEqual(result['revision'], 2)
         self.assertEqual(m.turn(self.db, answer), result)
         self.assertEqual(self.db.execute('SELECT count(*) FROM attempts').fetchone()[0], 1)
-        self.assertFalse((self.root/'My Summary.md').exists())
+        self.assertFalse((self.root/'my-summary.md').exists())
         self.assertEqual(list(self.root.glob('Lessons/*')), [])
 
     def test_batch_rollback_foreign_key_conflict_and_stale_revision(self):
@@ -267,15 +267,15 @@ os._exit(23)
 
     def test_summary_only_explicit_publication_and_no_automatic_refresh(self):
         self.capability()
-        self.assertFalse((self.root/'My Summary.md').exists())
+        self.assertFalse((self.root/'my-summary.md').exists())
         payload = dict(id='summary', request='Summarize me', body='# My Summary\n\nDeveloping c. [capabilities:c]\n',
                        evidence_ids=['capabilities:c'], expected_revision=m.revision(self.db))
         m.save_summary(self.db, self.root, payload)
-        original = (self.root/'My Summary.md').read_bytes()
+        original = (self.root/'my-summary.md').read_bytes()
         self.transfer()
         m.context(self.db)
         m.export_markdown(self.db, self.root, Path(self.scratch.name)/'export')
-        self.assertEqual((self.root/'My Summary.md').read_bytes(), original)
+        self.assertEqual((self.root/'my-summary.md').read_bytes(), original)
         m.save_summary(self.db, self.root, payload)  # same-ID publication retry
         self.assertEqual(self.db.execute('SELECT count(*) FROM summary_snapshots').fetchone()[0], 1)
         changed = dict(payload, id='summary2', expected_revision=m.revision(self.db), body='# My Summary\n\nNow demonstrated.\n')
@@ -284,9 +284,28 @@ os._exit(23)
         with self.assertRaises(ValueError):
             m.save_summary(self.db, self.root, payload)
 
+    def test_summary_context_graph_and_legacy_file_handoff(self):
+        self.capability()
+        self.write([self.record('topics', id='t', title='Topic'),
+                    self.record('topic_capabilities', id='tc', topic_id='t', capability_id='c')])
+        context = m.summary_context(self.db, self.root)
+        graph = context['progress_graphs'][0]['mermaid']
+        self.assertTrue(graph.startswith('graph TD'))
+        self.assertIn('classDef solid', graph)
+        self.assertIn(':::next', graph)
+        self.assertIsNone(context['current_file'])
+        (self.root/'My Summary.md').write_text('# My Summary\n\nOwner line.\n')
+        old = m.summary_context(self.db, self.root)['current_file']
+        self.assertEqual((old['path'], old['text']), ('My Summary.md', '# My Summary\n\nOwner line.\n'))
+        m.save_summary(self.db, self.root, dict(id='s', request='Summarize me', body='# My summary\n\nOwner line.\n',
+                       evidence_ids=[], expected_revision=m.revision(self.db)))
+        self.assertTrue((self.root/'my-summary.md').is_file())
+        self.assertTrue((self.root/'My Summary.md').is_file())  # never deleted
+        self.assertEqual(m.summary_context(self.db, self.root)['current_file']['path'], 'my-summary.md')
+
     def test_summary_owner_edits_preserved_merge_hash_and_interrupted_publication(self):
         self.capability()
-        path = self.root/'My Summary.md'
+        path = self.root/'my-summary.md'
         path.write_text('# My Summary\n\nMy personal edit.\n')
         payload = dict(id='s', request='Summarize me', body='# My Summary\n\nMy personal edit. Developing c.\n', evidence_ids=['capabilities:c'], expected_revision=m.revision(self.db))
         with self.assertRaises(ValueError):
@@ -412,6 +431,34 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual((self.dest/'AGENTS.md').read_bytes(), before)
 
 
+    def test_stable_vault_archive_goals_outcomes_and_own_words(self):
+        (self.source/'Archive').mkdir(); (self.source/'Templates').mkdir()
+        (self.source/'AGENTS.md').write_text('# Learning vault rules\n\nRegenerate map classes.\n')
+        (self.source/'Templates/lesson-template.md').write_text('---\nstatus: planned\n---\n')
+        (self.source/'Maps/My map.md').write_text('## Goal\n\n**Now:** read a graph\n**Long-term:** draw graphs\n**Path:** read → draw\n\n'
+            '## Map\n\n```mermaid\ngraph TD\n```\n\n## Outcomes\n\n| Outcome | Status |\n| --- | --- |\n| Read a graph | met 2026-10-01 |\n| Draw one | not yet |\n')
+        (self.source/'Archive/Old.md').write_text('---\nkind: concept\nstatus: review\n---\nold\n')
+        (self.source/'Lessons/Original.md').write_text('---\ntopic: ["[[My map]]"]\nkind: Procedure\nprerequisites: ["[[Old]]"]\nstatus: learning\n---\n'
+            '## Cycle 1\nx\n\n## In my words\nMy own sentence.\n')
+        m.initialize(self.dest)
+        legacy.import_markdown(self.dest, self.source)
+        db = m.connect(self.dest)
+        try:
+            topic = db.execute('SELECT goal,long_term,path FROM topics').fetchone()
+            self.assertEqual(tuple(topic), ('read a graph', 'draw graphs', 'read → draw'))
+            self.assertEqual([tuple(r) for r in db.execute('SELECT description,met_on FROM outcomes ORDER BY description')],
+                             [('Draw one', None), ('Read a graph', '2026-10-01')])
+            self.assertEqual(db.execute("SELECT archived FROM capabilities WHERE title='Old'").fetchone()[0], 1)
+            self.assertEqual(db.execute("SELECT kind FROM capabilities WHERE title='Original'").fetchone()[0], 'procedure')
+            own = db.execute("SELECT body FROM notes WHERE kind='own_words'").fetchone()[0]
+            self.assertEqual(own, 'My own sentence.')
+            titles = {r[0] for r in db.execute('SELECT title FROM notes')}
+            self.assertFalse(titles & {'AGENTS', 'lesson-template'})
+            self.assertTrue(db.execute("SELECT 1 FROM legacy_documents WHERE path='AGENTS.md'").fetchone())
+        finally:
+            db.close()
+
+
 class PackagingTests(unittest.TestCase):
     def test_independent_setup_archive_installs_working_runtime(self):
         with tempfile.TemporaryDirectory(dir=SCRATCH) as tmp:
@@ -431,14 +478,14 @@ class PackagingTests(unittest.TestCase):
             for command in ('context', 'check'):
                 result = subprocess.run([sys.executable, '-S', str(learning/'.learning/memory.py'), '--root',str(learning),command], capture_output=True, text=True)
                 self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertFalse((learning/'My Summary.md').exists())
+            self.assertFalse((learning/'my-summary.md').exists())
 
     def test_activity_handoffs_and_summary_triggers(self):
         for name in ('clarify-goal','check-level','teach-me','test-me','understand-me'):
             self.assertIn('`make-activity`', (ROOT/'skills'/name/'SKILL.md').read_text())
         summary = (ROOT/'skills/summarize-me/SKILL.md').read_text()
         self.assertIn('Only run on an explicit owner request', summary)
-        self.assertIn('No automatic refresh hooks', summary)
+        self.assertIn('No automatic refresh', summary)
         for name in ('teach-me', 'test-me'):
             text = (ROOT/'skills'/name/'SKILL.md').read_text()
             self.assertNotIn('references/learner-state.md', text)

@@ -111,7 +111,7 @@ class HistoricalReferenceTests(unittest.TestCase):
         rules = (ROOT/'skills/setup-learning/assets/AGENTS.md').read_text()
         self.assertIn('# Learning memory rules', rules)
         self.assertFalse(list(ROOT.glob('skills/*/references/learner-state.md')))
-        self.assertIn('one compact `turn', rules)
+        self.assertIn('one `turn', rules)
 
 
 if __name__ == '__main__':

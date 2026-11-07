@@ -13,7 +13,7 @@ Conventions for AI agents and humans editing this repository.
 | `scripts/package_skills.py` | Fresh-directory package builds and release tag/version guard |
 | `docs/` | README banner and badges (text drawn as outlines, so they render the same everywhere) |
 
-`setup-learning` initializes SQLite memory once; `update-learning` upgrades or imports older vaults. Other skills follow the learning folder's `AGENTS.md`. SQLite is authoritative; Markdown is an explicit export. Keep the hot path to bounded context and one transactional save. Never auto-refresh `My Summary.md`.
+`setup-learning` initializes SQLite memory once; `update-learning` upgrades or imports older vaults. Other skills follow the learning folder's `AGENTS.md`. SQLite is authoritative; Markdown is an explicit export. Keep the hot path to bounded context and one transactional save. Never auto-refresh `my-summary.md`.
 
 ## Rules
 
@@ -28,7 +28,6 @@ Conventions for AI agents and humans editing this repository.
 6. README and banner follow the loselen design system: "loselen" always lowercase, sentence case, as few words as possible, Blue 500 `#4A68E0` as the only accent, and no other brand names unless install steps need them.
 7. On release, bump `Template version:` in `skills/setup-learning/assets/AGENTS.md`, runtime `VERSION` and `marketplace.json`, and add an entry to `CHANGELOG.md`. `update-learning` relies on the version. Batch changes: release at most once a day, and bump the minor version when memory files change. Database schema versions are separate from release versions.
 8. If you rename a section, property or skill, update every skill, the vault `AGENTS.md`, the templates and the README.
-9. Before a release, run the scenarios in `evals/scenarios.md` and record the results in the pull request.
 
 ## Check before committing
 

@@ -43,4 +43,4 @@ Talk it through like a teacher: what they already have, where to start, roughly 
 
 ## With saved memory
 
-Search once for reusable capability IDs. Batch topics, new capabilities (default planned), topic membership, outcomes and prerequisite groups/members in one `apply`. Every group is required; any member satisfies it. The helper rejects unknown references, empty groups and hard cycles before committing. Reuse check-level's evidence rather than writing it again. Do not regenerate Markdown or refresh My Summary.md. Without memory, keep a small plan in the chat context.
+Search once for reusable capability IDs. Batch topics, new capabilities (default planned), topic membership, outcomes and prerequisite groups/members in one `apply`. Every group is required; any member satisfies it. The helper rejects unknown references, empty groups and hard cycles before committing. Reuse check-level's evidence rather than writing it again. Do not regenerate Markdown or refresh the personal summary. Without memory, keep a small plan in the chat context.

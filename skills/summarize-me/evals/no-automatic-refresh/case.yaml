@@ -1,4 +1,0 @@
-schema_version: "1.1"
-name: no-automatic-refresh
-expected_outcome: |
-  After the initial explicit summary, ordinary lesson completion and a progress question leave My Summary.md bytes and summary_snapshots count unchanged. The progress answer uses current evidence without claiming the older snapshot is current.

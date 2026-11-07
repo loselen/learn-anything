@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0
+
+- Stable release of the SQLite learning memory from experimental.4–5: bounded context, one transactional save per turn, derived progress, opt-in discovery and personalization, and make-activity across the learning skills.
+- summarize-me writes a narrative root `my-summary.md` with a Mermaid progress graph per topic, built by the runtime. An older `My Summary.md` is kept and its owner text merged on the next request.
+- Markdown migration covers stable 1.x vaults: archived lessons no longer block import, map goals and outcomes (with met dates) and own-words sections are imported, and old rules/templates stay as original bytes instead of searchable notes.
+- Leaner hot path: shorter learning-folder rules, understand-me evidence moved to a reference, duplicated key-check text trimmed, cached record schemas, and `legacy.py` no longer copied into each learning folder.
+- Exports color map nodes and skip edges to capabilities outside the topic.
+- Agent-session evals are run by the owner and no longer ship in skill packages.
+
 ## 1.4.0-experimental.5
 
 - Enforce fresh independent evidence, transfer-only repair, required revisions and predeclared conditional slip rechecks.

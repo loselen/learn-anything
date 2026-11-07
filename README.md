@@ -12,29 +12,19 @@
 
 A short explanation. One activity. You try it. The next step fits your attempt.
 
-## Experimental.5
+## What's new in 1.4.0
 
-**Less bookkeeping, more learning.** SQLite stores notes, attempts, progress and session memory. Your agent reads only the context it needs and saves a turn in one transaction. No Markdown rewrites, graph updates or automatic summaries between activities.
+**Less bookkeeping, more learning.** SQLite stores notes, attempts, progress and session memory. Your agent reads only the context it needs and saves each turn in one transaction. No Markdown rewrites or graph updates between activities.
 
-Experimental.5 makes progress tracking, interrupted setup and session continuity more reliable. Discovery and personalization remain available on request—not on every lesson. It is experimental, not a measured claim about model response speed. See [experimental.5](https://github.com/loselen/learn-anything/releases/tag/v1.4.0-experimental.5) and its validation limits before migrating real notes.
-
-See [what changed](CHANGELOG.md#140-experimental5) and [release validation](evals/results-experimental.5.md).
+See [what changed](CHANGELOG.md#140).
 
 ## Install
-
-Install experimental.5 separately from stable:
-
-```sh
-npx skills add https://github.com/loselen/learn-anything/tree/v1.4.0-experimental.5 --all
-```
-
-The stable release remains separate:
 
 ```sh
 npx skills add loselen/learn-anything
 ```
 
-The open [SKILL.md format](https://agentskills.io) works with any compatible agent. You can also copy folders from `skills/` into its skills folder. For Claude Code, this repository includes a plugin marketplace. Prerelease packages, once published, are separate from stable/latest.
+The open [SKILL.md format](https://agentskills.io) works with any compatible agent. You can also copy folders from `skills/` into its skills folder. For Claude Code, this repository includes a plugin marketplace.
 
 ## Start learning
 
@@ -55,9 +45,8 @@ my-learning/
 ├── .learning/
 │   ├── memory.sqlite3
 │   ├── memory.py
-│   ├── legacy.py
 │   └── schema.sql
-└── My Summary.md        only after you ask to summarize yourself
+└── my-summary.md        only after you ask to summarize yourself
 ```
 
 “Pause here”, “Resume”, “Save that question” and “What's due?” use the database directly. Responses and own-words notes remain yours, verbatim. Placement, supported practice and retained learning stay distinct.
@@ -66,7 +55,7 @@ my-learning/
 
 > Summarize me based on what I've learned and saved.
 
-`summarize-me` writes root **`My Summary.md`**: demonstrated abilities, developing skills, goals and explicitly shared context, with evidence and uncertainty. It updates **only when requested**, never after a lesson, on startup, or during review. Earlier snapshots stay in the database.
+`summarize-me` writes root **`my-summary.md`**: a short, readable story of what you can do, what you're working on and where you're heading, with a progress graph per topic. It updates **only when requested**, never after a lesson, on startup, or during review. Earlier snapshots stay in the database.
 
 ## Optional Markdown view
 
@@ -76,7 +65,7 @@ Want browsable notes? Ask for an export to a new folder:
 python .learning/memory.py export ../learning-snapshot
 ```
 
-Open that snapshot in Obsidian if you like. Plans, lessons, tests, references and saved actions are exported; structured answer keys are omitted by default. Imported prose may still contain old keys—inspect before sharing. It is a one-way view: edits aren't synchronized back, existing files aren't overwritten, and teaching doesn't wait for exports. Existing `My Summary.md` is copied as-is.
+Open that snapshot in Obsidian if you like. Plans, lessons, tests, references and saved actions are exported; structured answer keys are omitted by default. Imported prose may still contain old keys—inspect before sharing. It is a one-way view: edits aren't synchronized back, existing files aren't overwritten, and teaching doesn't wait for exports. Your `my-summary.md` is copied as-is.
 
 For an older Markdown vault, ask “Migrate my learning vault to SQLite”. `update-learning` validates a dry run, preserves original notes and imports in one transaction. PyYAML is needed only for this migration. See [migration](skills/update-learning/references/migration.md).
 
@@ -104,7 +93,6 @@ The old storage skill names were `setup-obsidian`, `update-vault` and `ask-obsid
 
 - [Architecture and schema](docs/sqlite-memory.md)
 - [Memory API](skills/setup-learning/references/api.md)
-- [Experimental.5 validation](evals/results-experimental.5.md)
 - [Contributing](AGENTS.md)
 
 Memory stays local; model-provider processing is separate. SQLite, backups and exports aren't encrypted. No analytics or background sync.

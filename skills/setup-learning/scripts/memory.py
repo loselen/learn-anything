@@ -13,7 +13,7 @@ import sys
 import tempfile
 import uuid
 
-VERSION = '1.4.0-experimental.5'
+VERSION = '1.4.0'
 SCHEMA = 1
 MUTABLE = {'topics', 'capabilities', 'topic_capabilities', 'outcomes', 'sessions',
            'questions', 'preferences', 'sources', 'capability_sources'}
@@ -23,6 +23,13 @@ DERIVED = {'status', 'placement', 'retention', 'repair', 'interval', 'last_revie
 TIME_TABLES = {'sessions', 'units', 'cycles', 'tests', 'attempts', 'assessments', 'notes', 'recommendations', 'baselines'}
 JSON_FIELDS = {'recommendations': ('snapshot', 'result'), 'baselines': ('snapshot',),
                'preferences': ('value',), 'tests': ('blueprint',)}
+SUMMARY = 'my-summary.md'
+LEGACY_SUMMARY = 'My Summary.md'
+COLUMNS = {}
+GRAPH_STYLE = ('    classDef solid fill:#4A68E0,stroke:#4A68E0,color:#FFFFFF',
+               '    classDef shaky fill:#D2DBF7,stroke:#D2DBF7,color:#2E47A8',
+               '    classDef next fill:#FFFFFF,stroke:#4A68E0,stroke-width:2px,color:#2E47A8',
+               '    classDef notyet fill:#ECE9E6,stroke:#C2BCB6,stroke-dasharray:4 3,color:#44403C')
 
 
 def now():
@@ -117,8 +124,9 @@ def initialize(root, install=True):
     if path.exists():
         raise ValueError('memory already exists; use update-learning')
     assets = Path(__file__).resolve().parent.parent / 'assets'
+    # legacy.py stays with the skill: imports run from setup-learning, never per turn.
     outputs = {folder / name: Path(__file__).with_name(name).read_bytes()
-               for name in ('memory.py', 'schema.sql', 'legacy.py')}
+               for name in ('memory.py', 'schema.sql')}
     if install:
         if not all((assets / name).is_file() for name in ('AGENTS.md', 'CLAUDE.md')):
             raise ValueError('initialize from the setup-learning skill, whose assets include the rules')
@@ -192,7 +200,9 @@ def put(db, table, data, importing=False):
     for field in JSON_FIELDS.get(table, ()):
         if isinstance(data.get(field), (dict, list)):
             data[field] = canonical(data[field])
-    columns = {r['name'] for r in db.execute(f'PRAGMA table_info({table})')}
+    columns = COLUMNS.get(table)
+    if columns is None:
+        columns = COLUMNS[table] = {r['name'] for r in db.execute(f'PRAGMA table_info({table})')}
     if set(data) - columns:
         raise ValueError(f'unknown {table} fields: {sorted(set(data)-columns)}')
     old = db.execute(f'SELECT * FROM {table} WHERE id=?', (data['id'],)).fetchone()
@@ -605,9 +615,41 @@ def optimize(db):
     return {'schema': SCHEMA, 'indexes_checked': len(indexes), 'revision': revision(db)}
 
 
-def summary_context(db, limit=100):
+def topic_graph(db, topic, limit=None):
+    """Mermaid map of one topic from derived classes. Mermaid is generated, never stored."""
+    members = rows(db, '''SELECT c.id,c.title,c.map_class FROM capability_state c
+      JOIN topic_capabilities t ON t.capability_id=c.id WHERE t.topic_id=? AND c.archived=0
+      ORDER BY CASE c.map_class WHEN 'next' THEN 0 WHEN 'shaky' THEN 1 WHEN 'solid' THEN 2 ELSE 3 END,c.title,c.id''', (topic,))
+    shown = members[:limit] if limit else members
+    node = {c['id']: 'N'+hashlib.sha256(c['id'].encode()).hexdigest()[:12] for c in shown}
+    lines = ['graph TD', *GRAPH_STYLE]
+    for c in shown:
+        label = c['title'].replace('"', '#quot;').replace('\n', ' ')
+        lines.append('    '+node[c['id']]+'("'+label+'"):::'+c['map_class'])
+    for edge in db.execute('''SELECT DISTINCT g.capability_id,m.prerequisite_id FROM prerequisite_groups g
+      JOIN prerequisite_members m ON m.group_id=g.id JOIN topic_capabilities t ON t.capability_id=g.capability_id
+      WHERE t.topic_id=? ORDER BY 1,2''', (topic,)):
+        if edge[0] in node and edge[1] in node:
+            lines.append('    '+node[edge[1]]+' --> '+node[edge[0]])
+    if len(members) > len(shown):
+        lines.append('    %% '+str(len(members)-len(shown))+' more capabilities not shown')
+    return '\n'.join(lines)
+
+
+def summary_file(root):
+    """The current summary file, or a pre-1.4.0 one whose owner text should be merged."""
+    for name in (SUMMARY, LEGACY_SUMMARY):
+        path = Path(root) / name
+        if path.is_file() and not path.is_symlink():
+            raw = path.read_bytes()
+            return {'path': name, 'sha256': hashlib.sha256(raw).hexdigest(), 'text': raw.decode('utf-8', 'replace')}
+    return None
+
+
+def summary_context(db, root, limit=100):
     """Explicit, bounded synthesis input. Not called by context/apply/export."""
     limit = max(1, min(limit, 500))
+    topics = rows(db, 'SELECT * FROM topics WHERE archived=0 ORDER BY title LIMIT ?', (limit,))
     return {
         'revision': revision(db),
         'status_counts': rows(db, 'SELECT status,count(*) AS count FROM capabilities WHERE archived=0 GROUP BY status'),
@@ -616,7 +658,9 @@ def summary_context(db, limit=100):
           FROM topics t LEFT JOIN topic_capabilities tc ON tc.topic_id=t.id
           LEFT JOIN capabilities c ON c.id=tc.capability_id AND c.archived=0
           WHERE t.archived=0 GROUP BY t.id ORDER BY t.title LIMIT ?''', (limit,)),
-        'topics': rows(db, 'SELECT * FROM topics WHERE archived=0 LIMIT ?', (limit,)),
+        'topics': topics,
+        'progress_graphs': [{'topic_id': t['id'], 'title': t['title'], 'mermaid': topic_graph(db, t['id'], 20)} for t in topics[:10]],
+        'graph_legend': 'filled blue = solid, light blue = shaky (due for review), outlined = ready next, grey dashed = not yet',
         'capabilities': rows(db, 'SELECT * FROM capability_state WHERE archived=0 ORDER BY last_reviewed DESC,next_review DESC LIMIT ?', (limit,)),
         'outcomes': rows(db, 'SELECT * FROM outcomes LIMIT ?', (limit,)),
         'evidence': rows(db, '''SELECT a.id,a.score,a.feedback,a.independent,a.complete,a.verified,a.disputed,a.created_at,
@@ -631,22 +675,23 @@ def summary_context(db, limit=100):
         'questions': rows(db, "SELECT * FROM questions WHERE disposition!='resolved' LIMIT ?", (limit,)),
         'sessions': rows(db, 'SELECT * FROM sessions ORDER BY updated_at DESC LIMIT 3'),
         'previous_summary': rows(db, 'SELECT id,body,created_at FROM summary_snapshots ORDER BY rowid DESC LIMIT 1'),
+        'current_file': summary_file(root),
         'limit_per_section': limit,
         'note': 'Bounded input, not a complete vault scan. Responses/notes are excerpts (1600/2000 chars); use get/search for missing evidence and label gaps.'
     }
 
 
 def save_summary(db, root, payload):
-    """Only this explicit command writes My Summary.md. Retry the same ID after a crash."""
+    """Only this explicit command writes my-summary.md. Retry the same ID after a crash."""
     required = {'id', 'request', 'body', 'evidence_ids', 'expected_revision'}
     if not required <= set(payload) or set(payload)-required-{'expected_file_hash'} or not str(payload['request']).strip():
         raise ValueError('summary requires id, explicit user request, body, evidence_ids, expected_revision')
-    if not isinstance(payload['body'], str) or not payload['body'].startswith('# My Summary\n'):
-        raise ValueError('summary must start with # My Summary')
+    if not isinstance(payload['body'], str) or not payload['body'].lower().startswith('# my summary\n'):
+        raise ValueError('summary must start with # My summary')
     if not isinstance(payload['evidence_ids'], list):
         raise ValueError('evidence_ids must be a list of table:id references')
     body = payload['body'].encode('utf-8')
-    path = Path(root) / 'My Summary.md'
+    path = Path(root) / SUMMARY
     with transaction(db):
         old = db.execute('SELECT * FROM summary_snapshots WHERE id=?', (payload['id'],)).fetchone()
         if old:
@@ -667,7 +712,7 @@ def save_summary(db, root, payload):
             actual_hash = hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else None
             merged = payload.get('expected_file_hash') and payload['expected_file_hash'] == actual_hash
             if path.is_symlink() or (path.exists() and not merged and (not previous or actual_hash != previous[0])):
-                raise ValueError('My Summary.md has owner edits or is unowned; preserve/merge them before saving')
+                raise ValueError(SUMMARY+' has owner edits or is unowned; preserve/merge them before saving')
             db.execute('INSERT INTO summary_snapshots VALUES (?,?,?,?,?,?)',
                        (payload['id'], payload['request'], payload['body'], canonical(payload['evidence_ids']), revision(db), now()))
             db.execute("UPDATE meta SET value=CAST(value AS INTEGER)+1 WHERE key='revision'")
@@ -713,7 +758,6 @@ def export_markdown(db, root, target, include_keys=False):
         rev = revision(db)
         capabilities = rows(db, 'SELECT * FROM capability_state ORDER BY title,id')
         names = {c['id']: filename(c['title'], c['id']) for c in capabilities}
-        node_ids = {c['id']: 'N'+hashlib.sha256(c['id'].encode()).hexdigest()[:12] for c in capabilities}
 
         def grouped(sql, key):
             result = {}
@@ -726,10 +770,8 @@ def export_markdown(db, root, target, include_keys=False):
         attempts_by_unit = grouped('SELECT * FROM attempts ORDER BY created_at,id', 'unit_id')
         grades_by_attempt = grouped('SELECT * FROM assessments ORDER BY created_at,id', 'attempt_id')
         notes_by_capability = grouped('SELECT * FROM notes ORDER BY created_at,id', 'capability_id')
-        members_by_topic = grouped('''SELECT c.*,t.topic_id FROM capability_state c
+        members_by_topic = grouped('''SELECT c.id,t.topic_id FROM capabilities c
             JOIN topic_capabilities t ON t.capability_id=c.id ORDER BY c.title,c.id''', 'topic_id')
-        dependencies = grouped('''SELECT g.capability_id,m.prerequisite_id FROM prerequisite_groups g
-            JOIN prerequisite_members m ON m.group_id=g.id ORDER BY g.id,m.prerequisite_id''', 'capability_id')
         outcomes_by_topic = grouped('SELECT * FROM outcomes ORDER BY id', 'topic_id')
         units_by_test = grouped('''SELECT i.test_id,i.ordinal,u.id,u.capability_id,u.prompt FROM test_items i
             JOIN units u ON u.id=i.unit_id ORDER BY i.ordinal''', 'test_id')
@@ -755,14 +797,8 @@ def export_markdown(db, root, target, include_keys=False):
             emit('Lessons/'+names[identity]+'.md', content)
         for topic in rows(db, 'SELECT * FROM topics ORDER BY title,id'):
             members = members_by_topic.get(topic['id'], [])
-            graph = ['graph TD']
-            for c in members:
-                label = c['title'].replace('"', '&quot;').replace('\n', ' ')
-                graph.append('    '+node_ids[c['id']]+'("'+label+'"):::'+c['map_class'])
-                for dep in dependencies.get(c['id'], []):
-                    graph.append('    '+node_ids[dep['prerequisite_id']]+' --> '+node_ids[c['id']])
             content = '# '+topic['title']+'\n\n## Goal\n\n'+topic['goal']+'\n\n'+topic['long_term']+'\n\n'+topic['path']
-            content += '\n\n## Map\n\n```mermaid\n'+'\n'.join(graph)+'\n```\n\nOR alternatives share a prerequisite group in SQLite; arrows alone do not show that formula.\n'
+            content += '\n\n## Map\n\n```mermaid\n'+topic_graph(db, topic['id'])+'\n```\n\nOR alternatives share a prerequisite group in SQLite; arrows alone do not show that formula.\n'
             content += '\n'.join('- [[Lessons/'+names[c['id']]+']]' for c in members)+'\n\n## Outcomes\n\n'
             content += '\n'.join('- '+o['description']+': '+(o['met_on'] or 'not yet') for o in outcomes_by_topic.get(topic['id'], []))+'\n'
             emit('Maps/'+filename(topic['title'], topic['id'])+'.md', content)
@@ -779,9 +815,9 @@ def export_markdown(db, root, target, include_keys=False):
         emit('Sessions/Questions.md', '# Saved questions\n\n'+'\n'.join('- '+q['text']+' ('+q['disposition']+')' for q in rows(db, 'SELECT * FROM questions'))+'\n')
         for legacy in db.execute('SELECT * FROM legacy_documents'):
             emit('Legacy/'+filename(Path(legacy['path']).stem, legacy['id'])+'.md', legacy['raw'])
-        existing_summary = Path(root) / 'My Summary.md'
+        existing_summary = Path(root) / SUMMARY
         if existing_summary.is_file() and not existing_summary.is_symlink():
-            emit('My Summary.md', existing_summary.read_bytes())
+            emit(SUMMARY, existing_summary.read_bytes())
         emit('README.md', '# Learning snapshot\n\nRead-only export at database revision '+str(rev)+'. SQLite remains authoritative; edits here are not imported automatically. Structured unit answer keys '+('included (not secure).' if include_keys else 'omitted.')+' Imported prose and Legacy files may contain original keys; inspect before sharing.\n')
         emit('Dashboard.base', 'views:\n  - type: table\n    name: Lessons\n    filters: file.inFolder("Lessons")\n    order:\n      - file.name\n      - status\n      - next_review\n')
         emit('manifest.json', json.dumps({'revision': rev, 'files': manifest}, indent=2))
@@ -863,7 +899,7 @@ def main():
                 check_graph(db)
                 result = {'integrity': db.execute('PRAGMA integrity_check').fetchone()[0], 'foreign_key_errors': rows(db, 'PRAGMA foreign_key_check'), 'revision': revision(db)}
             elif args.command == 'summary-context':
-                result = summary_context(db, args.limit)
+                result = summary_context(db, args.root, args.limit)
             elif args.command == 'export':
                 result = export_markdown(db, args.root, args.target, args.include_keys)
         finally:

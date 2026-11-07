@@ -15,4 +15,4 @@ Read the learning folder's `AGENTS.md` once. Narrow before reading; never dump t
 - Answer from saved evidence with compact `table:id` references. Distinguish placement, recently learned work and demonstrated retention. Say when the memory doesn't establish an answer.
 - For a next-step choice use the saved action, repair or ready frontier directly. Use `explore-next` only for a requested exploration/recommendation workflow. Don't run scoring or personalization for ordinary queries.
 
-This skill is read-only. A progress answer doesn't update `My Summary.md`; explicit “summarize me” requests hand off to `summarize-me`. Never run an export just to answer a question.
+This skill is read-only. A progress answer doesn't update `my-summary.md`; explicit “summarize me” requests hand off to `summarize-me`. Never run an export just to answer a question.

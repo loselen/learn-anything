@@ -1,8 +1,8 @@
-# Experimental.5: reliable local memory
+# SQLite learning memory
 
 ## Design and implementation order
 
-1. Start with experimental.3; include stable 1.3.1's make-activity behavior and handoffs.
+1. Start from experimental.3 discovery and stable 1.3.1's make-activity behavior and handoffs.
 2. Replace authoritative Markdown with one SQLite database and standard-library runtime.
 3. Add a small hot path: bounded context once, then one atomic turn save.
 4. Keep migration, exports, summaries, discovery and personalization off that path.
@@ -12,7 +12,7 @@ The goal is less agent bookkeeping, not more infrastructure. No server, MCP inst
 
 ## Storage
 
-`.learning/memory.sqlite3` is authoritative; `.learning/memory.py` is the installed interface. Python 3.10+ with SQLite is sufficient. Database schema **1** is independent of old Markdown schema **2** and package version **1.4.0-experimental.5**.
+`.learning/memory.sqlite3` is authoritative; `.learning/memory.py` is the installed interface. Python 3.10+ with SQLite is sufficient. Database schema **1** is independent of old Markdown schema **2** and package version **1.4.0**.
 
 | Tables | Responsibility |
 |---|---|
@@ -30,7 +30,7 @@ The goal is less agent bookkeeping, not more infrastructure. No server, MCP inst
 
 `schema.sql` is the exact field/constraint contract. Primary/foreign-key indexes support ID-based context, evidence joins, prerequisite lookups and due queues. Free-text search is bounded substring matching, not semantic retrieval or an unbounded agent file scan; it can scan text tables and is not promised to be constant-time. Add FTS only if measured vault sizes require it.
 
-Experimental.5 retains schema 1: structured blueprints use the existing text field, and archival changes only note metadata. After an explicit runtime update, `optimize` installs compatible indexes without changing learning data or revision. Initialization journals file installation and publishes the database last; an interrupted install can be retried with the same command/version without overwriting owner edits.
+1.4.0 retains schema 1: structured blueprints use the existing text field, and archival changes only note metadata. After an explicit runtime update, `optimize` installs compatible indexes without changing learning data or revision. Initialization journals file installation and publishes the database last; an interrupted install can be retried with the same command/version without overwriting owner edits.
 
 WAL, foreign keys, a five-second busy timeout, full synchronization and `BEGIN IMMEDIATE` provide local transactions. Evidence, progress, outcomes, session state and retry records commit together. A stale revision or any failed constraint rolls the batch back. Append-only IDs prevent accidental overwrites. The database serializes writers; owner-edited external files are not covered by its transaction. Backups use SQLite's online backup API.
 
@@ -42,16 +42,16 @@ After an answer, reuse context and save the response, feedback, next activity an
 
 Derived views remove map synchronization. Standard status and interval rules remain; placement, practice, transfer and delayed retrieval are distinct. Evidence assertions still come from the tutor—SQLite cannot establish whether an activity really tested transfer. Existing experimental discovery/personalization helpers are retained, opt-in, and not automatically invoked on each lesson. make-activity is applied inline after loading, not a nested planning pipeline.
 
-The runtime rejects missing revisions and repeated-unit independent evidence, preserves hint-only active tasks, and requires transfer to leave repair. Conditional slip rechecks must be linked in an immutable blueprint before the first attempt; they do not turn one successful placement response into two. SQLite projections for optional policies live in explore-next's `scripts/snapshot.py`; full taught scope and consent remain explicit host assertions. See [release validation](../evals/results-experimental.5.md).
+The runtime rejects missing revisions and repeated-unit independent evidence, preserves hint-only active tasks, and requires transfer to leave repair. Conditional slip rechecks must be linked in an immutable blueprint before the first attempt; they do not turn one successful placement response into two. SQLite projections for optional policies live in explore-next's `scripts/snapshot.py`; full taught scope and consent remain explicit host assertions. See [experimental.5 validation](../evals/results-experimental.5.md).
 
 ## Optional outputs and migration
 
-Obsidian is a read-only projection into a fresh directory. No per-turn exports or Markdown dependency. Owner changes in exports aren't silently imported. Original Markdown imports retain bytes and explicit state without manufacturing verified historical assessments; unresolved/ambiguous graph links fail preflight. Historical cycles/test prose remain searchable legacy notes, not guessed structured events. These notes may contain old keys: ordinary lesson context excludes legacy prose until explicitly read, and exports warn that original keys may remain. Existing legacy prompt references are saved for explicit resumption.
+Obsidian is a read-only projection into a fresh directory. No per-turn exports or Markdown dependency. Owner changes in exports aren't silently imported. Original Markdown imports retain bytes and explicit state without manufacturing verified historical assessments; unresolved/ambiguous graph links fail preflight. Historical cycles/test prose remain searchable legacy notes, not guessed structured events. These notes may contain old keys: ordinary lesson context excludes legacy prose until explicitly read, and exports warn that original keys may remain. Existing legacy prompt references are saved for explicit resumption. Stable 1.x vaults also bring map goals, outcome rows with met dates, own-words sections and archived lessons; old rules and templates are kept only as bytes.
 
-`My Summary.md` is the one intentionally maintained root Markdown output. summarize-me refreshes it only on an explicit request; no completion/startup/export hook exists. It is a current portrait from learning and other saved context, with evidence, uncertainty and explicit preferences—not inferred personality. DB snapshots preserve earlier summaries. Publishing the file after the DB commit is retryable; it is not falsely described as an atomic DB-plus-file transaction.
+`my-summary.md` is the one intentionally maintained root Markdown output: a narrative portrait with runtime-generated Mermaid progress graphs per topic. summarize-me refreshes it only on an explicit request; no completion/startup/export hook exists. It is a current portrait from learning and other saved context, with evidence, uncertainty and explicit preferences—not inferred personality. DB snapshots preserve earlier summaries. Publishing the file after the DB commit is retryable; it is not falsely described as an atomic DB-plus-file transaction.
 
 ## Validation and limits
 
-Automated tests cover transactions, retry/conflict safety, state transitions, tests, restart, migration, exports and summary isolation. The benchmark uses synthetic local data and reports runtime timing/returned bytes, not an unmeasured claim about end-to-end agent speed. Fresh-session conversational scenarios must still be checked with a chosen host/model before publishing; deterministic tests don't substitute for that.
+Automated tests cover transactions, retry/conflict safety, state transitions, tests, restart, migration, exports and summary isolation. The benchmark uses synthetic local data and reports runtime timing/returned bytes, not an unmeasured claim about end-to-end agent speed. Conversational behavior is checked by the owner in fresh agent sessions; deterministic tests don't substitute for that.
 
 No network memory service or analytics. Local files are not encrypted. Backups/exports and model-provider processing have separate privacy implications. Corrections after a grade has already changed scheduling, deletion and reset require explicit maintenance rather than a generic automatic rollback. Unknown future schema versions are refused; a future migration must be specified and tested before use.

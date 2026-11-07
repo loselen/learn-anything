@@ -44,7 +44,7 @@ By default, test what is due first (`status` `review` or `solid`, `next_review` 
 
 ## Check every answer key
 
-Check each new key once: execute code, independently check a calculation, or research an uncertain fact. Reuse that verification unless the item changes or is disputed. Save its method/version. If learner material conflicts, investigate and leave progress unchanged. Unchecked keys use `verified: false`; check before rejecting a different answer. Don't research settled facts again.
+Check each new key once (run the code, recheck the calculation, or research an uncertain fact) and save the method. Unchecked keys are `verified: false`; check before rejecting a different answer. If learner material conflicts, investigate and leave progress unchanged.
 
 ## Mark and review
 

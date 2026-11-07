@@ -59,7 +59,7 @@ class AuditRegressionTests(unittest.TestCase):
         before = t.state()
         t.write(t.response('r', identity='repeat', today='2026-11-16'), today='2026-11-16')
         self.assertEqual(t.state(), before)
-        evidence = {r['id']: r for r in m.summary_context(self.db)['evidence']}
+        evidence = {r['id']: r for r in m.summary_context(self.db, t.root)['evidence']}
         self.assertTrue(evidence['repeat-grade']['unit_reused'])
         t.write([t.activity('fresh', purpose='delayed'), *t.response('fresh', today='2026-11-16')], today='2026-11-16')
         self.assertEqual(t.state()['interval'], 30)
@@ -201,7 +201,7 @@ class AuditRegressionTests(unittest.TestCase):
     def test_summary_can_cite_supplied_session_evidence(self):
         t = self.t
         t.write([t.record('sessions', id='s', next_action='Continue counting', closure='paused')])
-        self.assertEqual(m.summary_context(self.db)['sessions'][0]['id'], 's')
+        self.assertEqual(m.summary_context(self.db, t.root)['sessions'][0]['id'], 's')
         result = m.save_summary(self.db, t.root, dict(id='summary', request='Summarize me',
             body='# My Summary\n\nPaused counting. [sessions:s]\n', evidence_ids=['sessions:s'], expected_revision=m.revision(self.db)))
         self.assertEqual(result['snapshot_id'], 'summary')

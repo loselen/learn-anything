@@ -60,6 +60,40 @@ def section(text, name):
     return match.group(1) if match else ''
 
 
+def goal_parts(text):
+    """1.x map goals hold **Now:**, **Long-term:** and **Path:** lines."""
+    found = {k: re.search(r'^\*\*'+k+r':\*\*[ \t]*(.*)$', text, re.M) for k in ('Now', 'Long-term', 'Path')}
+    if not found['Now']:
+        return {'goal': text.strip()}
+    return {'goal': found['Now'].group(1).strip(), 'long_term': found['Long-term'].group(1).strip() if found['Long-term'] else '',
+            'path': found['Path'].group(1).strip() if found['Path'] else ''}
+
+
+def outcome_rows(text):
+    for line in text.splitlines():
+        cells = [c.strip() for c in line.strip().strip('|').split('|')]
+        if len(cells) < 2 or not cells[0] or cells[0].lower() == 'outcome' or set(cells[0]) <= set('-: '):
+            continue
+        met = re.search(r'met\s+(\d{4}-\d{2}-\d{2})', cells[1])
+        yield cells[0], met.group(1) if met else None
+
+
+def classify(relative, props):
+    """Route a document to a table; 'raw' keeps only its original bytes."""
+    parts = relative.parts
+    if parts[0] == 'Templates' or (len(parts) == 1 and parts[0] in ('AGENTS.md', 'CLAUDE.md', 'My Summary.md', 'my-summary.md')):
+        return 'raw', False
+    category = parts[0] if len(parts) > 1 else ''
+    if category == 'Archive':
+        tags = props.get('tags') or []
+        if 'status' in props or 'prerequisites' in props:
+            return 'capabilities', True
+        if 'map' in (tags if isinstance(tags, list) else [tags]):
+            return 'topics', True
+        return 'notes', False
+    return {'Lessons': 'capabilities', 'Maps': 'topics', 'References': 'sources'}.get(category, 'notes'), False
+
+
 def plan(source):
     source = Path(source)
     if not source.is_dir() or source.is_symlink() or any(p.is_symlink() for p in source.parents):
@@ -74,14 +108,13 @@ def plan(source):
             raise ValueError('symlinked source: '+str(relative))
         raw = path.read_bytes()
         props, body = parse(raw)
-        category = relative.parts[0] if len(relative.parts) > 1 else ''
-        kind = {'Lessons': 'capabilities', 'Maps': 'topics', 'References': 'sources'}.get(category, 'notes')
+        kind, archived = classify(relative, props)
         ident = props.get('capability_id') if kind == 'capabilities' else None
         ident = ident or identity(str(relative))
         if not isinstance(ident, str):
             raise ValueError('invalid capability ID: '+str(relative))
-        doc = dict(path=str(relative), raw=raw, props=props, body=body, category=category,
-                   table=kind, id=ident, title=path.stem)
+        doc = dict(path=str(relative), raw=raw, props=props, body=body,
+                   table=kind, archived=archived, id=ident, title=path.stem)
         docs.append(doc)
         by_path[str(relative.with_suffix(''))] = doc
         by_title.setdefault(path.stem, []).append(doc)
@@ -104,9 +137,13 @@ def plan(source):
     stamp = m.now()
     for doc in docs:
         props, body, ident, table = doc['props'], doc['body'], doc['id'], doc['table']
+        if table == 'raw':
+            continue
         data = {'id': ident, 'title': doc['title']}
+        if doc['archived']:
+            data['archived'] = 1
         if table == 'capabilities':
-            data.update(kind=props.get('kind') or 'concept', status=props.get('status') or 'planned',
+            data.update(kind=str(props.get('kind') or 'concept').lower(), status=props.get('status') or 'planned',
                         placement=props.get('placement') or 'unknown', retention=props.get('retention') or 'unmeasured',
                         repair=int(bool(props.get('repair', False))))
             for field in ('interval', 'last_reviewed', 'next_review'):
@@ -115,9 +152,16 @@ def plan(source):
             # A legacy failed-review marker is not certain enough to silently infer repair.
             if 'repair' not in props and data['status'] == 'learning' and data.get('next_review'):
                 warnings.append(doc['path']+': repair was not explicit; preserved as ordinary learning')
-            data['objective'] = section(body, 'Outcome')
+            data['objective'] = section(body, 'Outcome').strip()
+            words = section(body, 'In my words').strip()
+            if words:
+                dependencies.append({'table': 'notes', 'data': {'id': identity(doc['path']+':own_words'), 'title': doc['title']+': in my words',
+                                'body': words, 'capability_id': ident, 'kind': 'own_words', 'created_at': stamp}})
         elif table == 'topics':
-            data.update(goal=section(body, 'Goal'), path=section(body, 'Map'))
+            data.update(goal_parts(section(body, 'Goal')))
+            for index, (description, met) in enumerate(outcome_rows(section(body, 'Outcomes'))):
+                dependencies.append({'table': 'outcomes', 'data': {'id': identity(doc['path']+':outcome:'+str(index)),
+                                     'topic_id': ident, 'description': description, 'met_on': met}})
         elif table == 'sources':
             url = re.search(r'https?://[^\s)>]+', body)
             data.update(body=body, url=url.group(0) if url else '', source_type='primary' if props.get('source_type') == 'primary' else 'secondary')

@@ -39,7 +39,7 @@ Use `make-activity` inline for probes and retries, with the objective/kind/level
 ## Report
 
 - **Solid**: passed a delayed independent review; placement alone is provisional. Placement successes are **shaky** until reviewed.
-- **Shaky**: passed, but only recently learned. With a vault, these are lessons at `status: review`. Review these first.
+- **Shaky**: passed, but only recently learned (`status: review` in saved memory). Review these first.
 - **Ready next**: failed, with its dependency formula satisfied by solid or shaky capabilities.
 - **Not yet**: everything else.
 - Each failure with its type, plus any missing prerequisites found.

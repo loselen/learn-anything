@@ -32,7 +32,7 @@ explain just enough → one activity → wait for the attempt
 
 ## Check every answer key
 
-Check each new key once: execute code, independently check a calculation, or research an uncertain fact. Reuse that verification unless the item changes or is disputed. Save its method/version. If learner material conflicts, investigate and leave progress unchanged. Unchecked keys use `verified: false`; check them before rejecting a different answer. Don't add a web search to settled facts.
+Check each new key once (run the code, recheck the calculation, or research an uncertain fact) and save the method. Unchecked keys are `verified: false`; check before rejecting a different answer. If learner material conflicts, investigate and leave progress unchanged.
 
 ## Start
 
@@ -88,4 +88,4 @@ Judge from the evidence across cycles. Before you call it, give one final activi
 
 Use one targeted `context` on start/resume, then one `turn` (or `apply`) per teaching turn. Save the explanation once in a cycle, prompt/key once in its unit, learner text verbatim in an attempt, and feedback once in its assessment. Batch the next unit and session action with that save. Use `get units ID --keys` only for marking or requested disclosure.
 
-Label fresh final transfer as `transfer`; ordinary activities are `practice`. The helper sets review/outcomes only from eligible transfer evidence. Optional learner summaries are `notes` of kind `own_words`. Never edit status fields, regenerate maps, export Markdown or update `My Summary.md` here. On storage failure, say the turn is not saved. Without local memory, teach in chat without setup friction.
+Label fresh final transfer as `transfer`; ordinary activities are `practice`. The helper sets review/outcomes only from eligible transfer evidence. Optional learner summaries are `notes` of kind `own_words`. Never edit status fields, regenerate maps, export Markdown or update the personal summary here. On storage failure, say the turn is not saved. Without local memory, teach in chat without setup friction.
